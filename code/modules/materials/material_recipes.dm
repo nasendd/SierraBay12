@@ -27,7 +27,7 @@
 	. += new/datum/stack_recipe/clipboard(src)
 	. += new/datum/stack_recipe/cross(src)
 
-	if(hardness >= MATERIAL_FLEXIBLE)
+	if(hardness > MATERIAL_FLEXIBLE)
 		. += new/datum/stack_recipe/baseball_bat(src)
 		. += new/datum/stack_recipe/urn(src)
 		. += new/datum/stack_recipe/spoon(src)
