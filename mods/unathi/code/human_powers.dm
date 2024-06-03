@@ -12,7 +12,7 @@
 	if(venom_cooldown > world.time)
 		to_chat(usr, SPAN_WARNING("Your venom glands are too exhausted, it will take some time before you can decant your innate venom again."))
 		return
-	if(istype(target, /obj/item/reagent_containers/))
+	if(istype(target, /obj/item/reagent_containers))
 		if(target.reagents)
 			target.reagents.add_reagent(poison_type, 8)
 			src.adjust_nutrition(-25)
