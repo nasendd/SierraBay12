@@ -1,5 +1,0 @@
-author: Teteshnik
-changes:
-  - {bugfix: 'Теперь нельзя делать кожанные двери, кожанные ножи, кожанные биты, кожанные
-      КАДы'}
-delete-after: true

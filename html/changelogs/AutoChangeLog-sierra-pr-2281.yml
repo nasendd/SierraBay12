@@ -1,4 +1,0 @@
-author: Teteshnik
-changes:
-  - {tweak: Убрана задержка в грабе перед опрокидыванием на стол.}
-delete-after: true
