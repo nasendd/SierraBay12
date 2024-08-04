@@ -1,0 +1,4 @@
+author: Teteshnik
+changes:
+  - {rscadd: Переношу код мозга из фиников на сьеррабей}
+delete-after: true
