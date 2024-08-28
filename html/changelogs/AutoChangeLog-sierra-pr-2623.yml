@@ -1,0 +1,4 @@
+author: Builder13
+changes:
+  - {bugfix: Фикс отсутствия падения персонажа при потере сознания}
+delete-after: true
