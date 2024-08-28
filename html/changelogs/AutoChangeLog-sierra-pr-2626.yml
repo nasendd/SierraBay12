@@ -1,0 +1,4 @@
+author: Builder13
+changes:
+  - {bugfix: Фикс отсутствия отображения активных кнопок в верхней части экрана}
+delete-after: true
