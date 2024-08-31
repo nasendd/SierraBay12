@@ -1,0 +1,4 @@
+author: Shegar
+changes:
+  - {admin: Возвращает map_upload}
+delete-after: true
