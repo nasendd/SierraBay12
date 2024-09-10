@@ -1,0 +1,5 @@
+author: Teteshnik
+changes:
+  - {rscdel: Удалил трэйси}
+  - {tweak: Портирован халат робототехника с инфинити.}
+delete-after: true
