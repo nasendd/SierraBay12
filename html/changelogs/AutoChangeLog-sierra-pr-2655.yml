@@ -1,8 +1,0 @@
-author: Builder13
-changes:
-  - {rscadd: Добавлена возможность вставки и вытаскивания предмета из интегральной
-      платы без ее удаления из корпуса}
-  - {rscadd: 'Добавлены интегральные платы list pick, image comparsion scanner, floor
-      magnet.'}
-  - {rscadd: Сделаны дополнения для плат intelligence control circuit и examiner}
-delete-after: true
