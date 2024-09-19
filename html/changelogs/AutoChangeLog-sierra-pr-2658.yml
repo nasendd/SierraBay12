@@ -1,5 +1,0 @@
-author: Teteshnik
-changes:
-  - {bugfix: 'Пофиксил лодаут ниндзи, так-же удалил костыль.'}
-  - {tweak: Портировал букеты в билд}
-delete-after: true
