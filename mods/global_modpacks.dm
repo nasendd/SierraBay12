@@ -33,7 +33,6 @@
 #include "utility_items/_utility_items.dme"
 #include "mechs_by_shegar/_mechs_by_shegar.dme"
 #include "newUI/_newUI.dme"
-#include "ai-update/_ai-update.dme"
 #include "anomaly/_anomaly.dme"
 #include "bouquet_by_hakso/_bouquet_by_hakso.dme"
 #include "integrated_circuits/_integrated_circuits.dme"
