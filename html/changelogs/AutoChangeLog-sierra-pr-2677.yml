@@ -1,0 +1,5 @@
+author: Teteshnik
+changes:
+  - {bugfix: Пофиксил шлем ЕРТ}
+  - {rscadd: Добавил новую прическу}
+delete-after: true
