@@ -1,4 +1,0 @@
-author: Builder13
-changes:
-  - {bugfix: Фикс краша консоли РнД}
-delete-after: true
