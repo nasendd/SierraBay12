@@ -1,4 +1,0 @@
-author: Builder13
-changes:
-  - {tweak: Радио при событии пси сигнала больше не должно воздействовать через стены}
-delete-after: true
