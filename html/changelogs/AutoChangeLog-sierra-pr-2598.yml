@@ -1,6 +1,0 @@
-author: Lexanx
-changes:
-  - {rscadd: Возвращена Вирусология.}
-  - {rscadd: Добавлена подпрофессия Химика - Вирусолог}
-  - {rscadd: Возвращены Вирусы}
-delete-after: true
