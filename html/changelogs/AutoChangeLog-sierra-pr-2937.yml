@@ -1,0 +1,5 @@
+author: Builder13
+changes:
+  - {rscadd: 'Портированы префы на музыку: Play jukeboxes and boomboxes и Play music
+      players'}
+delete-after: true
