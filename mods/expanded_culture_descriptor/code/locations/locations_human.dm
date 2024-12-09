@@ -35,6 +35,7 @@
 	тёплыми отношениями между Трестеном и ЦПСС, первый имеет несколько отрядов во вооружённых силах ЦПСС."
 	capital = "Терстен-сити"
 	economic_power = 1.0
+	secondary_langs = list(LANGUAGE_SIMPUNATHI)
 
 /singleton/cultural_info/location/avalon
 	name = HOME_SYSTEM_AVALON
@@ -240,4 +241,4 @@
 	ruling_body = "Центральное Правительство Солнечной Системы"
 	distance = "4 световых года"
 	economic_power = 1.2
-	secondary_langs = list(LANGUAGE_RESOMI, LANGUAGE_SKRELLIAN, LANGUAGE_HUMAN_CHINESE, LANGUAGE_HUMAN_ARABIC, LANGUAGE_HUMAN_INDIAN, LANGUAGE_HUMAN_IBERIAN, LANGUAGE_HUMAN_RUSSIAN)
+	secondary_langs = list(LANGUAGE_RESOMI, LANGUAGE_SIMPSKRELLIAN, LANGUAGE_HUMAN_CHINESE, LANGUAGE_HUMAN_ARABIC, LANGUAGE_HUMAN_INDIAN, LANGUAGE_HUMAN_IBERIAN, LANGUAGE_HUMAN_RUSSIAN)
