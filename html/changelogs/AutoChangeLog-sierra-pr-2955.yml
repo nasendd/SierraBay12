@@ -1,4 +1,0 @@
-author: RocheHendson
-changes:
-  - {bugfix: Заменил outlet на chute в карго почте}
-delete-after: true
