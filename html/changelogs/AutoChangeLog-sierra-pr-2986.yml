@@ -1,5 +1,0 @@
-author: Builder13
-changes:
-  - {rscadd: 'Предметам добавлен верб Inspect, через который можно производить определение
-      предметов антага'}
-delete-after: true
