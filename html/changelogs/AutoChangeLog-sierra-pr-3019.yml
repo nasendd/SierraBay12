@@ -1,0 +1,5 @@
+author: Teteshnik
+changes:
+  - {bugfix: Пофиксил отдельные лодаут вещи.}
+  - {bugfix: Исправлены иконки самодельного меча}
+delete-after: true
