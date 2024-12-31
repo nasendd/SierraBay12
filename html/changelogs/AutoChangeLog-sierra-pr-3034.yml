@@ -1,4 +1,0 @@
-author: Shegar
-changes:
-  - {rscdel: Спавн аномалий от БСД выведен из ротации}
-delete-after: true
