@@ -18,7 +18,6 @@
 #include "code/circuit.dm"
 #include "code/global_hud_sierra.dm"
 #include "code/labcoat.dm"
-#include "code/ninja-map.dm"
 #include "code/shuttle_feature.dm"
 #include "code/craft_drugs.dm"
 #include "code/hair_olivka.dm"

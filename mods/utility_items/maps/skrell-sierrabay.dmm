@@ -1157,7 +1157,6 @@
 /area/ship/skrellscoutship/crew/medbay)
 "dT" = (
 /obj/machinery/vending/medical/skrell{
-	density = 0;
 	dir = 1
 	},
 /turf/simulated/floor/tiled/skrell/white,
