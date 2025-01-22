@@ -1,0 +1,4 @@
+author: Lexanx
+changes:
+  - {bugfix: Пофиксил баг лендинга}
+delete-after: true
