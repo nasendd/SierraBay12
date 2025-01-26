@@ -56,7 +56,7 @@ var/time_to_live = 3 SECONDS
 	animate(src, alpha = 0, time_to_live, easing = EASE_IN)
 	QDEL_IN(src, time_to_live)
 
-	/obj/rune/convert/Topic(href, href_list)
+/obj/rune/convert/Topic(href, href_list)
 	if(href_list["join"])
 		if(usr.loc == loc && !iscultist(usr))
 			new /obj/effect/cult/rune_convert(get_turf(usr))
