@@ -868,7 +868,6 @@
 	cultname = "otherwordly abomination that shouldn't exist and that you should report to your local god as soon as you see it, along with the instructions for making this"
 	var/papertype
 
-/*
 /obj/rune/imbue/cast(mob/living/user)
 	var/obj/item/paper/target
 	var/tainted = 0
@@ -887,7 +886,6 @@
 	new papertype(get_turf(src))
 	qdel(target)
 	qdel(src)
-*/
 
 /obj/rune/imbue/stun
 	cultname = "stun imbue"
