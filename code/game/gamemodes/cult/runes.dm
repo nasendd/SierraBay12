@@ -152,7 +152,7 @@
 						target.take_overall_damage(0, 10)
 
 /*
-	/obj/rune/convert/Topic(href, href_list)
+/obj/rune/convert/Topic(href, href_list)
 	if(href_list["join"])
 		if(usr.loc == loc && !iscultist(usr))
 			GLOB.cult.add_antagonist(usr.mind, ignore_role = 1, do_not_equip = 1)
