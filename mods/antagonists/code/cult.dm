@@ -1,5 +1,3 @@
-var/time_to_live = 3 SECONDS
-
 /obj/effect/cult
 	icon = 'icons/effects/effects.dmi'
 	opacity = FALSE
@@ -16,8 +14,8 @@ var/time_to_live = 3 SECONDS
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/cult/rune_teleport/LateInitialize()
-	animate(src, alpha = 0, time_to_live, easing = EASE_IN)
-	QDEL_IN(src, time_to_live)
+	animate(src, alpha = 0, 3 SECONDS, easing = EASE_IN)
+	QDEL_IN(src, 3 SECONDS)
 
 /obj/effect/cult/rune_teleport_appear
 	name = "teleportation_appearing"
@@ -29,8 +27,8 @@ var/time_to_live = 3 SECONDS
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/cult/rune_teleport_appear/LateInitialize()
-	animate(src, alpha = 0, time_to_live, easing = EASE_IN)
-	QDEL_IN(src, time_to_live)
+	animate(src, alpha = 0, 3 SECONDS, easing = EASE_IN)
+	QDEL_IN(src, 3 SECONDS)
 
 /obj/effect/cult/rune_convert
 	name = "convert"
@@ -41,8 +39,8 @@ var/time_to_live = 3 SECONDS
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/cult/rune_convert/LateInitialize()
-	animate(src, alpha = 0, time_to_live, easing = EASE_IN)
-	QDEL_IN(src, time_to_live)
+	animate(src, alpha = 0, 3 SECONDS, easing = EASE_IN)
+	QDEL_IN(src, 3 SECONDS)
 
 /obj/effect/cult/rune_sacrifice
 	name = "sacrifice"
@@ -53,8 +51,8 @@ var/time_to_live = 3 SECONDS
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/effect/cult/rune_sacrifice/LateInitialize()
-	animate(src, alpha = 0, time_to_live, easing = EASE_IN)
-	QDEL_IN(src, time_to_live)
+	animate(src, alpha = 0, 3 SECONDS, easing = EASE_IN)
+	QDEL_IN(src, 3 SECONDS)
 
 /obj/rune/convert/Topic(href, href_list)
 	if(href_list["join"])
