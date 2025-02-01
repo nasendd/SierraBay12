@@ -151,12 +151,10 @@
 						to_chat(target, SPAN_OCCULT("Your mind turns to ash as the burning flames engulf your very soul and images of an unspeakable horror begin to bombard the last remnants of mental resistance."))
 						target.take_overall_damage(0, 10)
 
-/*
 /obj/rune/convert/Topic(href, href_list)
 	if(href_list["join"])
 		if(usr.loc == loc && !iscultist(usr))
 			GLOB.cult.add_antagonist(usr.mind, ignore_role = 1, do_not_equip = 1)
-*/
 
 /obj/rune/teleport
 	cultname = "teleport"
@@ -180,7 +178,6 @@
 	if(iscultist(user))
 		to_chat(user, "Its name is [destination].")
 
-/*
 /obj/rune/teleport/cast(mob/living/user)
 	if(user.loc == src)
 		showOptions(user)
@@ -212,7 +209,6 @@
 		if(!input)
 			return
 		destination = sanitize(input)
-*/
 
 /obj/rune/teleport/Topic(href, href_list)
 	if(usr.loc != src)
@@ -436,7 +432,6 @@
 	strokes = 3
 	var/mob/living/victim
 
-/*
 /obj/rune/offering/cast(mob/living/user)
 	var/list/mob/living/cultists = get_cultists()
 	if(victim)
@@ -505,7 +500,6 @@
 	if(victim)
 		victim.ExtinguishMob() // Technically allows them to put the fire out by sacrificing them and stopping immediately, but I don't think it'd have much effect
 		victim = null
-*/
 
 /obj/rune/drain
 	cultname = "blood drain"
