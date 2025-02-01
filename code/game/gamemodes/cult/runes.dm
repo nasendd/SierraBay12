@@ -501,6 +501,7 @@
 		victim.ExtinguishMob() // Technically allows them to put the fire out by sacrificing them and stopping immediately, but I don't think it'd have much effect
 		victim = null
 
+
 /obj/rune/drain
 	cultname = "blood drain"
 	strokes = 3
