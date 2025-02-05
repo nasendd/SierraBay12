@@ -535,6 +535,7 @@
 	icon_state = "railing0-1"
 	},
 /mob/living/simple_animal/passive/mouse/brown/Tom,
+/obj/item/device/scanner/health,
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/map_template/crashed_pod)
 "fn" = (
@@ -892,11 +893,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/map_template/crashed_pod)
 "gE" = (
-/obj/machinery/sleeper{
-	dir = 8
-	},
-/obj/floor_decal/industrial/outline/blue,
-/turf/simulated/floor/tiled/dark/monotile,
+/turf/simulated/floor/tiled/techfloor,
 /area/map_template/crashed_pod)
 "gF" = (
 /turf/simulated/floor/tiled/techfloor/grid,
@@ -1084,6 +1081,10 @@
 /obj/item/device/radio/hailing,
 /obj/random/plushie,
 /obj/item/paper_bin,
+/obj/random/soap{
+	pixel_x = 4;
+	pixel_y = 0
+	},
 /turf/simulated/floor/tiled/dark,
 /area/map_template/crashed_pod)
 "ZI" = (
