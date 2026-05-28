@@ -1,9 +1,12 @@
 /datum/map/build_exoplanets()
+#ifndef DEV_MODE_NO_AWAYS
 	//Игра заспавнит 1 обычную планету и 1 аномальную
 	var/list/anomaly_planets_list = list(
-		/obj/overmap/visitable/sector/exoplanet/flying,
-		/obj/overmap/visitable/sector/exoplanet/ice,
-		/obj/overmap/visitable/sector/exoplanet/water
+		/obj/overmap/visitable/sector/exoplanet/flying = 35,
+		/obj/overmap/visitable/sector/exoplanet/ice = 35,
+		/obj/overmap/visitable/sector/exoplanet/volcanic/anomaly = 20,
+		/obj/overmap/visitable/sector/exoplanet/water = 10
+
 	)
 	//Планеты которые сами по себе никогда не заспавнятся
 	var/list/shitspawn_planets = list(
@@ -23,7 +26,7 @@
 
 	if(LAZYLEN(anomaly_planets_list))
 		LAZYREMOVE(all_planets_list, anomaly_planets_list)
-		var/anomaly_planet_type = pick(anomaly_planets_list)
+		var/anomaly_planet_type = pickweight(anomaly_planets_list)
 		//Почему тут выставлены world.maxx и world.maxy вместо того чтоб выставить подобные параметры в карте?
 		//Потому что я пытался и игра спавнит планеты некорректно. Хотите исправить - убедитесь что ваш вариант реально
 		//будет работать.
@@ -35,6 +38,7 @@
 		var/normal_planet_type = pick(all_planets_list)
 		var/obj/overmap/visitable/sector/exoplanet/new_planet = new normal_planet_type(null, world.maxx, world.maxy)
 		new_planet.build_level()
+#endif
 
 /obj/overmap/visitable/sector/exoplanet/proc/generate_anomalies()
 	set background = 1

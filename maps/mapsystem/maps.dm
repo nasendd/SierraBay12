@@ -234,7 +234,7 @@ var/global/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		TAG_RELIGION =  RELIGION_AGNOSTICISM
 	)
 
-	var/access_modify_region = list(
+	var/access_modify_region = alist(
 		ACCESS_REGION_SECURITY = list(access_hos, access_change_ids),
 		ACCESS_REGION_MEDBAY = list(access_cmo, access_change_ids),
 		ACCESS_REGION_RESEARCH = list(access_rd, access_change_ids),
@@ -379,9 +379,11 @@ var/global/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 
 /datum/map/proc/build_away_sites()
-#ifdef UNIT_TEST
-	report_progress("Unit testing, so not loading away sites")
-	return // don't build away sites during unit testing
+// [SIERRA-EDIT] - DEVMODE NO AWARS
+#if defined(UNIT_TEST) || defined(DEV_MODE_NO_AWAYS)
+	report_progress("Unit testing or dev mode (no aways), so not loading away sites")
+	return // don't build away sites during unit testing or dev mode
+// [/SIERRA-EDIT]
 #else
 	report_progress("Loading away sites...")
 
@@ -423,6 +425,10 @@ var/global/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 	report_progress("Finished selecting away sites ([english_list(selected)]) for [away_site_budget - points] cost of [away_site_budget] budget.")
 
+	// Record loaded away site IDs for derelict mission generation
+	for(var/datum/map_template/ruin/away_site/site in selected)
+		loaded_away_site_ids += site.id
+
 	for (var/datum/map_template/template in selected)
 		if (template.load_new_z())
 			report_progress("Loaded away site [template]!")
@@ -431,6 +437,12 @@ var/global/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 #endif
 
 /datum/map/proc/build_exoplanets()
+// [SIERRA-EDIT] - DEVMODE NO AWAYS
+#ifdef DEV_MODE_NO_AWAYS
+	report_progress("Dev mode (no aways), so not loading exoplanets")
+	return
+#endif
+// [/SIERRA-EDIT]
 	if(!use_overmap)
 		return
 
@@ -536,6 +548,25 @@ var/global/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		num2text(SUP_FREQ)   = list(access_cargo),
 		num2text(SRV_FREQ)   = list(access_janitor, access_hydroponics),
 		num2text(HAIL_FREQ)  = list(),
+	)
+
+/datum/map/proc/intercept_internal_channels()
+	return list(
+		num2text(PUB_FREQ)   = list(),
+		num2text(AI_FREQ)    = list(access_synth),
+		num2text(ENT_FREQ)   = list(),
+		num2text(ERT_FREQ)   = list(access_cent_specops),
+		num2text(COMM_FREQ)  = list(access_bridge),
+		num2text(ENG_FREQ)   = list(access_engine_equip, access_atmospherics),
+		num2text(MED_FREQ)   = list(access_medical_equip),
+		num2text(MED_I_FREQ) = list(access_medical_equip),
+		num2text(SEC_FREQ)   = list(access_brig),
+		num2text(SEC_I_FREQ) = list(access_brig),
+		num2text(SCI_FREQ)   = list(access_tox,access_robotics,access_xenobiology),
+		num2text(SUP_FREQ)   = list(access_cargo),
+		num2text(SRV_FREQ)   = list(access_janitor, access_hydroponics),
+		num2text(HAIL_FREQ)  = list(),
+		num2text(SYND_FREQ)  = list()
 	)
 
 /datum/map/proc/show_titlescreen(client/C)

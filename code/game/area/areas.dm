@@ -70,7 +70,7 @@
 			simT.update_external_atmos_participation() // Refreshes outside status and adds exterior air to turf air if necessary.
 	//Check again if turf is outside -> This isnt solely area based so we cant know based on area alone
 	if(T.is_outside() != old_outside)
-		//T.update_weather()
+		T.update_weather()
 		AMBIENT_LIGHT_QUEUE_TURF(T)
 
 /// Returns list (`/obj/machinery/camera`). A list of all cameras in the area.
@@ -263,6 +263,7 @@
 
 	play_ambience(L)
 	L.lastarea = newarea
+	check_derelict_first_visit(L)
 
 
 /// Handles playing ambient sounds to a given mob, including ship hum.

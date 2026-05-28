@@ -4,8 +4,16 @@
 	var/UI_style = "Midnight"
 	var/UI_style_color = "#ffffff"
 	var/UI_style_alpha = 255
+	var/outline_reachable = "#00ff00"
+	var/outline_unreachable = "#ff0000"
+	var/outline_alpha = 255
+	// [SIERRA-ADD]
+	var/ui_scale = "100%"
+	var/window_size = "100%"
+	// [/SIERRA-ADD]
 
 	var/tooltip_style = "Midnight" //Style for popup tooltips
+	var/maptext_font = ""
 
 
 /datum/category_item/player_setup_item/player_global/ui
@@ -19,6 +27,14 @@
 	pref.UI_style_alpha = R.read("UI_style_alpha")
 	pref.ooccolor = R.read("ooccolor")
 	pref.clientfps = R.read("clientfps")
+	pref.outline_reachable = R.read("outline_reachable")
+	pref.outline_unreachable = R.read("outline_unreachable")
+	pref.outline_alpha = R.read("outline_alpha")
+	// [SIERRA-ADD]
+	pref.ui_scale = R.read("ui_scale")
+	pref.window_size = R.read("window_size")
+	// [/SIERRA-ADD]
+	pref.maptext_font = R.read("maptext_font")
 
 
 /datum/category_item/player_setup_item/player_global/ui/save_preferences(datum/pref_record_writer/W)
@@ -27,14 +43,48 @@
 	W.write("UI_style_alpha", pref.UI_style_alpha)
 	W.write("ooccolor", pref.ooccolor)
 	W.write("clientfps", pref.clientfps)
+	W.write("outline_reachable", pref.outline_reachable)
+	W.write("outline_unreachable", pref.outline_unreachable)
+	W.write("outline_alpha", pref.outline_alpha)
+	// [SIERRA-ADD]
+	W.write("ui_scale", pref.ui_scale)
+	W.write("window_size", pref.window_size)
+	// [/SIERRA-ADD]
+	W.write("maptext_font", pref.maptext_font)
 
 
 /datum/category_item/player_setup_item/player_global/ui/sanitize_preferences()
 	pref.UI_style		= sanitize_inlist(pref.UI_style, all_ui_styles, initial(pref.UI_style))
 	pref.UI_style_color	= sanitize_hexcolor(pref.UI_style_color, initial(pref.UI_style_color))
-	pref.UI_style_alpha	= sanitize_integer(pref.UI_style_alpha, 0, 255, initial(pref.UI_style_alpha))
+	pref.UI_style_alpha	= sanitize_integer(pref.UI_style_alpha, 50, 255, initial(pref.UI_style_alpha))
 	pref.ooccolor		= sanitize_hexcolor(pref.ooccolor, initial(pref.ooccolor))
+	pref.outline_reachable = sanitize_hexcolor(pref.outline_reachable, initial(pref.outline_reachable))
+	pref.outline_unreachable = sanitize_hexcolor(pref.outline_unreachable, initial(pref.outline_unreachable))
+	pref.outline_alpha = sanitize_integer(pref.outline_alpha, 50, 255, initial(pref.outline_alpha))
+	// [SIERRA-ADD]
+	pref.ui_scale = sanitize_text(pref.ui_scale, initial(pref.ui_scale))
+	var/scale_num = text2num(pref.ui_scale)
+	if (scale_num)
+		pref.ui_scale = "[clamp(scale_num, 50, 300)]%"
+	else
+		pref.ui_scale = initial(pref.ui_scale)
+
+	pref.window_size = sanitize_text(pref.window_size, initial(pref.window_size))
+	var/window_num = text2num(pref.window_size)
+	if (window_num)
+		pref.window_size = "[clamp(window_num, 50, 300)]%"
+	else
+		pref.window_size = initial(pref.window_size)
+	// [/SIERRA-ADD]
+	pref.maptext_font = sanitize_text(pref.maptext_font, initial(pref.maptext_font))
 	sanitize_client_fps()
+
+
+/datum/category_item/player_setup_item/player_global/ui/sanitize_character()
+	if (pref.maptext_font)
+		winset(pref.client, ":map", "font-family='[pref.maptext_font]','Small Fonts',Fixedsys,sans-serif")
+	else
+		winset(pref.client, ":map", "font-family='Small Fonts',Fixedsys,sans-serif")
 
 
 /datum/category_item/player_setup_item/player_global/ui/content(mob/user)
@@ -44,6 +94,13 @@
 	. += "-Color: <a href='byond://?src=\ref[src];select_color=1'><b>[pref.UI_style_color]</b></a> <table style='display:inline;' bgcolor='[pref.UI_style_color]'><tr><td>__</td></tr></table> <a href='byond://?src=\ref[src];reset=ui'>reset</a><br>"
 	. += "-Alpha(transparency): <a href='byond://?src=\ref[src];select_alpha=1'><b>[pref.UI_style_alpha]</b></a> <a href='byond://?src=\ref[src];reset=alpha'>reset</a><br>"
 	. += "<b>Tooltip Style:</b> <a href='byond://?src=\ref[src];select_tooltip_style=1'><b>[pref.tooltip_style]</b></a><br>"
+	. += {"<b>Maptext Font:</b> <a href='byond://?src=\ref[src];select_maptext_font=1'><span style="font-weight: bold; font-family:[pref.maptext_font ? " '[pref.maptext_font]'," : ""] 'Small Fonts', Fixedsys, sans-serif; text-rendering: geometricPrecision;">[pref.maptext_font || "Default"]</span></a><br>"}
+	. += "<b>Atom Hover Outlines</b><br>"
+	var/outlines_enabled = user.get_preference_value(/datum/client_preference/atom_outlines) == GLOB.PREF_YES
+	. += "- Enabled: <a href='byond://?src=\ref[src];outline_toggle=1'>[outlines_enabled ? "Yes" : "No"]</a><br>"
+	. += "- Reachable: <a href='byond://?src=\ref[src];outline_reachable=1' style='background:[pref.outline_reachable];color:transparent'>--</a><br>"
+	. += "- Unreachable: <a href='byond://?src=\ref[src];outline_unreachable=1' style='background:[pref.outline_unreachable];color:transparent'>--</a><br>"
+	. += "- Alpha: <a href='byond://?src=\ref[src];outline_alpha=1'>[pref.outline_alpha]</a><br>"
 	if(can_select_ooc_color(user))
 		. += "<b>OOC Color:</b> "
 		if(pref.ooccolor == initial(pref.ooccolor))
@@ -51,6 +108,10 @@
 		else
 			. += "<a href='byond://?src=\ref[src];select_ooc_color=1'><b>[pref.ooccolor]</b></a> <table style='display:inline;' bgcolor='[pref.ooccolor]'><tr><td>__</td></tr></table> <a href='byond://?src=\ref[src];reset=ooc'>reset</a><br>"
 	. += "<b>Client FPS:</b> <a href='byond://?src=\ref[src];select_fps=1'><b>[pref.clientfps]</b></a><br>"
+	// [SIERRA-ADD]
+	. += "<b>UI Scale:</b> <a href='byond://?src=\ref[src];select_ui_scale=1'><b>[pref.ui_scale]</b></a><br>"
+	. += "<b>Window Size:</b> <a href='byond://?src=\ref[src];select_window_size=1'><b>[pref.window_size]</b></a><br>"
+	// [/SIERRA-ADD]
 
 
 /datum/category_item/player_setup_item/player_global/ui/OnTopic(href,list/href_list, mob/user)
@@ -72,6 +133,39 @@
 		pref.UI_style_alpha = UI_style_alpha_new
 		return TOPIC_REFRESH
 
+	else if (href_list["outline_toggle"])
+		user.cycle_preference(/datum/client_preference/atom_outlines)
+		return TOPIC_REFRESH
+
+	else if (href_list["outline_reachable"])
+		var/response = input(user, "Reachable atom outline color:", "Global Preference", pref.outline_reachable) as null | color
+		if (!response)
+			return TOPIC_NOACTION
+		if (!CanUseTopic(user))
+			return TOPIC_NOACTION
+		pref.outline_reachable = response
+		return TOPIC_REFRESH
+
+	else if (href_list["outline_unreachable"])
+		var/response = input(user, "Unreachable atom outline color:", "Global Preference", pref.outline_unreachable) as null | color
+		if (!response)
+			return TOPIC_NOACTION
+		if (!CanUseTopic(user))
+			return TOPIC_NOACTION
+		pref.outline_unreachable = response
+		return TOPIC_REFRESH
+
+	else if (href_list["outline_alpha"])
+		var/response = input(user, "Atom outline transparency, between 50 - 255:", "Global Preference", pref.outline_alpha) as null | num
+		if (!response)
+			return TOPIC_NOACTION
+		if (response < 50 || response > 255)
+			return TOPIC_NOACTION
+		if (!CanUseTopic(user))
+			return TOPIC_NOACTION
+		pref.outline_alpha = response
+		return TOPIC_REFRESH
+
 	else if(href_list["select_ooc_color"])
 		var/new_ooccolor = input(user, "Choose OOC color:", "Global Preference") as color|null
 		if(new_ooccolor && can_select_ooc_color(user) && CanUseTopic(user))
@@ -87,12 +181,45 @@
 			if (target_mob?.client)
 				target_mob.client.fps = pref.clientfps
 			return TOPIC_REFRESH
+	// [SIERRA-ADD]
+	else if(href_list["select_ui_scale"])
+		var/new_scale = input(user, "Enter UI Scale (50-300):", "Global Preference", text2num(pref.ui_scale)) as num|null
+		if(isnull(new_scale) || !CanUseTopic(user)) return TOPIC_NOACTION
+		new_scale = clamp(new_scale, 50, 300)
+		pref.ui_scale = "[new_scale]%"
+		SSnano.update_user_uis(user)
+		return TOPIC_REFRESH
+
+	else if(href_list["select_window_size"])
+		var/new_size = input(user, "Enter Window Size (50-300):", "Global Preference", text2num(pref.window_size)) as num|null
+		if(isnull(new_size) || !CanUseTopic(user)) return TOPIC_NOACTION
+		new_size = clamp(new_size, 50, 300)
+		pref.window_size = "[new_size]%"
+		// We don't resize open windows immediately as it might be jarring,
+		// but they will open with the new size next time.
+		return TOPIC_REFRESH
+	// [/SIERRA-ADD]
 
 	else if(href_list["select_tooltip_style"])
 		var/tooltip_style_new = input(user, "Choose tooltip style.", "Global Preference", pref.tooltip_style) as null|anything in all_tooltip_styles
 		if(!tooltip_style_new || !CanUseTopic(user))
 			return TOPIC_NOACTION
 		pref.tooltip_style = tooltip_style_new
+		return TOPIC_REFRESH
+
+	else if (href_list["select_maptext_font"])
+		var/response = input(user, "Maptext font name, or empty to reset:", "Global Preference", pref.maptext_font) as null | text
+		if (isnull(response))
+			return
+		if (response)
+			response = copytext_char(response, 1, 48)
+			response = replacetext_char(response, "\\", "")
+			response = replacetext_char(response, "'", "\\'")
+		pref.maptext_font = response
+		if (pref.maptext_font)
+			winset(pref.client, ":map", "font-family='[pref.maptext_font]','Small Fonts',Fixedsys,sans-serif")
+		else
+			winset(pref.client, ":map", "font-family='Small Fonts',Fixedsys,sans-serif")
 		return TOPIC_REFRESH
 
 	else if(href_list["reset"])
@@ -113,4 +240,7 @@
 
 
 /proc/can_select_ooc_color(mob/user)
-	return config.allow_admin_ooccolor && check_rights(R_ADMIN, 0, user)
+	// [SIERRA-EDIT]
+	// return config.allow_admin_ooccolor && check_rights(R_ADMIN, 0, user) // SIERRA-EDIT - ORIGINAL
+	return config.allow_admin_ooccolor && check_rights(R_ADMIN|R_DEBUG, 0, user)
+	// [/SIERRA-EDIT]

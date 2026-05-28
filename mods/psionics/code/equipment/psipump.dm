@@ -47,7 +47,7 @@
 	y = 0.7
 	icon = "implant"
 
-	required_technologies = list(/datum/technology/bio/implants)
+	required_technologies = list(/datum/technology/bio/implant_injection_zh)
 	required_tech_levels = list()
 	cost = 1500
 
@@ -57,6 +57,7 @@
 /datum/design/autolathe/arms_ammo/psipump
 	name = "Psi-pump"
 	build_path = /obj/item/clothing/head/helmet/psipump
+	hidden = TRUE
 
 // WITH CRYSTAL
 /obj/item/clothing/head/helmet/psipump/active

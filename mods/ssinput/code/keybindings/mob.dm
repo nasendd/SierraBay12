@@ -179,3 +179,29 @@
 /datum/keybinding/mob/toggle_gun_mode/down(client/user)
 	var/mob/M = user.mob
 	M.toggle_gun_mode()
+
+/datum/keybinding/mob/activate_world_object
+	hotkey_keys = list("CtrlF", "CtrlG")
+	name = "activate_object_in_world"
+	full_name = "Activate Object In World"
+
+/datum/keybinding/mob/activate_world_object/down(client/user)
+	var/mob/M = user.mob
+
+	var/datum/click_handler/click_handler = M.GetClickHandler()
+	var/atom/hovered = click_handler.hovered_atom
+	if (!hovered)
+		return
+
+	M.ClickOn(hovered, "", TRUE)
+
+/datum/keybinding/mob/stop_pulling
+	hotkey_keys = list("C", "Delete")
+	name = "stop_pulling"
+	full_name = "Stop Pulling"
+	description = "Let go of the object and stop pulling"
+
+/datum/keybinding/mob/stop_pulling/down(client/user)
+	var/mob/M = user.mob
+	M.stop_pulling()
+	return TRUE

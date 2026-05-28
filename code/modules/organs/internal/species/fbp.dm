@@ -48,7 +48,7 @@
 	..()
 	if(!owner)
 		return
-	if(owner.stat == DEAD)	//not a drain anymore
+	if(owner.is_real_dead())	//not a drain anymore
 		return
 	var/cost = get_power_drain()
 	if(world.time - owner.l_move_time < 15)
@@ -97,7 +97,7 @@
 /obj/item/organ/internal/cell/replaced()
 	..()
 	// This is very ghetto way of rebooting an IPC. TODO better way.
-	if(owner && owner.stat == DEAD)
+	if(owner && owner.is_real_dead())
 		owner.set_stat(CONSCIOUS)
 		owner.visible_message(SPAN_DANGER("\The [owner] twitches visibly!"))
 
@@ -115,6 +115,7 @@
 	var/obj/item/device/mmi/stored_mmi
 	var/datum/mind/persistantMind //Mind that the organ will hold on to after being removed, used for transfer_and_delete
 	var/ownerckey // used in the event the owner is out of body
+	max_damage = 40 //[SIERRA-ADD]
 
 /obj/item/organ/internal/mmi_holder/Destroy()
 	stored_mmi = null
@@ -136,7 +137,7 @@
 /obj/item/organ/internal/mmi_holder/Process()
 	..()
 	if(owner?.is_asystole())
-		take_internal_damage(0.5)
+		take_internal_damage(0.25) //[SIERRA-EDIT] 0.5 было
 
 /obj/item/organ/internal/mmi_holder/handle_regeneration() // MMI will regenerate from small amounts of damage, e.g. damage that might occur when swapping a power cell
 	if(!damage || !owner || owner.is_asystole())
@@ -165,7 +166,7 @@
 	stored_mmi.update_icon()
 	icon_state = stored_mmi.icon_state
 
-	if(owner && owner.stat == DEAD)
+	if(owner && owner.is_real_dead())
 		owner.set_stat(CONSCIOUS)
 		owner.switch_from_dead_to_living_mob_list()
 		owner.visible_message(SPAN_DANGER("\The [owner] twitches visibly!"))
@@ -181,6 +182,7 @@
 		persistantMind = owner.mind
 		if(owner.ckey)
 			ownerckey = owner.ckey
+		stored_mmi.brainmob.languages = owner.languages.Copy()
 	..()
 
 /obj/item/organ/internal/mmi_holder/proc/transfer_and_delete()

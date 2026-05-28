@@ -68,7 +68,7 @@
 
 /area/bridge/nano
 	icon = 'maps/sierra/icons/turf/areas.dmi'
-	name = "Second Deck - Bridge - Entrance"
+	name = "Second Deck - Bridge - Fore"
 	icon_state = "bridge_room"
 
 /area/bridge/meeting_room
@@ -87,7 +87,7 @@
 	req_access = list()
 
 /area/bridge/hallway
-	name = "Second Deck - Bridge - Hallway"
+	name = "Second Deck - Bridge - Entrance"
 /*
 /area/bridge/storage
 	name = "Bridge - Storage"
@@ -99,6 +99,9 @@
 	sound_env = SMALL_ENCLOSED
 	req_access = list(access_teleporter)
 	holomap_color = HOLOMAP_AREACOLOR_COMMAND
+
+/area/teleporter/seconddeck
+	name = "Second Deck - Teleporter"
 
 /area/crew_quarters/heads/office/iaa
 	icon_state = "heads_cl"
@@ -146,6 +149,20 @@
 /area/turret_protected/ai_upload
 	name = "Third Deck - AI Upload"
 	icon_state = "ai_upload"
+
+/area/turret_protected/ai_cyborg_station
+	name = "First Deck - Cyborg Station"
+	icon_state = "ai_cyborg"
+	sound_env = SMALL_ENCLOSED
+	area_flags = AREA_FLAG_RAD_SHIELDED | AREA_FLAG_ION_SHIELDED
+	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
+
+/area/turret_protected/ai_cyborg_upload
+	name = "First Deck - Cyborg Upload"
+	icon_state = "ai_cyborg"
+	sound_env = SMALL_ENCLOSED
+	area_flags = AREA_FLAG_RAD_SHIELDED | AREA_FLAG_ION_SHIELDED
+	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 
 // Heads Quarters
 /*

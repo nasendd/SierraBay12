@@ -34,9 +34,10 @@ avoid code duplication. This includes items that may sometimes act as a standard
 /**
  * Called when the item is in the active hand and another atom is clicked. This is generally called by `ClickOn()`.
  *
- * This passes down to `use_before()`, `use_weapon()`, `use_tool()`, and then use_after() in that order,
+ * This passes down to `use_before()`, `use_flame()`, `use_weapon()`, `use_tool()`, and then use_after() in that order,
  * depending on item flags and user's intent.
  * use_grab() is run in an override of resolve_attackby() processed at the grab's level, and is not part of this chain.
+ * Click cooldown is only set by default for use_weapon(), otherwise you should set desired cooldown when using other calls or overriding use_weapon().
  *
  * **Parameters**:
  * - `atom` - The atom that was clicked.
@@ -53,6 +54,10 @@ avoid code duplication. This includes items that may sometimes act as a standard
 
 	use_call = "use"
 	. = use_before(atom, user, click_params)
+	var/datum/extension/flame_source/flame = get_extension(src, /datum/extension/flame_source)
+	if (!. && istype(flame))
+		use_call = "flame"
+		. = flame.use_flame(atom, user, click_params)
 	if (!. && (user.a_intent == I_HURT || user.a_intent == I_DISARM))
 		use_call = "weapon"
 		. = atom.use_weapon(src, user, click_params)

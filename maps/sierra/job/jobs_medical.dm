@@ -7,7 +7,7 @@
 	minimal_player_age = 14
 	minimum_character_age = list(SPECIES_HUMAN = 28)
 	ideal_character_age = 45
-	economic_power = 8
+	economic_power = 9
 	skill_points = 26
 
 	total_positions = 2
@@ -42,7 +42,7 @@
 		SKILL_ANATOMY     = SKILL_MAX
 	)
 	access = list(
-		access_medical, access_morgue, access_virology,
+		access_medical, access_morgue, access_virology, access_medical_records,
 		access_maint_tunnels, access_emergency_storage, access_crematorium,
 		access_surgery, access_eva, access_external_airlocks,
 		access_medical_equip, access_senmed, access_hangar,
@@ -68,7 +68,7 @@
 
 	minimum_character_age = list(SPECIES_HUMAN = 19)
 	ideal_character_age = 26
-	economic_power = 7
+	economic_power = 6
 	skill_points = 22
 
 	alt_titles = list(
@@ -96,7 +96,7 @@
 		SKILL_VIROLOGY	=	SKILL_MAX
 	)
 	access = list(
-		access_medical, access_morgue, access_virology,
+		access_medical, access_morgue, access_virology, access_medical_records,
 		access_maint_tunnels, access_external_airlocks, access_emergency_storage,
 		access_eva, access_surgery, access_medical_equip,
 		access_hangar
@@ -125,7 +125,8 @@
 	selection_color = "#013d3b"
 	alt_titles = list(
 		"Orderly" = /singleton/hierarchy/outfit/job/sierra/crew/medical/doctor/orderly,
-		"Nurse" = /singleton/hierarchy/outfit/job/sierra/crew/medical/doctor/nurse
+		"Nurse" = /singleton/hierarchy/outfit/job/sierra/crew/medical/doctor/nurse,
+		"Trainee EMT" = /singleton/hierarchy/outfit/job/sierra/crew/medical/doctor/emt
 	)
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/medical/paramedic
 	allowed_branches = list(
@@ -146,7 +147,7 @@
 		SKILL_MEDICAL = SKILL_MAX
 	)
 	access = list(
-		access_medical, access_morgue, access_surgery,
+		access_medical, access_morgue, access_surgery, access_medical_records,
 		access_medical_equip, access_maint_tunnels, access_emergency_storage,
 		access_external_airlocks, access_hangar
 	)
@@ -167,7 +168,7 @@
 
 	minimum_character_age = list(SPECIES_HUMAN = 24)
 	ideal_character_age = 26
-	economic_power = 5
+	economic_power = 7
 	skill_points = 18
 
 	total_positions = 2 //[было 1]
@@ -190,7 +191,7 @@
 	)
 	access = list(
 		access_medical, access_maint_tunnels, access_emergency_storage,
-		access_medical_equip, access_chemistry, access_virology
+		access_medical_equip, access_chemistry, access_virology, access_medical_records
 	)
 
 
@@ -238,7 +239,7 @@
 	)
 	access = list(
 		access_medical, access_morgue, access_chapel_office,
-		access_crematorium, access_psychiatrist
+		access_crematorium, access_psychiatrist, access_medical_records
 	)
 	software_on_spawn = list(
 		/datum/computer_file/program/suit_sensors,

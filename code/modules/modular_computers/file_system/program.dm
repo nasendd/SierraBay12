@@ -41,6 +41,8 @@
 	var/requires_ntnet = FALSE
 	/// Optional, if above is set to TRUE, checks for specific function of NTNet (One of NTNET_*).
 	var/requires_ntnet_feature = 0
+	/// Optional, required additional parts for this program to even function on the host machine.
+	var/list/required_parts = list()
 	/// Optional string that describes what NTNet server/system this program connects to. Used in default logging.
 	var/network_destination = null
 
@@ -71,13 +73,14 @@
 	temp.program_icon_state = program_icon_state
 	temp.requires_ntnet = requires_ntnet
 	temp.requires_ntnet_feature = requires_ntnet_feature
+	temp.required_parts = required_parts
 	temp.usage_flags = usage_flags
 	return temp
 
 /// Relays icon update to the computer.
-/datum/computer_file/program/proc/update_computer_icon()
+/datum/computer_file/program/proc/update_computer_icon(player_instigated = FALSE)
 	if(istype(computer))
-		computer.update_host_icon()
+		computer.update_host_icon(src, player_instigated)
 		return
 
 /datum/computer_file/program/proc/is_supported_by_hardware(hardware_flag)
@@ -126,7 +129,7 @@
 /// This attempts to retrieve header data for NanoUIs. If implementing completely new device of different type than existing ones, always include the device here in this proc. This proc basically relays the request to whatever is running the program.
 /datum/computer_file/program/proc/get_header_data()
 	if(computer)
-		return computer.get_header_data()
+		return computer.get_header_data(src)
 	return list()
 
 /// When implementing new program based device, use this to run the program. May be overriden to add extra logic. Remember to include ..() call.
@@ -156,7 +159,7 @@
 	if(program_state != PROGRAM_STATE_ACTIVE) // Our program was closed. Close the ui if it exists.
 		if(ui)
 			ui.close()
-		return computer.ui_interact(user)
+		return computer.ui_interact(user, ui_key, null, force_open)
 	if(istype(NM))
 		NM.ui_interact(user, ui_key, null, force_open)
 		return FALSE
@@ -173,6 +176,8 @@
 /datum/computer_file/program/Topic(href, href_list)
 	if(..())
 		return TOPIC_HANDLED
+	if (href_list["close"] && computer)
+		computer.window_closed(src, usr)
 	if(computer)
 		return computer.Topic(href, href_list)
 

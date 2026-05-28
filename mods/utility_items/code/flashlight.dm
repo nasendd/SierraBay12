@@ -1,17 +1,19 @@
 /obj/item/device/flashlight
 	var/suitable_cell = /obj/item/cell/device/standard
 	var/obj/item/cell/cell
-	var/power_cost = 0.1
+	var/power_cost = 0.06
 
 /obj/item/device/flashlight
 
 /obj/item/device/flashlight/lamp/floodlamp
-	power_cost = 0.5
+	power_cost = 0.1
+	suitable_cell = /obj/item/cell/device/standard	// portable, runs on battery
 /obj/item/device/flashlight/lamp
 	power_cost = 0.15
+	suitable_cell = null	// wall-powered, no battery drain
 /obj/item/device/flashlight/lamp/lava
 	on = 1
-
+	suitable_cell = null	// wall-powered, no battery drain
 /obj/item/device/flashlight/upgraded
 	cell = /obj/item/cell/device/high
 /obj/item/device/flashlight/maglight
@@ -86,10 +88,10 @@
 	update_icon()
 
 /obj/item/device/flashlight/MouseDrop(over_object)
-	if(istype(over_object, /obj/screen/inventory))
+	if(istype(over_object, /obj/screen/item_relayed/inventory_slot))
 		if(ismob(usr))
 			var/mob/user = usr
-			var/obj/screen/inventory/hand = over_object
+			var/obj/screen/item_relayed/inventory_slot/hand = over_object
 			if(!user.stat && hand.name && (loc == user) && eject_item_from(cell, user))
 				turn_off()
 				cell = null

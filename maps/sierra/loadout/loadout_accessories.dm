@@ -60,12 +60,21 @@
 	display_name = "work visa"
 	description = "A work visa issued by the Sol Central Government for the purpose of work."
 	path = /obj/item/paper/workvisa
+	slot = slot_in_backpack
 	cost = 0
 
 /datum/gear/travelvisa
 	display_name = "travel visa"
 	description = "A travel visa issued by the Sol Central Government for the purpose of recreation."
 	path = /obj/item/paper/travelvisa
+	slot = slot_in_backpack
+	cost = 0
+
+/datum/gear/iccgvisa
+	display_name = "iccg work visa"
+	description = "A travel visa issued by the ICCG for the purpose of work."
+	path = /obj/item/paper/iccgvisa
+	slot = slot_in_backpack
 	cost = 0
 
 /datum/gear/utility/holster_belt
@@ -93,7 +102,7 @@
 /datum/gear/accessory/solgov/engineering
 	display_name = "Solgov engineering insignia"
 	path = /obj/item/clothing/accessory/solgov/department/engineering
-	allowed_roles = list(/datum/job/chief_engineer, /datum/job/senior_engineer, /datum/job/engineer, /datum/job/infsys, /datum/job/roboticist, /datum/job/engineer_trainee, /datum/job/explorer_engineer)
+	allowed_roles = list(/datum/job/chief_engineer, /datum/job/senior_engineer, /datum/job/engineer, /datum/job/infsys, /datum/job/roboticist, /datum/job/explorer_engineer)
 	allowed_branches = list(/datum/mil_branch/contractor)
 	allowed_factions = list(FACTION_EXPEDITIONARY, FACTION_CORPORATE)
 	flags = GEAR_HAS_NO_CUSTOMIZATION
@@ -145,29 +154,24 @@
 /datum/gear/accessory/cross_blue
 	display_name = "Cross blue"
 	path = /obj/item/clothing/accessory/cross_blue
-	flags = GEAR_HAS_NO_CUSTOMIZATION
 	cost = 2
 
 /datum/gear/accessory/cross_red
 	display_name = "Cross red"
 	path = /obj/item/clothing/accessory/cross_red
-	flags = GEAR_HAS_NO_CUSTOMIZATION
 	cost = 2
 
 /datum/gear/accessory/flower_gold
 	display_name = "Flower gold"
 	path = /obj/item/clothing/accessory/flower_gold
-	flags = GEAR_HAS_NO_CUSTOMIZATION
 	cost = 2
 
 /datum/gear/accessory/flower_silver
 	display_name = "Flower silver"
 	path = /obj/item/clothing/accessory/flower_silver
-	flags = GEAR_HAS_NO_CUSTOMIZATION
 	cost = 2
 
 /datum/gear/accessory/flower_bronze
 	display_name = "Flower bronze"
 	path = /obj/item/clothing/accessory/flower_bronze
-	flags = GEAR_HAS_NO_CUSTOMIZATION
 	cost = 2

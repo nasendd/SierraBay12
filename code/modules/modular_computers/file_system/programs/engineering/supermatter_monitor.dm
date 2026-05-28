@@ -5,7 +5,7 @@
 /datum/computer_file/program/supermatter_monitor
 	filename = "supmon"
 	filedesc = "Supermatter Monitoring"
-	nanomodule_path = /datum/nano_module/supermatter_monitor
+	nanomodule_path = /datum/nano_module/program/supermatter_monitor
 	program_icon_state = "smmon_0"
 	program_key_state = "tech_key"
 	program_menu_icon = "notice"
@@ -20,31 +20,32 @@
 
 /datum/computer_file/program/supermatter_monitor/process_tick()
 	..()
-	var/datum/nano_module/supermatter_monitor/NMS = NM
+	var/datum/nano_module/program/supermatter_monitor/NMS = NM
 	var/new_status = istype(NMS) ? NMS.get_status() : 0
 	if(last_status != new_status)
 		last_status = new_status
 		ui_header = "smmon_[last_status].gif"
 		program_icon_state = "smmon_[last_status]"
-		update_computer_icon()
+		update_computer_icon(FALSE)
 
-/datum/nano_module/supermatter_monitor
+/datum/nano_module/program/supermatter_monitor
 	name = "Supermatter monitor"
+	available_to_ai = TRUE
 	var/list/supermatters
 	var/obj/machinery/power/supermatter/active = null		// Currently selected supermatter crystal.
 	var/screen = SM_MONITOR_SCREEN_MAIN // Which screen the monitor is currently on
 
-/datum/nano_module/supermatter_monitor/Destroy()
+/datum/nano_module/program/supermatter_monitor/Destroy()
 	. = ..()
 	active = null
 	supermatters = null
 
-/datum/nano_module/supermatter_monitor/New()
+/datum/nano_module/program/supermatter_monitor/New()
 	..()
 	refresh()
 
 // Refreshes list of active supermatter crystals
-/datum/nano_module/supermatter_monitor/proc/refresh()
+/datum/nano_module/program/supermatter_monitor/proc/refresh()
 	supermatters = list()
 	var/valid_z_levels = GetConnectedZlevels(get_host_z())
 	for(var/obj/machinery/power/supermatter/S as anything in SSmachines.get_machinery_of_type(/obj/machinery/power/supermatter))
@@ -57,12 +58,12 @@
 		active = null
 		screen = initial(screen)
 
-/datum/nano_module/supermatter_monitor/proc/get_status()
+/datum/nano_module/program/supermatter_monitor/proc/get_status()
 	. = SUPERMATTER_INACTIVE
 	for(var/obj/machinery/power/supermatter/S in supermatters)
 		. = max(., S.get_status())
 
-/datum/nano_module/supermatter_monitor/proc/process_data_output(skill, value)
+/datum/nano_module/program/supermatter_monitor/proc/process_data_output(skill, value)
 	switch(skill)
 		if(SKILL_UNSKILLED)
 			return (0.6 + 0.8 * rand()) * value
@@ -71,7 +72,7 @@
 		else
 			return value
 
-/datum/nano_module/supermatter_monitor/proc/get_threshhold_color(threshhold, value)
+/datum/nano_module/program/supermatter_monitor/proc/get_threshhold_color(threshhold, value)
 	for (var/entry in active.threshholds)
 		if (entry["name"] != threshhold)
 			continue
@@ -85,14 +86,14 @@
 			return "average"
 	return "good"
 
-/datum/nano_module/supermatter_monitor/proc/set_threshhold_value(threshhold, category, value)
+/datum/nano_module/program/supermatter_monitor/proc/set_threshhold_value(threshhold, category, value)
 	for (var/entry in active.threshholds)
 		if (entry["name"] != threshhold)
 			continue
 		entry[category] = value
 
-/datum/nano_module/supermatter_monitor/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
-	var/list/data = host.initial_data()
+/datum/nano_module/program/supermatter_monitor/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+	var/list/data = host.initial_data(program)
 	var/engine_skill = user.get_skill_value(SKILL_ENGINES)
 
 	if(istype(active))
@@ -110,7 +111,7 @@
 		var/ambient_pressure = air.return_pressure()
 		var/epr = active.get_epr()
 
-		data["active"] = 1
+		data["active"] = TRUE
 		data["screen"] = screen
 		data["threshholds"] = active.threshholds
 		data["SM_integrity"] = min(process_data_output(engine_skill, active.get_integrity()), 100)
@@ -137,20 +138,18 @@
 			data["SM_gas_N2O"] = 0
 			data["SM_gas_H2"] = 0
 	else
-		var/list/SMS = list()
-		for(var/obj/machinery/power/supermatter/S in supermatters)
-			var/area/A = get_area(S)
-			if(!A)
+		var/list/per_supermatter_data = list()
+		for (var/obj/machinery/power/supermatter/supermatter as anything in supermatters)
+			var/area/area = get_area(supermatter)
+			if (!area)
 				continue
-
-			SMS.Add(list(list(
-			"area_name" = A.name,
-			"integrity" = process_data_output(engine_skill, S.get_integrity()),
-			"uid" = S.uid
-			)))
-
-		data["active"] = 0
-		data["supermatters"] = SMS
+			per_supermatter_data += list(list(
+				"area_name" = area.name,
+				"integrity" = process_data_output(engine_skill, supermatter.get_integrity()),
+				"ref" = any2ref(supermatter)
+			))
+		data["supermatters"] = per_supermatter_data
+		data["active"] = FALSE
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
@@ -161,30 +160,31 @@
 		ui.open()
 		ui.set_auto_update(1)
 
-/datum/nano_module/supermatter_monitor/Topic(href, href_list)
-	if(..())
-		return 1
-	if( href_list["clear"] )
+/datum/nano_module/program/supermatter_monitor/Topic(href, list/href_list)
+	. = ..()
+	if (.)
+		return
+	if (href_list["clear"])
 		active = null
 		screen = initial(screen)
-		return 1
-	if( href_list["refresh"] )
+		return TOPIC_HANDLED
+	if (href_list["refresh"])
 		refresh()
-		return 1
+		return TOPIC_HANDLED
 	if (href_list["screen_threshholds"])
 		screen = SM_MONITOR_SCREEN_THRESHHOLDS
-		return 1
+		return TOPIC_HANDLED
 	if (href_list["screen_main"])
 		screen = SM_MONITOR_SCREEN_MAIN
-		return 1
+		return TOPIC_HANDLED
 	if (href_list["set_threshhold"])
-		var/new_value = input(usr, "Select a new threshhold, or set to -1 to disable:", "Threshhold", href_list["value"]) as null|num
-		if (new_value != null)
+		var/new_value = input(usr, "Select a new threshhold, or set to -1 to disable:", "Threshhold", href_list["value"]) as null | num
+		if (!isnull(new_value))
 			set_threshhold_value(href_list["threshhold"], href_list["category"], new_value)
-		return 1
-	if( href_list["set"] )
-		var/newuid = text2num(href_list["set"])
-		for(var/obj/machinery/power/supermatter/S in supermatters)
-			if(S.uid == newuid)
-				active = S
-		return 1
+		return TOPIC_HANDLED
+	if (href_list["set"])
+		var/obj/machinery/power/supermatter/supermatter = locate(href_list["set"])
+		if (!(supermatter in supermatters))
+			return TOPIC_NOACTION
+		active = supermatter
+		return TOPIC_HANDLED

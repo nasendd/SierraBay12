@@ -53,6 +53,10 @@
 	display_name = "deck of tarot cards"
 	path = /obj/item/deck/tarot
 
+/datum/gear/hanafuda
+	display_name = "deck of hanafuda cards"
+	path = /obj/item/deck/hanafuda
+
 /datum/gear/holder
 	display_name = "card holder"
 	path = /obj/item/deck/holder
@@ -100,6 +104,31 @@
 	knives["utility knife"] = /obj/item/material/knife/utility
 	knives["lightweight utility knife"] = /obj/item/material/knife/utility/lightweight
 	gear_tweaks += new/datum/gear_tweak/path(knives)
+
+/datum/gear/utensil
+	display_name = "utensil selection"
+	description = "A selection of utensils."
+	path = /obj/item/material/utensil
+
+/datum/gear/utensil/New()
+	..()
+	var/utensil = list()
+	utensil["fork"] = /obj/item/material/utensil/fork
+	utensil["knife"] = /obj/item/material/utensil/knife
+	utensil["spork"] = /obj/item/material/utensil/spork
+	utensil["spoon"] = /obj/item/material/utensil/spoon
+	utensil["chopsticks"] = /obj/item/material/utensil/chopsticks
+	gear_tweaks += new/datum/gear_tweak/path(utensil)
+
+/datum/gear/serving_bowl
+	display_name = "serving bowl"
+	description = "An empty serving bowl, used to combine food together."
+	path = /obj/item/serving_bowl
+
+/datum/gear/kirpan
+	display_name = "kirpan"
+	description = "A ceremonial Sikh dagger."
+	path = /obj/item/material/knife/kirpan
 
 /datum/gear/lunchbox
 	display_name = "lunchbox"
@@ -286,6 +315,8 @@
 	books["Kitab-i-Aqdas"] = /obj/item/storage/bible/aqdas
 	books["Kojiki"] = /obj/item/storage/bible/kojiki
 	books["Guru Granth Sahib"] = /obj/item/storage/bible/guru
+	books["Histories of the Kaahnepos (blue)"] = /obj/item/storage/bible/grandstratagem
+	books["Histories of the Kaahnepos (green)"] = /obj/item/storage/bible/grandstratagem/green
 	gear_tweaks += new/datum/gear_tweak/path(books)
 
 /datum/gear/swiss
@@ -293,7 +324,6 @@
 	path = /obj/item/material/knife/folding/swiss
 	cost = 4
 	flags = GEAR_HAS_COLOR_SELECTION
-
 
 /datum/gear/cross
 	display_name = "cross"
@@ -313,3 +343,24 @@
 	path = /obj/item/reagent_containers/hypospray/autoinjector/pouch_auto/allergy
 	cost = 1
 	allowed_traits = list(/singleton/trait/malus/allergy)
+
+/datum/gear/rosary
+	display_name = "rosary"
+	path = /obj/item/clothing/accessory/prayer_beads/rosary
+
+/datum/gear/prayer_beads
+	display_name = "prayer beads"
+	path = /obj/item/clothing/accessory/prayer_beads
+	flags = GEAR_HAS_COLOR_SELECTION
+
+/datum/gear/icon_christ
+	display_name = "icon of Christ"
+	path = /obj/item/icon_christ
+	cost = 2
+	flags = GEAR_HAS_TYPE_SELECTION
+
+/datum/gear/cup_of_knowledge
+	display_name = "markesheli cup of knowledge"
+	path = /obj/item/cup_of_knowledge
+	cost = 2
+	whitelisted = list(SPECIES_UNATHI, SPECIES_YEOSA)

@@ -5,7 +5,7 @@
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "Главе Службы безопасности"
-	economic_power = 8
+	economic_power = 9
 	minimal_player_age = 14
 	minimum_character_age = list(SPECIES_HUMAN = 26)
 	ideal_character_age = 28
@@ -29,7 +29,7 @@
 
 	access = list(access_seceva, access_guard, access_security, access_brig, access_armory, access_forensics_lockers,
 			            access_maint_tunnels, access_external_airlocks, access_emergency_storage,
-			            access_eva, access_sec_doors, access_gun, access_hangar, access_warden
+			            access_eva, access_sec_doors, access_gun, access_hangar, access_warden, access_security_records
 			            )
 
 
@@ -54,7 +54,7 @@
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "Главе Службы безопасности"
-	economic_power = 5
+	economic_power = 8
 	minimal_player_age = 7
 	minimum_character_age = list(SPECIES_HUMAN = 25)
 	ideal_character_age = 30
@@ -79,7 +79,7 @@
 
 	access = list(access_seceva, access_security, access_brig, access_forensics_lockers,
 			            access_maint_tunnels, access_emergency_storage, access_eva,
-			            access_sec_doors, access_morgue, access_hangar)
+			            access_sec_doors, access_morgue, access_hangar, access_security_records)
 
 
 
@@ -121,7 +121,7 @@
 
 	access = list(access_seceva, access_guard, access_security, access_brig, access_maint_tunnels,
 						access_external_airlocks, access_emergency_storage,
-			            access_eva, access_sec_doors, access_hangar)
+			            access_eva, access_sec_doors, access_hangar, access_security_records)
 
 
 
@@ -164,7 +164,7 @@
 
 	access = list(access_seceva, access_security, access_brig, access_maint_tunnels,
 						access_external_airlocks, access_emergency_storage,
-			            access_eva, access_sec_doors, access_hangar)
+			            access_eva, access_sec_doors, access_hangar, access_security_records)
 
 
 

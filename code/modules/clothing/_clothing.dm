@@ -525,6 +525,7 @@ BLIND     // can't see anything
 	var/head_light_range = 4
 	var/brightness_on
 	var/on = 0
+	var/protects_against_weather = FALSE
 
 
 /obj/item/clothing/head/equipped(mob/user, slot)
@@ -659,11 +660,11 @@ BLIND     // can't see anything
 /obj/item/clothing/mask/proc/filters_water()
 	return FALSE
 
-/obj/item/clothing/mask/New()
-	if(pull_mask)
+/obj/item/clothing/mask/Initialize()
+	. = ..()
+	if (pull_mask)
 		action_button_name = "Adjust Mask"
 		verbs += /obj/item/clothing/mask/proc/adjust_mask
-	..()
 
 /obj/item/clothing/mask/update_clothing_icon()
 	if (ismob(src.loc))
@@ -895,6 +896,7 @@ BLIND     // can't see anything
 		SPECIES_UNATHI = 'icons/mob/species/unathi/onmob_suit_unathi.dmi',
 		SPECIES_NABBER = 'icons/mob/species/nabber/onmob_suit_gas.dmi'
 	)
+	var/protects_against_weather = FALSE
 
 /obj/item/clothing/suit/update_clothing_icon()
 	if (ismob(src.loc))

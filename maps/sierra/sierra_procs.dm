@@ -33,8 +33,12 @@
 				else
 					to_chat(Player, "<font color='red'><b>Вы не пережили события на [station_name()]...</b></font>")
 
-/datum/map/sierra/do_interlude_teleport(atom/movable/target, atom/destination, duration = 30 SECONDS, precision, type)
-	var/turf/T = pick_area_turf(/area/bluespace_interlude/platform, list(GLOBAL_PROC_REF(not_turf_contains_dense_objects), GLOBAL_PROC_REF(IsTurfAtmosSafe)))
+/datum/map/sierra/do_interlude_teleport(atom/movable/target, atom/destination, duration = 1 MINUTES, precision, type)
+	var/turf/T
+	if(rand(1,4) == 1)
+		T = pick_area_turf(/area/bluespace_interlude/platform, list(GLOBAL_PROC_REF(not_turf_contains_dense_objects), GLOBAL_PROC_REF(IsTurfAtmosSafe)))
+	else
+		T = pick_area_turf(/area/space, list(GLOBAL_PROC_REF(not_turf_contains_dense_objects), GLOBAL_PROC_REF(IsTurfAtmosSafe)))
 
 	if (!T)
 		do_teleport(target, destination)
@@ -60,3 +64,11 @@
 			for(var/obj/machinery/door/airlock/vault/bolted/V in A.contents)
 				if(V.locked)
 					V.unlock()
+
+
+/datum/map/sierra/ship_jump()
+	for(var/obj/overmap/visitable/ship/sierra/sierra)
+		new /obj/ftl (get_turf(sierra))
+		qdel(sierra)
+		animate(sierra, time = 0.5 SECONDS)
+		animate(alpha = 0, time = 0.5 SECONDS)

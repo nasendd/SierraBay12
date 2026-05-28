@@ -350,6 +350,7 @@ GLOBAL_LIST_AS(zombie_species, list(\
 	color = "#411111"
 	taste_mult = 5
 	metabolism = REM
+	active_metabolites = /datum/reagent/zombie
 	overdose = 200
 	filter_mod = 0.3
 	hidden_from_codex = TRUE
@@ -357,16 +358,16 @@ GLOBAL_LIST_AS(zombie_species, list(\
 	heating_point = null
 	should_admin_log = TRUE
 
-/datum/reagent/zombie/affect_blood(mob/living/carbon/M, removed)
+/datum/reagent/zombie/affect_metabolites(mob/living/carbon/M, dose)
 	if (!ishuman(M))
 		return
 	var/mob/living/carbon/human/H = M
 
 	if (!(H.species.name in GLOB.zombie_species) || H.is_species(SPECIES_DIONA) || H.isSynthetic())
-		remove_self(volume)
+		remove_self(dose)
 		return
-	var/true_dose = H.chem_doses[type] + volume
 
+	var/true_dose = dose + H.bloodstr.get_reagent_amount(type)
 	if (true_dose >= 30)
 		if (M.getBrainLoss() > 140)
 			H.zombify()
@@ -403,7 +404,7 @@ GLOBAL_LIST_AS(zombie_species, list(\
 		if (prob(3))
 			H.zombify()
 
-	M.reagents.add_reagent(/datum/reagent/zombie, Frand(0.1, 1))
+	M.bloodstr.add_reagent(/datum/reagent/zombie, frand(0.1, 1))
 
 /datum/reagent/zombie/affect_touch(mob/living/carbon/M, removed)
 	affect_blood(M, removed * 0.5)
@@ -512,7 +513,7 @@ GLOBAL_LIST_AS(zombie_species, list(\
 	var/mob/living/carbon/human/target
 	var/list/victims = list()
 	for (var/mob/living/carbon/human/L in get_turf(src))
-		if (L != src && (L.lying || L.stat == DEAD))
+		if (L != src && (L.lying || L.is_dead()))
 			if (L.is_zombie())
 				to_chat(src, SPAN_WARNING("\The [L] isn't fresh anymore!"))
 				continue
@@ -536,7 +537,7 @@ GLOBAL_LIST_AS(zombie_species, list(\
 	if (!target)
 		to_chat(src, SPAN_WARNING("You aren't on top of a victim!"))
 		return
-	if (get_turf(src) != get_turf(target) || !(target.lying || target.stat == DEAD))
+	if (get_turf(src) != get_turf(target) || !(target.lying || target.is_dead()))
 		to_chat(src, SPAN_WARNING("You're no longer on top of \the [target]!"))
 		return
 
@@ -550,13 +551,13 @@ GLOBAL_LIST_AS(zombie_species, list(\
 	if (do_after(src, 5 SECONDS, target, DO_DEFAULT | DO_USER_UNIQUE_ACT, INCAPACITATION_KNOCKOUT))
 		admin_attack_log(src, target, "Consumed their victim.", "Was consumed.", "consumed")
 
-		if (!target.lying && target.stat != DEAD) //Check victims are still prone
+		if (!target.lying && !target.is_dead()) //Check victims are still prone
 			return
 
 		target.reagents.add_reagent(/datum/reagent/zombie, 35) //Just in case they haven't been infected already
 		if (target.getBruteLoss() > target.maxHealth * 1.5)
 			to_chat(src,SPAN_WARNING("You've scraped \the [target] down to the bones already!."))
-			if (target.stat != DEAD)
+			if (!target.is_real_dead())
 				target.zombify()
 			else if (!(MUTATION_SKELETON in target.mutations))
 				if (istype(target, /mob/living/carbon/human/monkey))

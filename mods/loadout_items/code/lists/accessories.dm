@@ -56,6 +56,7 @@
 	path = /obj/item/clothing/accessory/choker
 	sort_category = "Clothing Pieces"
 	flags = GEAR_HAS_COLOR_SELECTION
+	slot = slot_tie // [SIERRA-ADD] — Allow attaching to worn clothing in preview
 
 /datum/gear/accessory/collar
 	display_name = "collar selection"
@@ -115,7 +116,44 @@
 	display_name = "KMS kneepads"
 	path = /obj/item/clothing/accessory/kms_kneepads
 	allowed_roles = list(/datum/job/doctor, /datum/job/officer)
-	/* 
+	/*
 	allowed_branches = list(/datum/mil_branch/contractor)
-	allowed_factions = list(FACTION_KMS) 
+	allowed_factions = list(FACTION_KMS)
 	*/
+
+/datum/gear/accessory/sweaters
+	display_name = "sweaters selection, color select"
+	path = /obj/item/clothing/accessory/sweater
+	sort_category = "Clothing Pieces"
+	flags = GEAR_HAS_COLOR_SELECTION
+
+/datum/gear/accessory/sweaters/New()
+	..()
+	var/sweaters = list()
+	sweaters["sweater"] = /obj/item/clothing/accessory/sweater/simple
+	sweaters["tubeneck sweater"] = /obj/item/clothing/accessory/sweater/tubeneck
+	sweaters["turtleneck sweater"] = /obj/item/clothing/accessory/sweater
+	sweaters["crewneck sweater"] = /obj/item/clothing/accessory/sweater/crewneck
+	sweaters["v-neck sweater"] = /obj/item/clothing/accessory/sweater/v_neck
+	sweaters["deep v-neck sweater"] = /obj/item/clothing/accessory/sweater/v_neck_deep
+	sweaters["argyle sweater"] = /obj/item/clothing/accessory/sweater/argyle
+	sweaters["argyle tubeneck sweater"] = /obj/item/clothing/accessory/sweater/argyle_tubeneck
+	sweaters["argyle turtleneck sweater"] = /obj/item/clothing/accessory/sweater/argyle_turtleneck
+	sweaters["argyle crewneck sweater"] = /obj/item/clothing/accessory/sweater/argyle_crewneck
+	sweaters["argyle v-neck sweater"] = /obj/item/clothing/accessory/sweater/argyle_v_neck
+	gear_tweaks += new/datum/gear_tweak/path(sweaters)
+
+/datum/gear/accessory/shemagh
+	display_name = "shemagh scarf"
+	path = /obj/item/clothing/accessory/helmet_decor/shemagh_scarf
+	flags = GEAR_HAS_COLOR_SELECTION
+
+/datum/gear/storage/webbing
+	flags = GEAR_HAS_COLOR_SELECTION
+
+/datum/gear/storage/webbing_large
+	flags = GEAR_HAS_COLOR_SELECTION
+
+/datum/gear/tactical/kneepads
+	flags = GEAR_HAS_COLOR_SELECTION
+

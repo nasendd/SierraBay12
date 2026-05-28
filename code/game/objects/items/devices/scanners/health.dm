@@ -84,7 +84,7 @@
 	var/brain_result = "normal"
 	if(H.should_have_organ(BP_BRAIN))
 		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
-		if(!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
+		if(!brain || H.is_dead())
 			brain_result = SPAN_CLASS("scan_danger", "none, patient is braindead")
 		else if(H.stat != DEAD)
 			if(H.has_brain_worms())
@@ -112,7 +112,7 @@
 		brain_result = SPAN_CLASS("scan_danger", "ERROR - Nonstandard biology")
 	dat += "Brain activity: [brain_result]."
 
-	if(H.stat == DEAD || (H.status_flags & FAKEDEATH))
+	if(H.is_dead())
 		dat += SPAN_CLASS("scan_warning", "[b]Time of Death:[endb] [time2text(worldtime2stationtime(H.timeofdeath), "hh:mm")]")
 
 	// Pulse rate.
@@ -279,14 +279,14 @@
 			print_reagent_default_message = FALSE
 			. += SPAN_CLASS("scan_warning", "Non-medical reagent[(unknown > 1)?"s":""] found in subject's stomach.")
 
-	if(length(H.chem_doses))
-		var/list/chemtraces = list()
-		for(var/T in H.chem_doses)
+	if(length(H.metabolized?.reagent_list))
+		var/list/metabolites = list()
+		for(var/T in H.metabolized.reagent_list)
 			var/datum/reagent/R = T
-			if(initial(R.scannable))
-				chemtraces += "[initial(R.name)] ([H.chem_doses[T]])"
-		if(length(chemtraces))
-			. += SPAN_CLASS("scan_notice", "Metabolism products of [english_list(chemtraces)] found in subject's system.")
+			if(initial(R.scannable) && R.active_metabolites)
+				metabolites += "[initial(R.name)] ([round(R.volume, 1)])"
+		if(length(metabolites))
+			. += SPAN_CLASS("scan_notice", "Metabolically active breakdown products of [english_list(metabolites)] found in subject's system.")
 //SIERRA-ADD VIRUSOLOGY
 	if(LAZYLEN(H.virus2))
 		for (var/ID in H.virus2)

@@ -13,6 +13,7 @@
 #define LANDING_ZONE_RADIUS 15 // Used for autoplacing landmarks on exoplanets
 
 // Invisibility constants.
+#define INVISIBILITY_NONE        0
 #define INVISIBILITY_LIGHTING    20
 #define INVISIBILITY_LEVEL_ONE   35
 #define INVISIBILITY_LEVEL_TWO   45
@@ -156,6 +157,7 @@
 #define PROG_UTIL 		"Utility"
 #define PROG_SEC 		"Security"
 #define PROG_MONITOR	"Monitoring"
+#define PROG_HELM  		"Helm"
 
 // Caps for NTNet logging. Less than 10 would make logging useless anyway, more than 500 may make the log browser too laggy. Defaults to 100 unless user changes it.
 #define MAX_NTNET_LOGS 500
@@ -287,7 +289,7 @@
 //Misc text define. Does 4 spaces. Used as a makeshift tabulator.
 #define FOURSPACES "&nbsp;&nbsp;&nbsp;&nbsp;"
 
-#define INCREMENT_WORLD_Z_SIZE world.maxz++; if (length(SSzcopy.zlev_maximums)) { SSzcopy.calculate_zstack_limits() }
+#define INCREMENT_WORLD_Z_SIZE world.maxz++; if (length(SSzcopy.zlev_maximums)) { SSzcopy.calculate_zstack_limits() }; if(SSweather?.weather_by_z) { LIST_RESIZE(SSweather.weather_by_z, world.maxz)}
 
 //-- Masks for /atom/var/init_flags --
 //- machinery
@@ -591,3 +593,9 @@
 #define COOKING_CHECK_FAIL			-1
 #define COOKING_CHECK_EXTRA			0
 #define COOKING_CHECK_EXACT			1
+
+// used to define a paired produce item and seed datum, eg wheat
+#define PRODUCE_SEED(PATH, NAME) \
+/obj/item/reagent_containers/food/snacks/grown/PATH/plantname = NAME;\
+/datum/seed/PATH/name = NAME;\
+/datum/seed/PATH

@@ -3,16 +3,20 @@ var/global/list/lunchables_lunches_ = list(
 									/obj/item/reagent_containers/food/snacks/slice/meatbread/filled,
 									/obj/item/reagent_containers/food/snacks/slice/tofubread/filled,
 									/obj/item/reagent_containers/food/snacks/slice/creamcheesebread/filled,
-									/obj/item/reagent_containers/food/snacks/slice/margherita/filled,
-									/obj/item/reagent_containers/food/snacks/slice/meatpizza/filled,
-									/obj/item/reagent_containers/food/snacks/slice/mushroompizza/filled,
-									/obj/item/reagent_containers/food/snacks/slice/vegetablepizza/filled,
+									/obj/item/reagent_containers/food/snacks/slice/pizza/margherita/filled,
+									/obj/item/reagent_containers/food/snacks/slice/pizza/meat/filled,
+									/obj/item/reagent_containers/food/snacks/slice/pizza/mushroom/filled,
+									/obj/item/reagent_containers/food/snacks/slice/pizza/vegetable/filled,
 									/obj/item/reagent_containers/food/snacks/tastybread,
 									/obj/item/reagent_containers/food/snacks/liquidfood,
 									/obj/item/reagent_containers/food/snacks/jellysandwich,
 									/obj/item/reagent_containers/food/snacks/tossedsalad,
 									/obj/item/reagent_containers/food/snacks/vegetablesoup,
-									/obj/item/reagent_containers/food/snacks/plainsteak
+									/obj/item/reagent_containers/food/snacks/plainsteak,
+									/obj/item/reagent_containers/food/snacks/boiledrice,
+									/obj/item/reagent_containers/food/snacks/boiledspagetti,
+									/obj/item/reagent_containers/food/snacks/boiledegg,
+									/obj/item/reagent_containers/food/snacks/meatcube
 								  )
 
 var/global/list/lunchables_snacks_ = list(
@@ -101,7 +105,7 @@ var/global/list/lunchables_ethanol_reagents_ = list(
 												/datum/reagent/ethanol/threemileisland,
 												/datum/reagent/ethanol/toxins_special,
 												/datum/reagent/ethanol/qokkloa,
-												/datum/reagent/ethanol/qokkhrona,
+												/datum/reagent/ethanol/qokkloa/qokkhrona,
 												/datum/reagent/ethanol/iridast
 											)
 

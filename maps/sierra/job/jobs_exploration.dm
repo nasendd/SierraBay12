@@ -37,6 +37,7 @@
 		access_explorer,
 		access_eva,
 		access_bridge,
+		access_employment_records,
 		access_heads,
 		access_emergency_storage,
 		access_tech_storage,
@@ -194,7 +195,7 @@
 
 	minimum_character_age = list(SPECIES_HUMAN = 24)
 	ideal_character_age = 26
-	economic_power = 8
+	economic_power = 7
 	skill_points = 26
 
 	min_skill = list(
@@ -221,7 +222,8 @@
 		access_expedition_shuttle,
 		access_guppy,
 		access_hangar,
-		access_research
+		access_research,
+		access_medical_records
 	)
 	software_on_spawn = list(/datum/computer_file/program/deck_management)
 

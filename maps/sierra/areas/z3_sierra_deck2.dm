@@ -78,57 +78,68 @@
 /* RND AREAS
  * =========
  */
-/area/rnd/entry/lower
-	name = "Second Deck - RND - Aux Lobby"
+/area/rnd/sierra/xenobiology
+	icon_state = "xeno_lab"
+	req_access = list(access_xenobiology)
+
+/area/rnd/sierra/xenobiology/level1
+	name = "Second Deck - Xenobiology Lab"
+	icon_state = "xeno_lab"
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
+
+/area/rnd/sierra/xenobiology/entry
+	name = "Second Deck - Xenobiology Access"
+	icon_state = "xeno_lab"
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
+
+/area/rnd/sierra/xenobiology/airlock1
+	name = "Second Deck - Xenobiology Airlock"
+	icon_state = "xeno_lab"
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
+
+/area/rnd/sierra/xenobiology/water_cell
+	name = "Second Deck - Xenobiology - Water Cell"
+	icon_state = "xeno_lab"
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
+
+/area/rnd/sierra/xenobiology/cell_1
+	name = "Second Deck - Xenobiology - Cell 1"
+	icon_state = "xeno_lab_cell_1"
+
+/area/rnd/sierra/xenobiology/cell_2
+	name = "Second Deck - Xenobiology - Cell 2"
+	icon_state = "xeno_lab_cell_2"
+
+/area/rnd/sierra/xenobiology/cell_3
+	name = "Second Deck - Xenobiology - Cell 3"
+	icon_state = "xeno_lab_cell_3"
+
+/area/rnd/sierra/xenobiology/cell_4
+	name = "Second Deck - Xenobiology - Cell 4"
+	icon_state = "xeno_lab_cell_4"
+
+
+/area/rnd/sierra/xenobiology/compartment
+	name = "Second Deck - Xenobiology - Isolation Cell"
 	icon_state = "decontamination"
-
-/area/rnd/misc_lab
-	name = "First Deck - RND - Miscellaneous Lab"
-	icon_state = "misclab"
-	req_access = list(access_research)
-
-/area/rnd/misc_lab/stairs
-	name = "Second Deck - RND - Miscellaneous Access"
-	icon_state = "research"
-
-/area/rnd/xenobiology/entry
-	name = "Xenobiology Access"
-	icon_state = "xeno_lab"
 	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
-/area/rnd/xenobiology/storage2
-	name = "Xenobiology Access"
-	icon_state = "xeno_lab"
-	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
-
-/area/rnd/xenobiology/level1
-	name = "Xenobiology Level One"
-	icon_state = "xeno_lab"
-	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
-
-/area/rnd/xenobiology/atmos
-	name = "Xenobiology - Atmos Hub"
-	icon_state = "xeno_lab"
-	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
-
-/area/rnd/xenobiology/water_cell
-	name = "Xenobiology - Water Cell"
-	icon_state = "xeno_lab"
-	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
-
-/area/rnd/blanks
-	name = "Second Deck - RND - Aux Backup Storage"
-	req_access = list(access_rd)
-	icon_state = "decontamination"
-
-/area/rnd/toxins
-	name = "Second Deck - RND - Toxins Lab"
+/area/rnd/sierra/toxins/storage
+	name = "Second Deck - RND - Toxins Storage"
 	icon_state = "toxstorage"
 	req_access = list(access_tox_storage)
 	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
-/area/rnd/toxins/storage
-	name = "Second Deck - RND - Canister Storage"
+/area/rnd/sierra/toxins/airlock
+	name = "Second Deck - RND - Toxins Storage Airlock"
+	icon_state = "toxstorage"
+	req_access = list(access_tox_storage)
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
+
+/area/rnd/sierra/blanks
+	name = "Second Deck - RND - Aux Backup Storage"
+	req_access = list(access_rd)
+	icon_state = "decontamination"
 	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
 /* VACANT AREAS
@@ -238,11 +249,11 @@
 	sound_env = SMALL_SOFTFLOOR
 	req_access = list(access_actor)
 	holomap_color = HOLOMAP_AREACOLOR_CREW
-/*
+
 /area/crew_quarters/actor/stage
 	name = "Second Deck - Service - Stage"
 	holomap_color = HOLOMAP_AREACOLOR_CREW
-*/
+
 /area/crew_quarters/lounge/upper
 	name = "Second Deck - Living - Lounge"
 	holomap_color = HOLOMAP_AREACOLOR_CREW
@@ -308,10 +319,12 @@
 	icon_state = "patients"
 	area_flags = AREA_FLAG_RAD_SHIELDED | AREA_FLAG_ION_SHIELDED
 
+/*
 /area/medical/wardhallway
 	name = "Second Deck - Patient Ward - Hallway"
 	icon_state = "medbay2"
 	area_flags = AREA_FLAG_RAD_SHIELDED | AREA_FLAG_ION_SHIELDED
+*/
 
 /area/medical/maintenance_equipstorage
 	name = "Second Deck - Infirmary - Lower Storage"
@@ -327,6 +340,18 @@
 		'sound/music/main.ogg'
 	)
 	req_access = list(access_morgue)
+
+/area/medical/mentalhealth
+	name = "Second Deck - Infirmary - Mental Health"
+	icon_state = "medbay3"
+	ambience = list('sound/ambience/signal.ogg')
+	req_access = list(access_psychiatrist)
+
+/area/medical/mentalhealth/therapyroom
+	name = "Second Deck - Infirmary - Therapy Room"
+	icon_state = "medbay3"
+	ambience = list('sound/ambience/signal.ogg')
+	req_access = list(access_psychiatrist)
 
 // Virology
 
@@ -344,3 +369,13 @@
 
 /area/medical/virology/ward
 	name = "Second Deck - Virology - Isolation"
+
+/area/crew_quarters/virtual_reality_control
+	name = "\improper VR Control"
+	icon_state = "vr_control"
+
+/area/crew_quarters/virtual_reality
+	name = "\improper VR Suites"
+	icon_state = "vr_suites"
+	sound_env = SMALL_SOFTFLOOR
+	area_flags = AREA_FLAG_RAD_SHIELDED | AREA_FLAG_ION_SHIELDED

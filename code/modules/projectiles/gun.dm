@@ -40,6 +40,7 @@
 
 //Parent gun type. Guns are weapons that can be aimed at mobs and act over a distance
 /obj/item/gun
+	abstract_type = /obj/item/gun
 	name = "gun"
 	desc = "Its a gun. It's pretty terrible, though."
 	icon = 'icons/obj/guns/gui.dmi'
@@ -127,6 +128,14 @@
 	var/gun_skill = SKILL_WEAPONS
 	/// What skill level is needed in the gun's skill to completely negate the chance of an accident.
 	var/safety_skill = SKILL_EXPERIENCED
+	/// Whether the gun has a foldable stock.
+	var/foldable = FALSE
+	/// Whether the gun's stock is folded or not.
+	var/folded = FALSE
+	/// Fold-in sound.
+	var/foldin = 'sound/weapons/guns/interaction/stock_in.ogg'
+	/// Fold-out sound.
+	var/foldout = 'sound/weapons/guns/interaction/stock_out.ogg'
 
 /obj/item/gun/Initialize()
 	. = ..()
@@ -138,6 +147,13 @@
 
 	if(scope_zoom)
 		verbs += /obj/item/gun/proc/scope
+
+	if (length(firemodes))
+		var/datum/firemode/mode = firemodes[sel_mode]
+		mode.apply_to(src)
+
+	if (foldable)
+		verbs += /obj/item/gun/proc/stock
 
 /obj/item/gun/on_update_icon()
 	var/mob/living/M = loc
@@ -154,6 +170,14 @@
 			AddOverlays(image('icons/obj/guns/gui.dmi',"safety[safety()]"))
 	if(safety_icon)
 		AddOverlays(image(icon,"[safety_icon][safety()]"))
+
+	if (!foldable)
+		return
+
+	if (folded)
+		icon_state = "[initial(icon_state)]-folded"
+	else
+		icon_state = "[initial(icon_state)]"
 
 //Checks whether a given mob can use the gun
 //Any checks that shouldn't result in handle_click_empty() being called if they fail should go here.
@@ -300,7 +324,7 @@
 			pointblank = 0
 
 	//update timing
-	var/delay = max(burst_delay+1, fire_delay)
+	var/delay = max((burst_delay+1)*!can_autofire, fire_delay)
 	user.setClickCooldown(min(delay, DEFAULT_QUICK_COOLDOWN))
 	user.SetMoveCooldown(move_delay)
 	next_fire_time = world.time + delay
@@ -390,7 +414,7 @@
 		var/old_dir = user.dir
 		var/mob/living/carbon/human/H = user
 		var/obj/item/tank/jetpack/jetpack = H.get_jetpack()
-		if(jetpack && !jetpack.stabilization_on)
+		if(!(jetpack && jetpack.on && jetpack.stabilization_on))
 			user.inertia_ignore = projectile
 			step(user,get_dir(target,user))
 			user.set_dir(old_dir)
@@ -425,11 +449,7 @@
 	// [SIERRA-REMOVE]
 	/*
 	var/stood_still = last_handled
-	//Not keeping gun active will throw off aim (for non-Masters)
-	if(user.skill_check(SKILL_WEAPONS, SKILL_MASTER))
-		stood_still = min(user.l_move_time, last_handled)
-	else
-		stood_still = max(user.l_move_time, last_handled)
+	stood_still = max(user.l_move_time, last_handled)
 
 	stood_still = max(0,round((world.time - stood_still)/10) - 1)
 	if(stood_still)
@@ -657,6 +677,19 @@
 		to_chat(user, "The safety is [safety() ? "on" : "off"].")
 	last_safety_check = world.time
 
+/obj/item/gun/proc/toggle_stock(mob/user)
+	if (!foldable)
+		return
+	user.visible_message(
+		SPAN_NOTICE("\The [user] [folded ? "unfolds" : "folds"] \the [src]'s stock."),
+		SPAN_NOTICE("You [folded ? "unfold" : "fold"] \the [src]'s stock.")
+	)
+
+	playsound(src, folded ? foldout : foldin, 40)
+	folded = !folded
+
+	update_icon()
+
 /obj/item/gun/proc/switch_firemodes()
 
 	var/next_mode = get_next_firemode()
@@ -698,6 +731,14 @@
 		last_safety_check = world.time
 		playsound(src, 'sound/weapons/flipblade.ogg', 15, 1)
 
+/obj/item/gun/proc/stock()
+	set name = "Toggle Stock"
+	set desc = "Fold (or unfold) the gun's stock."
+	set category = "Object"
+	set popup_menu = TRUE
+	set src in usr
+
+	toggle_stock(usr)
 
 /obj/item/gun/verb/toggle_safety_verb()
 	set name = "Toggle Gun Safety"

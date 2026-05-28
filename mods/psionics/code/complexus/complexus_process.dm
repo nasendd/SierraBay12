@@ -90,8 +90,8 @@
 						aura_color = "#cccc33"
 					if(PSI_MANIFESTATION)
 						aura_color = "#cc8221"
-			aura_image.pixel_x = -64 - owner.default_pixel_x
-			aura_image.pixel_y = -64 - owner.default_pixel_y
+			aura_image.pixel_x = -owner.default_pixel_x
+			aura_image.pixel_y = -owner.default_pixel_y
 
 	if(!announced && owner && owner.client && !QDELETED(src))
 		announced = TRUE
@@ -136,28 +136,66 @@
 				stamina = min(max_stamina, stamina + rand(3,5))
 
 		if(!owner.nervous_system_failure() && stamina && !suppressed && get_rank(PSI_REDACTION) >= PSI_RANK_APPRENTICE)
-			if(owner.stat == UNCONSCIOUS && get_rank(PSI_REDACTION) < PSI_RANK_MASTER)
-				attempt_regeneration()
-			else if(get_rank(PSI_REDACTION) >= PSI_RANK_MASTER)
+			if(get_rank(PSI_REDACTION) >= PSI_RANK_GRANDMASTER)
 				attempt_regeneration()
 
-	var/next_aura_size = max(0.1,((stamina/max_stamina)*min(3,rating))/5)
-	var/next_aura_alpha = round(((suppressed ? max(0,rating - 2) : rating)/5)*255)
+	var/next_aura_alpha = suppressed ? 0 : clamp(round((rating/5)*255), 0, 255)
 
-	if(next_aura_alpha != last_aura_alpha || next_aura_size != last_aura_size || aura_color != last_aura_color)
-		last_aura_size =  next_aura_size
+	// Перезапускаем пульсацию только при изменении параметров
+	if(next_aura_alpha != last_aura_alpha || aura_color != last_aura_color)
 		last_aura_alpha = next_aura_alpha
 		last_aura_color = aura_color
-		animate(
-			get_aura_image(),
-			alpha = next_aura_alpha,
-			transform = matrix().Update(scale_x = next_aura_size, scale_y = next_aura_size),
-			color = aura_color,
-			time = 3
-		)
+		start_aura_pulse()
 
 	if(update_hud)
 		ui.update_icon()
+
+/**
+ * Запускает плавную бесконечную анимацию "дыхания" ауры.
+ *
+ * Слабый псионик: медленно, тускло, почти незаметный пульс.
+ * Сильный псионик: быстро, ярко, выраженное расширение.
+ * При подавлении: плавно гаснет.
+ */
+/datum/psi_complexus/proc/start_aura_pulse()
+	var/image/I = get_aura_image()
+	if(!I) return
+
+	if(suppressed)
+		animate(I, alpha = 0, time = 25)
+		return
+
+	var/r = clamp(rating, 2, 5)
+
+	// Скорость: rating 2 → 70 тиков/полцикл (7 сек), rating 5 → 22 тиков (2.2 сек)
+	var/pulse_half = clamp(round(140 / r), 22, 70)
+
+	// Яркость: аура никогда не гаснет полностью — тускнеет до alpha_min
+	var/alpha_min = clamp(r * 9, 15, 45)
+	var/alpha_max = clamp(r * 36, 60, 160)
+
+	// Масштаб: фиксированный max 1.10, min зависит от rating
+	var/scale_min = 0.65
+	var/scale_max = min(0.75 + (r / 20), 1)
+
+	// Установить цвет и начальное состояние (стартуем с alpha_min, не с 0)
+	I.color = aura_color
+	I.alpha = alpha_min
+	I.transform = matrix().Update(scale_x = scale_min, scale_y = scale_min)
+
+	// Вдох: выходим на полную яркость и размер. loop = -1 = бесконечная цепочка
+	animate(I,
+		alpha     = alpha_max,
+		transform = matrix().Update(scale_x = scale_max, scale_y = scale_max),
+		time      = pulse_half,
+		loop      = -1
+	)
+	// Выдох: цепляется к предыдущему кадру (БЕЗ объекта — это ключевой момент!)
+	animate(
+		alpha     = alpha_min,
+		transform = matrix().Update(scale_x = scale_min, scale_y = scale_min),
+		time      = pulse_half
+	)
 
 /datum/psi_complexus/proc/attempt_regeneration()
 
@@ -175,23 +213,26 @@
 			heal_poison = TRUE
 			heal_internal = TRUE
 			heal_bleeding = TRUE
-			mend_prob = 50
-			heal_rate = 7
+			mend_prob = 100
+			heal_rate = 10
 		if(PSI_RANK_MASTER)
+			heal_general = TRUE
 			heal_poison = TRUE
 			heal_internal = TRUE
 			heal_bleeding = TRUE
-			mend_prob = 20
-			heal_rate = 5
+			mend_prob = 80
+			heal_rate = 7
 		if(PSI_RANK_OPERANT)
+			heal_poison = TRUE
 			heal_internal = TRUE
 			heal_bleeding = TRUE
-			mend_prob = 10
-			heal_rate = 3
+			mend_prob = 60
+			heal_rate = 5
 		if(PSI_RANK_APPRENTICE)
+			heal_internal = TRUE
 			heal_bleeding = TRUE
-			mend_prob = 5
-			heal_rate = 1
+			mend_prob = 40
+			heal_rate = 5
 		else
 			return
 
@@ -282,3 +323,4 @@
 		owner.adjustOxyLoss(-(heal_rate))
 		if(prob(25))
 			to_chat(owner, SPAN_NOTICE("Your skin crawls as your autoredactive faculty heals your body."))
+	owner.update_icon()

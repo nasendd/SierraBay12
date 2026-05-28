@@ -143,6 +143,11 @@ ranks - ec
 		slot_wear_mask_str = 'mods/loadout_items/icons/onmob_accessory.dmi'
 	)
 
+	sprite_sheets = list(
+		SPECIES_UNATHI = 'mods/loadout_items/icons/unathi/onmob_accessory_unathi.dmi',
+		SPECIES_RESOMI = 'mods/loadout_items/icons/resomi/onmob_accessory_resomi.dmi'
+	)
+
 	var/renameable = FALSE
 
 /obj/item/clothing/accessory/necklace/collar/gold
@@ -365,3 +370,168 @@ ranks - ec
 	icon = 'mods/loadout_items/icons/obj_accessory.dmi'
 	accessory_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_accessory.dmi')
 	icon_state = "kms_kneepads"
+
+// Visas override
+/obj/item/paper/workvisa
+	name = "Sol Work Visa"
+	info = "<center><b><large>Рабочая виза Правительства Солнечной Системы</large></b></center><br><center><img src = sollogo.png><br><br><i><small>Выдано от имени Генерального секретаря.</small></i></center><hr><BR>Настоящим документом разрешается предъявителю беспрепятственно передвигаться по территориям, колониям и космическому пространству Солнечной системы с целью работы и трудовой деятельности."
+	desc = "A flimsy piece of laminated cardboard issued by the Sol Central Government."
+	icon = 'mods/loadout_items/icons/obj_accessory.dmi'
+	on_turf_icon = 'mods/loadout_items/icons/on_turf_icons/obj_accessory.dmi'
+
+/obj/item/paper/travelvisa
+	name = "Sol Travel Visa"
+	info = "<center><b><large>Туристическая виза Правительства Солнечной Системы</large></b></center><br><center><img src = sollogo.png><br><br><i><small>Выдано от имени Генерального секретаря.</small></i></center><hr><BR>Настоящим документом разрешается предъявителю беспрепятственно передвигаться по территориям, колониям и космическому пространству Солнечной системы с целью отдыха и туризма."
+	desc = "A flimsy piece of laminated cardboard issued by the Sol Central Government."
+	icon = 'mods/loadout_items/icons/obj_accessory.dmi'
+	on_turf_icon = 'mods/loadout_items/icons/on_turf_icons/obj_accessory.dmi'
+
+/obj/item/paper/workvisa/New()
+	..()
+	icon_state = "workvisa" //Has to be here or it'll assume default paper sprites.
+
+/obj/item/paper/travelvisa/New()
+	..()
+	icon_state = "travelvisa" //Has to be here or it'll assume default paper sprites.
+
+/obj/item/paper/iccgvisa
+	name = "ICCG Work Visa"
+	info = "<center><b><large>Рабочая виза Гильгамешской Колониальной Конфедерации</large></b></center><br><center><img src = terralogo.png><br><br><i><small>Выдано от имени Премьер-министра.</small></i></center><hr><BR>Настоящим документом разрешается предъявителю беспрепятственно передвигаться по территориям, колониям и космическому пространству ГКК с целью работы и трудовой деятельности."
+	desc = "A flimsy piece of laminated cardboard issued by the ICCG."
+	icon = 'mods/loadout_items/icons/obj_accessory.dmi'
+	on_turf_icon = 'mods/loadout_items/icons/on_turf_icons/obj_accessory.dmi'
+	readable = FALSE
+	language = LANGUAGE_HUMAN_RUSSIAN
+	var/open = FALSE
+
+/obj/item/paper/iccgvisa/New()
+	..()
+	icon_state = "iccgvisa0" //Has to be here or it'll assume default paper sprites.
+
+/obj/item/paper/iccgvisa/attack_self(mob/living/user)
+	open = !open
+	icon_state = "iccgvisa[open]"
+	readable = open
+	update_icon()
+
+/obj/item/paper/iccgvisa/on_update_icon()
+	icon_state = "iccgvisa[open]"
+
+/obj/item/clothing/accessory/sweater/simple
+	name = "sweater"
+	desc = "A warm, knit sweater."
+	icon = 'mods/loadout_items/icons/obj_accessory.dmi'
+	accessory_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_accessory.dmi')
+	icon_state = "sweater"
+
+/obj/item/clothing/accessory/sweater/tubeneck
+	name = "tubeneck sweater"
+	desc = "A warm, knit tubeneck sweater."
+	icon = 'mods/loadout_items/icons/obj_accessory.dmi'
+	accessory_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_accessory.dmi')
+	icon_state = "sweater_tubeneck"
+
+/obj/item/clothing/accessory/sweater/crewneck
+	name = "crewneck sweater"
+	desc = "A sewn crewneck sweater featuring a collarless neckline."
+	icon = 'mods/loadout_items/icons/obj_accessory.dmi'
+	accessory_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_accessory.dmi')
+	icon_state = "sweater_crewneck"
+
+/obj/item/clothing/accessory/sweater/v_neck
+	name = "v-neck sweater"
+	desc = "A sewn v-neck sweater featuring a collarless neckline."
+	icon = 'mods/loadout_items/icons/obj_accessory.dmi'
+	accessory_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_accessory.dmi')
+	icon_state = "sweater_v_neck"
+
+/obj/item/clothing/accessory/sweater/v_neck_deep
+	name = "deep v-neck sweater"
+	desc = "A sewn v-neck sweater with deep drawn neckline."
+	icon = 'mods/loadout_items/icons/obj_accessory.dmi'
+	accessory_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_accessory.dmi')
+	icon_state = "sweater_deep_v_neck"
+
+/obj/item/clothing/accessory/sweater/argyle
+	name = "argyle sweater"
+	desc = "A warm, knit sweater with an argyle pattern."
+	icon = 'mods/loadout_items/icons/obj_accessory.dmi'
+	accessory_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_accessory.dmi')
+	icon_state = "argyle_sweater"
+
+/obj/item/clothing/accessory/sweater/argyle_tubeneck
+	name = "argyle tubeneck sweater"
+	desc = "A warm, knit argyle tubeneck sweater."
+	icon = 'mods/loadout_items/icons/obj_accessory.dmi'
+	accessory_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_accessory.dmi')
+	icon_state = "argyle_sweater_tubeneck"
+
+/obj/item/clothing/accessory/sweater/argyle_turtleneck
+	name = "argyle turtleneck sweater"
+	desc = "A warm, knit argyle turtleneck sweater."
+	icon = 'mods/loadout_items/icons/obj_accessory.dmi'
+	accessory_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_accessory.dmi')
+	icon_state = "argyle_sweater_turtleneck"
+
+/obj/item/clothing/accessory/sweater/argyle_crewneck
+	name = "argyle crewneck sweater"
+	desc = "A sewn crewneck sweater featuring a collarless neckline and an argyle pattern."
+	icon = 'mods/loadout_items/icons/obj_accessory.dmi'
+	accessory_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_accessory.dmi')
+	icon_state = "argyle_sweater_crewneck"
+
+/obj/item/clothing/accessory/sweater/argyle_v_neck
+	name = "argyle v-neck sweater"
+	desc = "A sewn v-neck sweater featuring a collarless neckline and an argyle pattern."
+	icon = 'mods/loadout_items/icons/obj_accessory.dmi'
+	accessory_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_accessory.dmi')
+	icon_state = "argyle_sweater_v_neck"
+
+/obj/item/clothing/accessory/helmet_decor/shemagh_scarf
+	name = "shemagh scarf"
+	desc = "A versatile, heavy cotton scarf wrapped around the head or neck for protection from space-sand and space-dust. You can wrap it around your helmet, even when you are wearing other masks."
+	icon = 'mods/loadout_items/icons/obj_accessory.dmi'
+	icon_state = "shemagh_scarf"
+	overlay_state = "shemagh_scarf"
+	slot_flags = SLOT_MASK | SLOT_TIE | SLOT_BELT
+	slot = ACCESSORY_SLOT_HELMET_DECOR
+	body_location = HEAD | UPPER_TORSO
+	w_class = ITEM_SIZE_SMALL
+	gender = NEUTER
+
+	accessory_icons = list(
+		slot_tie_str = 'mods/loadout_items/icons/onmob_accessory.dmi',
+		slot_goggles_str = 'mods/loadout_items/icons/onmob_accessory.dmi',
+		slot_head_str = 'mods/loadout_items/icons/onmob_accessory.dmi',
+		slot_w_uniform_str = 'mods/loadout_items/icons/onmob_accessory.dmi',
+		slot_wear_suit_str = 'mods/loadout_items/icons/onmob_accessory.dmi',
+	)
+	item_icons = list(
+		slot_wear_mask_str = 'mods/loadout_items/icons/onmob_accessory.dmi',
+		slot_l_hand_str = 'mods/loadout_items/icons/inhand_l.dmi',
+		slot_r_hand_str = 'mods/loadout_items/icons/inhand_r.dmi',
+	)
+
+	item_state_slots = list(
+		slot_l_hand_str = "shemagh",
+		slot_r_hand_str = "shemagh",
+	)
+
+	sprite_sheets = list(
+		SPECIES_UNATHI = 'mods/loadout_items/icons/unathi/onmob_accessory_unathi.dmi'
+	)
+
+	var/lowered_icon_state = "shemagh_scarf"
+	var/rised_icon_state = "shemagh_mask"
+
+/obj/item/clothing/accessory/helmet_decor/shemagh_scarf/attack_self(mob/user)
+	if(body_parts_covered >= FACE)
+		body_parts_covered &= ~FACE
+		icon_state = lowered_icon_state
+		overlay_state = lowered_icon_state
+		to_chat(user, SPAN_NOTICE("You lowered your scarf."))
+	else
+		body_parts_covered |= FACE
+		icon_state = rised_icon_state
+		overlay_state = rised_icon_state
+		to_chat(user, SPAN_NOTICE("You rised your scarf. Feeling tacticool!"))

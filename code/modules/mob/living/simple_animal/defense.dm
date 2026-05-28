@@ -31,6 +31,9 @@
 	switch (M.a_intent)
 		if (I_HELP)
 			if (health > 0)
+				// Taming system: intercept help-intent for petting progress
+				if(tame_datum && tame_datum.try_pet(M))
+					return
 				M.visible_message(SPAN_NOTICE("\The [M] [response_help] \the [src]."))
 				M.update_personal_goal(/datum/goal/achievement/specific_object/pet, type)
 
@@ -61,7 +64,7 @@
 /mob/living/simple_animal/use_tool(obj/item/tool, mob/user, list/click_params)
 	// Butcher's Cleaver - Butcher dead mob
 	if (istype(tool, /obj/item/material/knife/kitchen/cleaver))
-		if (stat != DEAD)
+		if (!is_dead())
 			USE_FEEDBACK_FAILURE("\The [src] must be dead before you can butcher \him.")
 			return TRUE
 		if (!meat_type || !meat_amount)
@@ -96,7 +99,7 @@
 
 	// Medical - Attempt healing
 	if (istype(tool, /obj/item/stack/medical))
-		if (stat == DEAD)
+		if (is_dead())
 			USE_FEEDBACK_FAILURE("\The [src] is dead, medical items won't bring \him back to life.")
 			return TRUE
 		if (health >= maxHealth)

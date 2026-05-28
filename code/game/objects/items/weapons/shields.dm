@@ -214,7 +214,7 @@
 	if (active)
 		playsound(src, 'sound/obj/item/shield/energy/shield-start.ogg', 40)
 		force = 10
-		w_class = ITEM_SIZE_NO_CONTAINER
+		w_class = ITEM_SIZE_LARGE // [SIERRA-EDIT] in orig in was infinity, and that was a huge bug
 
 	if (istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
@@ -282,7 +282,7 @@
 		disabletime = 1 MINUTES
 
 	visible_message(SPAN_DANGER("\The [src] violently shudders!"))
-	new /obj/overlay/self_deleting/emppulse(get_turf(src))
+	new /obj/overlay/emp_pulse (get_turf(src))
 
 	disabled = world.time + disabletime
 	damaged = TRUE

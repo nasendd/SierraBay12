@@ -316,6 +316,7 @@
 				/obj/item/gun/projectile/automatic/bullpup_rifle = 2,
 				/obj/item/gun/projectile/pistol/sec = 4,
 				/obj/item/gun/projectile/pistol/holdout = 2,
+				/obj/item/gun/projectile/pistol/grosser = 3,
 				/obj/item/gun/projectile/pirate = 2,
 				/obj/item/gun/projectile/revolver = 4,
 				/obj/item/gun/projectile/automatic/sec_smg = 3,
@@ -335,6 +336,7 @@
 
 /obj/random/handgun/spawn_choices()
 	return list(/obj/item/gun/projectile/pistol/sec = 3,
+				/obj/item/gun/projectile/pistol/grosser = 2,
 				/obj/item/gun/energy/gun = 2,
 				/obj/item/gun/projectile/pistol/holdout = 2,
 				/obj/item/gun/energy/retro = 1,
@@ -734,6 +736,10 @@
 				/obj/item/pizzabox/margherita,
 				/obj/item/pizzabox/mushroom,
 				/obj/item/pizzabox/fruit,
+				/obj/item/pizzabox/choco,
+				/obj/item/pizzabox/ham,
+				/obj/item/pizzabox/hawaiian,
+				/obj/item/pizzabox/capricciosa,
 				/obj/item/reagent_containers/food/snacks/plumphelmetbiscuit,
 				/obj/item/reagent_containers/food/snacks/skrellsnacks)
 

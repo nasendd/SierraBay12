@@ -108,8 +108,6 @@
 
 #define isopenspace(A) istype(A, /turf/simulated/open)
 
-#define isplunger(A) istype(A, /obj/item/clothing/mask/plunger) || istype(A, /obj/item/device/plunger/robot)
-
 #define isadmin(X) (check_rights(R_ADMIN, 0, (X)) != 0)
 
 #define sequential_id(key) uniqueness_repository.Generate(/datum/uniqueness_generator/id_sequential, key)
@@ -173,9 +171,6 @@
 // Insert an object A into a sorted list using cmp_proc (/code/_helpers/cmp.dm) for comparison.
 #define ADD_SORTED(list, A, cmp_proc) if(!length(list)) {list.Add(A)} else {list.Insert(FindElementIndex(A, list, cmp_proc), A)}
 
-// Spawns multiple objects of the same type
-#define cast_new(type, num, args...) if((num) == 1) { new type(args) } else { for(var/i=0;i<(num),i++) { new type(args) } }
-
 #define JOINTEXT(X) jointext(X, null)
 
 #define SPAN_CLASS(class, X) "<span class='[class]'>[X]</span>"
@@ -206,9 +201,9 @@
 
 #define SPAN_INFO(X) SPAN_CLASS("info", "[X]")
 
-#define STYLE_SMALLFONTS(X, S, C1) SPAN_STYLE("font-family: 'Small Fonts'; color: [C1]; font-size: [S]px", "[X]")
+#define STYLE_SMALLFONTS(X, S, C1) SPAN_STYLE("color: [C1]; font-size: [S]px", "[X]")
 
-#define STYLE_SMALLFONTS_OUTLINE(X, S, C1, C2) SPAN_STYLE("font-family: 'Small Fonts'; color: [C1]; -dm-text-outline: 1 [C2]; font-size: [S]px", "[X]")
+#define STYLE_SMALLFONTS_OUTLINE(X, S, C1, C2) SPAN_STYLE("color: [C1]; -dm-text-outline: 1 [C2]; font-size: [S]px", "[X]")
 
 #define SPAN_DEBUG(X) SPAN_CLASS("debug", "[X]")
 
@@ -300,7 +295,7 @@
 
 
 /// Test all bits of MASK are set in FIELD
-#define HAS_FLAGS(FIELD, MASK) (((FIELD) & (MASK)) == (MASK))
+#define HAS_FLAGS(FIELD, MASK) ((~(FIELD) & (MASK)) == 0)
 
 
 /// Set bits of MASK in FIELD

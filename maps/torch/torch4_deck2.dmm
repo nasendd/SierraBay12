@@ -2182,9 +2182,9 @@
 "el" = (
 /obj/structure/table/rack,
 /obj/floor_decal/industrial/outline/yellow,
-/obj/item/airlock_electronics/brace,
-/obj/item/airlock_electronics/brace,
-/obj/item/airlock_electronics/brace,
+/obj/item/airlock_brace,
+/obj/item/airlock_brace,
+/obj/item/airlock_brace,
 /obj/item/airlock_brace,
 /obj/item/airlock_brace,
 /obj/item/airlock_brace,
@@ -7772,7 +7772,7 @@
 	pixel_x = -6;
 	pixel_y = -26
 	},
-/obj/machinery/computer/ship/engines{
+/obj/machinery/computer/modular/preset/helm{
 	dir = 1
 	},
 /turf/simulated/floor/tiled/steel_grid,
@@ -11371,6 +11371,7 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/cyan{
 	dir = 4
 	},
+/obj/item/sticky_pad/tag_out,
 /turf/simulated/floor/tiled/steel_grid,
 /area/engineering/engineering_bay)
 "CD" = (
@@ -12462,7 +12463,6 @@
 	},
 /obj/structure/table/standard,
 /obj/item/storage/toolbox/electrical,
-/obj/item/paper/newrust,
 /turf/simulated/floor/tiled/steel_grid,
 /area/engineering/prototype/control)
 "Fj" = (
@@ -12640,7 +12640,7 @@
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/maintenance/seconddeck/aftport)
 "FD" = (
-/obj/machinery/computer/ship/engines{
+/obj/machinery/computer/modular/preset/helm{
 	dir = 1
 	},
 /turf/simulated/floor/tiled/techfloor,
@@ -15656,6 +15656,7 @@
 /obj/floor_decal/techfloor{
 	dir = 6
 	},
+/obj/item/sticky_pad/tag_out,
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/engineering/engineering_bay)
 "PM" = (

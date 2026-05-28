@@ -1,12 +1,12 @@
 /datum/design/item/mechfab/mech_l_leg
-	category = list("Mech left leg")
+	category = list("Mech propulsion")
 
 /datum/design/item/mechfab/mech_l_leg/powerloader
 	name = "left power loader motivator"
 	id = "left_powerloader_leg"
 	time = 15
 	build_path =  /obj/item/mech_component/propulsion/powerloader
-	materials = list(MATERIAL_STEEL = 5000)
+	materials = list(MATERIAL_STEEL = 10000)
 
 /datum/design/item/mechfab/mech_l_leg/light
 	name = "left light mech motivator"

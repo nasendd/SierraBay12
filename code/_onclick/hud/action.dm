@@ -136,17 +136,17 @@
 	if (owner?.target)
 		tooltip_title = owner.target.name
 
-
+/* [SIERRA-REMOVE] - HARDSUITS
 /obj/screen/movable/action_button/Click(location,control,params)
 	var/list/modifiers = params2list(params)
-	if(modifiers["shift"])
+	if(modifiers[MOUSE_SHIFT])
 		moved = 0
 		return 1
 	if(usr.next_move >= world.time) // Is this needed ?
 		return
 	owner.Trigger()
 	return 1
-
+*/
 
 /obj/screen/movable/action_button/MouseEntered(location, control, params)
 	openToolTip(usr, src, params, tooltip_title, name)

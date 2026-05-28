@@ -205,6 +205,7 @@ SUBSYSTEM_DEF(jobs)
 	var/list/candidates = list()
 	for(var/mob/new_player/player in unassigned_roundstart)
 		var/datum/preferences/prefs = player.client.prefs
+		var/singleton/species/species = GLOB.species_by_name[prefs.species]
 		if(jobban_isbanned(player, job.title))
 			continue
 		if(!job.player_old_enough(player.client))
@@ -213,7 +214,7 @@ SUBSYSTEM_DEF(jobs)
 			for(var/datum/preferences_slot/slot in prefs.slot_priority_list)
 				if(flag && !(flag in slot.be_special_role))
 					continue
-				if(job.minimum_character_age && (slot.age < job.minimum_character_age))
+				if(LAZYACCESS(job.minimum_character_age, species.get_bodytype()) && (slot.age < job.minimum_character_age[species.get_bodytype()]))
 					continue
 				if(slot.CorrectLevel(job, level))
 					candidates += player
@@ -221,7 +222,7 @@ SUBSYSTEM_DEF(jobs)
 		else if(prefs.CorrectLevel(job,level))
 			if(flag && !(flag in prefs.be_special_role))
 				continue
-			if(job.minimum_character_age && (prefs.age < job.minimum_character_age))
+			if(LAZYACCESS(job.minimum_character_age, species.get_bodytype()) && (prefs.age < job.minimum_character_age[species.get_bodytype()]))
 				continue
 			candidates += player
 	return candidates
@@ -608,7 +609,7 @@ SUBSYSTEM_DEF(jobs)
 	if(istype(V))
 		location_name = V.name
 
-	var/style = "font-family: 'Fixedsys'; -dm-text-outline: 1 black; font-size: 11px;"
+	var/style = "-dm-text-outline: 1 black; font-size: 11px;"
 	var/area/A = get_area(mob)
 	var/text = "Earthdate [stationdate2text()]\n[A.name], [location_name]\n[star_name] system"
 	text = uppertext(text)

@@ -23,7 +23,7 @@
 			access_tox,					access_tox_storage,	access_research,	access_mining,		access_mining_office,
 			access_mining_station,		access_xenobiology,	access_xenoarch,	access_robotics,	access_guppy_helm,
 			access_expedition_shuttle,	access_guppy,		access_hangar,		access_petrov,		access_petrov_helm,
-			access_research_storage
+			access_research_storage, access_rnd_network
 		)
 
 
@@ -60,7 +60,7 @@
 	total_positions = 6
 	spawn_positions = 6
 	supervisors = "Директору Исследований и Старшему Исследователю"
-	economic_power = 10
+	economic_power = 9
 	minimum_character_age = list(SPECIES_HUMAN = 25)
 	ideal_character_age = 27
 	alt_titles = list(
@@ -98,7 +98,7 @@
 	access = list(
 			access_tox,				access_tox_storage,			access_research,	access_petrov,		access_petrov_helm,
 			access_mining_office,	access_mining_station,		access_xenobiology,	access_guppy_helm, 	access_hangar,
-			access_xenoarch,		access_expedition_shuttle,	access_guppy, access_research_storage
+			access_xenoarch,		access_expedition_shuttle,	access_guppy, access_research_storage, access_rnd_network
 		)
 
 
@@ -119,12 +119,12 @@
 	spawn_positions = 2
 	supervisors = "Директору Исследований и Старшему Исследователю"
 	selection_color = "#633d63"
-	economic_power = 6
+	economic_power = 7
 	minimum_character_age = list(SPECIES_HUMAN = 25)
 	ideal_character_age = 27
 	alt_titles = list(
 			"Biomechanical Engineer",
-			"Exosuit Technician",
+			"Mechatronic Technician",
 		)
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/research/roboticist
 	allowed_branches = list(
@@ -142,7 +142,6 @@
 			SKILL_DEVICES		=	SKILL_EXPERIENCED,
 			SKILL_ANATOMY		=	SKILL_TRAINED,
 			SKILL_MECH			=	HAS_PERK,
-			SKILL_MEDICAL		=	SKILL_BASIC,
 			SKILL_ELECTRICAL	=	SKILL_TRAINED
 		)
 
@@ -156,13 +155,16 @@
 			SKILL_ANATOMY		=	SKILL_EXPERIENCED
 		)
 
-	skill_points = 22
+	skill_points = 26
 
 	access = list(
 			access_robotics,
 			access_research,
 			access_tech_storage,
-			access_research_storage
+			access_research_storage,
+			access_medical_records,
+			access_medical,
+			access_rnd_network
 		)
 
 

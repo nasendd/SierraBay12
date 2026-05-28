@@ -91,6 +91,13 @@
 	req_access = list(access_gun)
 	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 
+/area/command/probebay
+	name = "First Deck - Probe Bay"
+	icon = 'maps/sierra/icons/turf/areas.dmi'
+	icon_state = "bridge_gun"
+	req_access = list(access_gun)
+	holomap_color = HOLOMAP_AREACOLOR_COMMAND
+
 /* ENGINEERING AREAS
  * =================
  */
@@ -112,45 +119,59 @@
 /* RND AREAS
  * =========
  */
-/area/rnd/research
+
+/area/rnd/sierra/entry
+	name = "First Deck - RND - Lobby"
+	icon_state = "decontamination"
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
+
+/area/rnd/sierra/research
 	name = "First Deck - RND - Research Lab"
 	icon_state = "research"
 	req_access = list(access_research)
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
-/area/rnd/storage
+/area/rnd/sierra/storage
 	name = "First Deck - RND - Storage"
 	icon_state = "toxstorage"
 	req_access = list(access_research_storage)
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
-/area/rnd/development
+/area/rnd/sierra/development
 	name = "First Deck - RND - Fabricator Lab"
 	icon_state = "devlab"
 	req_access = list(access_tox)
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
-/area/rnd/entry
-	name = "First Deck - RND - Lobby"
-	icon_state = "decontamination"
+/area/rnd/sierra/testing
+	name = "First Deck - RND - Testing Lab"
+	icon_state = "misclab"
+	req_access = list(access_research)
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
-/area/rnd/containment
-	name = "Second Deck - RND - Containment Zone"
-	icon_state = "decontamination"
-
-/area/rnd/locker
-	name = "First Deck - RND - Locker Room"
+/area/rnd/sierra/office
+	name = "First Deck - RND - Office"
 	icon_state = "locker"
 	req_access = list(access_research_storage)
-/*
-/area/rnd/office
-	name = "First Deck - RND - Research Office"
-	icon_state = "locker"
-	req_access = list(access_research_storage)
-*/
-/area/rnd/servers
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
+
+/area/rnd/sierra/servers
 	name = "First Deck - RND - Servers"
 	icon_state = "tcomsatcham"
 	area_flags = AREA_FLAG_RAD_SHIELDED
 	sound_env = SMALL_ENCLOSED
 	req_access = list(access_rd)
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
+
+/area/rnd/sierra/xenobiology/xenoflora
+	name = "First Deck - RND - Xenoflora Lab"
+	icon_state = "xeno_f_lab"
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
+
+/area/rnd/sierra/xenobiology/xenoflora_airlock
+	name = "First Deck - RND - Xenoflora Airlock"
+	icon_state = "xeno_f_store"
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
 /area/assembly
 	req_access = list(access_robotics)
@@ -169,7 +190,6 @@
 	name = "First Deck - RND - Robotics Office"
 	icon_state = "mechbay"
 */
-
 
 /* CREW AREAS
  * ==========
@@ -227,6 +247,10 @@
 
 /area/security/sierra/equipment
 	name = "First Deck - Security - Equipment"
+	req_access = list(access_security)
+
+/area/security/sierra/restroom
+	name = "First Deck - Security - Restroom"
 	req_access = list(access_security)
 
 /area/security/sierra/interrogation
@@ -290,18 +314,6 @@
 	name = "First Deck - Infirmary - Locker Room"
 	icon_state = "locker"
 	req_access = list(access_medical_equip)
-
-/area/medical/mentalhealth
-	name = "First Deck - Infirmary - Mental Health"
-	icon_state = "medbay3"
-	ambience = list('sound/ambience/signal.ogg')
-	req_access = list(access_psychiatrist)
-
-/area/medical/mentalhealth/therapyroom
-	name = "First Deck - Infirmary - Therapy Room"
-	icon_state = "medbay3"
-	ambience = list('sound/ambience/signal.ogg')
-	req_access = list(access_psychiatrist)
 
 /area/medical/chemistry
 	name = "First Deck - Infirmary - Chemistry"

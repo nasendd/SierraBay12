@@ -29,7 +29,7 @@
 
 	access = list(		access_maint_tunnels, access_emergency_storage, access_bridge, access_tech_storage,  access_cargo, access_guppy_helm,
 						access_cargo_bot, access_qm, access_mailsorting, access_expedition_shuttle, access_guppy, access_hangar,
-						access_mining, access_mining_office, access_mining_station, access_commissary, access_external_airlocks)
+						access_mining, access_mining_office, access_mining_station, access_commissary, access_external_airlocks, access_employment_records)
 
 
 
@@ -52,6 +52,7 @@
 	supervisors = "Квартирмейстеру и Главе Персонала"
 	minimum_character_age = list(SPECIES_HUMAN = 22)
 	ideal_character_age = 24
+	economic_power = 3
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/supply/tech
 	allowed_branches = list(/datum/mil_branch/employee, /datum/mil_branch/contractor)
 	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor, /datum/mil_rank/civ/probation_employee, /datum/mil_rank/civ/probation_contractor)

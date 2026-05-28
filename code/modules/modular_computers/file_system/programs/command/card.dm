@@ -18,7 +18,7 @@
 	var/selected_branch = null // Track currently selected branch for rank selection
 
 /datum/nano_module/program/card_mod/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
-	var/list/data = host.initial_data()
+	var/list/data = host.initial_data(program)
 	var/obj/item/stock_parts/computer/card_slot/card_slot = program.computer.get_component(PART_CARD)
 
 	data["src"] = "\ref[src]"
@@ -321,7 +321,7 @@
 								id_card.access += access_type
 							break
 	if(id_card)
-		id_card.SetName(text("[id_card.registered_name]'s ID Card ([id_card.assignment])"))
+		id_card.SetName("[id_card.registered_name]'s ID Card ([id_card.assignment])")
 
 	SSnano.update_uis(NM)
 	return 1

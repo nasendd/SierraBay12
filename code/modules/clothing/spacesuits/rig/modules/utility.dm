@@ -155,7 +155,7 @@
 		list("dylovene",      "dylovene",      /datum/reagent/dylovene,          80),
 		list("hyronalin",     "hyronalin",     /datum/reagent/hyronalin,         80),
 		list("spaceacillin",  "spaceacillin",  /datum/reagent/spaceacillin,      80),
-		list("tramadol",      "tramadol",      /datum/reagent/tramadol,          80)
+		list("tramadol",      "tramadol",      /datum/reagent/opiate/tramadol,          80)
 		)
 
 	var/max_reagent_volume = 80 //Used when refilling.
@@ -174,7 +174,7 @@
 		list("dermaline",     "dermaline",     /datum/reagent/dermaline,         20),
 		list("spaceacillin",  "spaceacillin",  /datum/reagent/spaceacillin,      20),
 		list("coagulant",     "coagulant",     /datum/reagent/coagulant,         20),
-		list("tramadol",      "tramadol",      /datum/reagent/tramadol,          20)
+		list("tramadol",      "tramadol",      /datum/reagent/opiate/tramadol,          20)
 		)
 
 /obj/item/rig_module/chem_dispenser/accepts_item(obj/item/input_item, mob/living/user)
@@ -210,6 +210,7 @@
 		to_chat(user, SPAN_DANGER("None of the reagents seem suitable."))
 	return 1
 
+/*[SIERRA-REMOVE] - HARDSUITS
 /obj/item/rig_module/chem_dispenser/engage(atom/target)
 
 	if(!..())
@@ -252,6 +253,8 @@
 
 	return 1
 
+[SIERRA-REMOVE] - HARDSUITS
+*/
 /obj/item/rig_module/chem_dispenser/combat
 
 	name = "combat chemical dispenser"
@@ -261,7 +264,7 @@
 	charges = list(
 		list("synaptizine", "synaptizine", /datum/reagent/synaptizine,        30),
 		list("hyperzine",   "hyperzine",   /datum/reagent/hyperzine,          30),
-		list("oxycodone",   "oxycodone",   /datum/reagent/tramadol/oxycodone, 30),
+		list("oxycodone",   "oxycodone",   /datum/reagent/opiate/oxycodone, 30),
 		list("glucose",     "glucose",     /datum/reagent/nutriment/glucose,  60)
 		)
 
@@ -276,7 +279,7 @@
 	charges = list(
 		list("synaptizine",   "synaptizine",   /datum/reagent/synaptizine,        10),
 		list("inaprovaline",  "inaprovaline",  /datum/reagent/inaprovaline,       30),
-		list("oxycodone",     "oxycodone",     /datum/reagent/tramadol/oxycodone, 10),
+		list("oxycodone",     "oxycodone",     /datum/reagent/opiate/oxycodone, 10),
 		list("tricordrazine", "tricordrazine", /datum/reagent/tricordrazine,      15),
 		list("coagulant",     "coagulant",     /datum/reagent/coagulant,          15),
 		list("dexalin plus",  "dexalin plus",  /datum/reagent/dexalinp,           30),
@@ -307,7 +310,7 @@
 		list("inaprovaline",  "inaprovaline",  /datum/reagent/inaprovaline,       50),
 		list("dermaline",     "dermaline",     /datum/reagent/dermaline,          30),
 		list("bicaridine",    "bicaridine",    /datum/reagent/bicaridine,         40),
-		list("oxycodone",     "oxycodone",     /datum/reagent/tramadol/oxycodone, 40),
+		list("oxycodone",     "oxycodone",     /datum/reagent/opiate/oxycodone, 40),
 		list("dylovene",      "dylovene",      /datum/reagent/dylovene,           50)
 		)
 
@@ -511,6 +514,7 @@
 	var/charge_consumption = 0.5 KILOWATTS
 	var/max_cooling = 12
 	var/thermostat = T20C
+	show_toggle_button = TRUE
 
 /obj/item/rig_module/cooling_unit/Process()
 	if(!active)
@@ -595,3 +599,40 @@
 
 			else
 				deactivate()
+
+/obj/item/rig_module/radiation
+	name = "radiation shielding module"
+	desc = "Highly advanced electromagnetic radiation cloak that allows most harmful radiation to pass through the suit harmlessly."
+	icon_state = "rad_resist"
+	selectable = TRUE
+	toggleable = TRUE
+	disruptive = FALSE
+	use_power_cost = 80 KILOWATTS
+	active_power_cost = 20 KILOWATTS
+	passive_power_cost = 0
+
+	interface_name = "radiation shielding module"
+	interface_desc = "Electromagnetic radiation cloak that allows most harmful radiation to pass around the suit, instead of through the wearer."
+	origin_tech = list(TECH_BIO = 3, TECH_MAGNET = 3, TECH_ENGINEERING = 5)
+
+	var/radiation_protection = ARMOR_RAD_SHIELDED
+	var/initial_protection = ARMOR_RAD_MINOR
+
+/obj/item/rig_module/radiation/activate()
+	if(!..())
+		return FALSE
+
+	initial_protection = holder.armor["rad"]
+	for(var/obj/item/piece in list(holder.gloves,holder.helmet,holder.boots,holder.chest))
+		piece.armor["rad"] = radiation_protection
+
+	holder.wearer.alpha = 200
+
+/obj/item/rig_module/radiation/deactivate()
+	if(!..())
+		return FALSE
+
+	for(var/obj/item/piece in list(holder.gloves,holder.helmet,holder.boots,holder.chest))
+		piece.armor["rad"] = initial_protection
+
+	holder.wearer.alpha = 255

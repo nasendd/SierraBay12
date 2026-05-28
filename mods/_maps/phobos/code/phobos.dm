@@ -2,6 +2,7 @@
 	name = "SCGF Patrol Craft"
 	desc = "SCGF Cobra-class Patrol Craft. Belongs to Third Fleet Battle Group Alpha"
 	color = "#81c6ff"
+	fore_dir = WEST
 	vessel_mass = 5000
 	max_speed = 1/(2 SECONDS)
 	place_near_main = list(5, 5)
@@ -35,10 +36,12 @@
 	area_usage_test_exempted_root_areas = list(/area/ship/phobos)
 	shuttles_to_initialise = list(/datum/shuttle/autodock/overmap/interseptor)
 // We're deep in frontier. So no elite troops or terrans
+	#ifndef DEV_MODE
 	ban_ruins = list(
 		/datum/map_template/ruin/away_site/farfleet,
 		/datum/map_template/ruin/away_site/patrol
 		)
+	#endif
 
 /obj/shuttle_landmark/nav_phobos/nav1
 	name = "Ship Navpoint #1"

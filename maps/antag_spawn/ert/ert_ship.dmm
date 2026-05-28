@@ -870,7 +870,7 @@
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/map_template/ert/ship/hangar)
 "fA" = (
-/obj/wallframe_spawn/reinforced/polarized/full{
+/obj/wallframe_spawn/reinforced/polarized{
 	id = "ert_co_windows"
 	},
 /obj/paint/fleet,
@@ -1619,7 +1619,7 @@
 "kg" = (
 /obj/paint/fleet,
 /obj/machinery/door/firedoor/ert,
-/obj/wallframe_spawn/reinforced/polarized/full{
+/obj/wallframe_spawn/reinforced/polarized{
 	id = "ert_co_windows"
 	},
 /obj/machinery/door/blast/regular/open{
@@ -1734,8 +1734,8 @@
 /obj/item/storage/box/ammo/sniperammo/apds,
 /obj/item/storage/box/ammo/sniperammo/apds,
 /obj/item/storage/box/ammo/sniperammo/apds,
-/obj/item/storage/box/ammo/sniperammo/apds,
-/obj/item/storage/box/ammo/sniperammo/apds,
+/obj/item/storage/box/ammo/sniperammo/tracer,
+/obj/item/storage/box/ammo/sniperammo/tracer,
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/map_template/ert/ship/armory)
 "kJ" = (
@@ -5569,10 +5569,10 @@
 /obj/item/gun/launcher/syringe/rapid,
 /obj/item/storage/box/syringes,
 /obj/item/storage/box/syringes,
-/obj/item/reagent_containers/hypospray,
-/obj/item/reagent_containers/hypospray,
-/obj/item/reagent_containers/hypospray,
-/obj/item/reagent_containers/hypospray,
+/obj/item/reagent_containers/hypospray/vial,
+/obj/item/reagent_containers/hypospray/vial,
+/obj/item/reagent_containers/hypospray/vial,
+/obj/item/reagent_containers/hypospray/vial,
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/map_template/ert/ship/armory)
 "IG" = (

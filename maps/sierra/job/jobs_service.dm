@@ -7,7 +7,8 @@
 	spawn_positions = 1
 	minimum_character_age = list(SPECIES_HUMAN = 28)
 	ideal_character_age = 35
-	economic_power = 6
+	alt_titles = list("Chief")
+	economic_power = 8
 	minimal_player_age = 7
 	supervisors = "Главе Персонала"
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/service/chief_steward
@@ -33,7 +34,8 @@
 		access_hydroponics,
 		access_kitchen,
 		access_commissary,
-		access_RC_announce
+		access_RC_announce,
+		access_employment_records
 	)
 
 /datum/job/chief_steward/get_description_blurb()

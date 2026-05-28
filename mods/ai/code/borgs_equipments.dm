@@ -96,7 +96,7 @@
 		/obj/item/inflatable_dispenser/robot,
 		/obj/item/reagent_containers/spray/cleaner/drone,
 		/obj/item/inducer/borg,
-		/obj/item/device/plunger/robot,
+		/obj/item/clothing/mask/plunger/robot,
 		/obj/item/matter_decompiler,
 		/obj/item/stack/material/cyborg/steel,
 		/obj/item/stack/material/cyborg/aluminium,
@@ -107,6 +107,13 @@
 		/obj/item/stack/cable_coil/cyborg,
 		/obj/item/stack/material/cyborg/plasteel,
 		/obj/item/device/flash
+	)
+	skills = list(
+		SKILL_ATMOS        = SKILL_MASTER,
+		SKILL_ENGINES      = SKILL_MASTER,
+		SKILL_CONSTRUCTION = SKILL_MASTER,
+		SKILL_ELECTRICAL   = SKILL_MASTER,
+		SKILL_COMPUTER     = SKILL_EXPERIENCED
 	)
 
 /obj/item/robot_module/flying
@@ -162,7 +169,7 @@
 		/obj/item/inflatable_dispenser/robot,
 		/obj/item/reagent_containers/spray/cleaner/drone,
 		/obj/item/inducer/borg,
-		/obj/item/device/plunger/robot,
+		/obj/item/clothing/mask/plunger/robot,
 		/obj/item/matter_decompiler,
 		/obj/item/stack/material/cyborg/steel,
 		/obj/item/stack/material/cyborg/aluminium,
@@ -185,7 +192,7 @@
 		/obj/item/holosign_creator,
 		/obj/item/device/lightreplacer,
 		/obj/item/borg/sight/hud/jani,
-		/obj/item/device/plunger/robot,
+		/obj/item/clothing/mask/plunger/robot,
 		/obj/item/crowbar,
 		/obj/item/weldingtool,
 		/obj/item/device/flash
@@ -207,7 +214,7 @@
 		/obj/item/extinguisher/mini,
 		/obj/item/device/paint_sprayer,
 		/obj/item/inducer/borg,
-		/obj/item/device/plunger/robot,
+		/obj/item/clothing/mask/plunger/robot,
 		/obj/item/inflatable_dispenser/robot,
 		/obj/item/reagent_containers/spray/cleaner/drone,
 		/obj/item/borg/sight/hud/jani,
@@ -314,3 +321,38 @@
 		/obj/item/crowbar,
 		/obj/item/device/flash
 	)
+
+/obj/item/robot_module/drone/construction
+	equipment=list(
+		/obj/item/weldingtool,
+		/obj/item/screwdriver,
+		/obj/item/wrench,
+		/obj/item/crowbar,
+		/obj/item/wirecutters,
+		/obj/item/device/multitool,
+		/obj/item/device/t_scanner,
+		/obj/item/device/scanner/gas,
+		/obj/item/device/lightreplacer,
+		/obj/item/gripper,
+		/obj/item/gripper/no_use/loader,
+		/obj/item/extinguisher/mini,
+		/obj/item/device/paint_sprayer,
+		/obj/item/inducer/borg,
+		/obj/item/clothing/mask/plunger/robot,
+		/obj/item/inflatable_dispenser/robot,
+		/obj/item/reagent_containers/spray/cleaner/drone,
+		/obj/item/borg/sight/hud/jani,
+		/obj/item/tank/jetpack/carbondioxide,
+		/obj/item/matter_decompiler,
+		/obj/item/stack/material/cyborg/steel,
+		/obj/item/stack/material/rods/cyborg,
+		/obj/item/stack/tile/floor/cyborg,
+		/obj/item/stack/material/cyborg/glass,
+		/obj/item/stack/material/cyborg/glass/reinforced,
+		/obj/item/stack/tile/wood/cyborg,
+		/obj/item/stack/material/cyborg/wood,
+		/obj/item/stack/cable_coil/cyborg,
+		/obj/item/stack/material/cyborg/plastic,
+		/obj/item/taperoll/engineering,
+		/obj/item/taperoll/atmos
+)

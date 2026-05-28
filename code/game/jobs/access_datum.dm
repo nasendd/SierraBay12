@@ -268,6 +268,14 @@ var/global/const/access_research = "ACCESS_RESEARCH" //47
 	desc = "Science"
 	region = ACCESS_REGION_RESEARCH
 
+//[SIERRA-ADD] RND
+var/global/const/access_rnd_network = "ACCESS_RND_NETWORK"
+/datum/access/rnd_network
+	id = access_rnd_network
+	desc = "R&D Network"
+	region = ACCESS_REGION_RESEARCH
+//[/SIERRA-ADD] RND
+
 var/global/const/access_mining = "ACCESS_MINING" //48
 /datum/access/mining
 	id = access_mining
@@ -387,6 +395,26 @@ var/global/const/access_pilot = "ACCESS_PILOT"
 	id = access_pilot
 	desc = "Pilot"
 	region = ACCESS_REGION_GENERAL
+
+// [SIERRA-ADD] - CREW_RECORDS_ACCESS
+var/global/const/access_employment_records = "ACCESS_EMPLOYMENT_RECORDS"
+/datum/access/employment_records
+	id = access_employment_records
+	desc = "Employment Records"
+	region = ACCESS_REGION_COMMAND
+
+var/global/const/access_medical_records = "ACCESS_MEDICAL_RECORDS"
+/datum/access/medical_records
+	id = access_medical_records
+	desc = "Medical Records"
+	region = ACCESS_REGION_MEDBAY
+
+var/global/const/access_security_records = "ACCESS_SECURITY_RECORDS"
+/datum/access/security_records
+	id = access_security_records
+	desc = "Security Records"
+	region = ACCESS_REGION_SECURITY
+// [/SIERRA-ADD]
 
 /******************
 * Central Command *
