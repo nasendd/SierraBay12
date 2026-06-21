@@ -34,7 +34,7 @@
 	var/name				//replaces mob/var/original_name
 	var/mob/living/current
 	var/mob/living/original	//TODO: remove.not used in any meaningful way ~Carn. First I'll need to tweak the way silicon-mobs handle minds.
-	var/active = 0
+	var/active = FALSE
 
 	var/assigned_role
 	var/special_role
@@ -73,6 +73,8 @@
 /datum/mind/Destroy()
 	QDEL_NULL_LIST(memories)
 	QDEL_NULL_LIST(goals)
+	current = null
+	original = null
 	SSticker.minds -= src
 	. = ..()
 
