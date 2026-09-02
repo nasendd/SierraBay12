@@ -73,8 +73,6 @@
 	construct_state = /singleton/machine_construction/default/panel_closed
 	uncreated_component_parts = null
 
-	var/manufacturer = null
-
 /obj/machinery/fabricator/rnd/robotics/Initialize()
 	stored_material = list(
 		MATERIAL_STEEL = 0,
@@ -89,6 +87,7 @@
 		MATERIAL_URANIUM = 0,
 		MATERIAL_DIAMOND = 0
 	)
+	manufacturer = basic_robolimb.company
 	. = ..()
 
 /obj/machinery/fabricator/rnd/robotics/mech
@@ -178,6 +177,7 @@
 	req_components = list(
 							/obj/item/stock_parts/matter_bin = 2,
 							/obj/item/stock_parts/manipulator = 2,
+							/obj/item/stock_parts/micro_laser = 1,
 							/obj/item/reagent_containers/glass/beaker = 2)
 	additional_spawn_components = list(
 		/obj/item/stock_parts/power/apc/buildable = 1
@@ -191,6 +191,7 @@
 	req_components = list(
 							/obj/item/stock_parts/matter_bin = 1,
 							/obj/item/stock_parts/manipulator = 1,
+							/obj/item/stock_parts/micro_laser = 1,
 							/obj/item/reagent_containers/glass/beaker = 2)
 	additional_spawn_components = list(
 		/obj/item/stock_parts/power/apc/buildable = 1
@@ -209,6 +210,7 @@
 /obj/machinery/smartfridge/disks/permitted
 	startswith = list(
 		/obj/item/stock_parts/computer/hard_drive/portable/design/components = 1,
+		/obj/item/stock_parts/computer/hard_drive/portable/design/cookware = 1,
 		/obj/item/stock_parts/computer/hard_drive/portable/design/cuttery = 1,
 		/obj/item/stock_parts/computer/hard_drive/portable/design/drinking = 1,
 		/obj/item/stock_parts/computer/hard_drive/portable/design/exploration = 1,
@@ -221,6 +223,7 @@
 /obj/machinery/smartfridge/disks/full
 	startswith = list(
 		/obj/item/stock_parts/computer/hard_drive/portable/design/components = 1,
+		/obj/item/stock_parts/computer/hard_drive/portable/design/cookware = 1,
 		/obj/item/stock_parts/computer/hard_drive/portable/design/cuttery = 1,
 		/obj/item/stock_parts/computer/hard_drive/portable/design/drinking = 1,
 		/obj/item/stock_parts/computer/hard_drive/portable/design/arms = 1,

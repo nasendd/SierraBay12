@@ -167,7 +167,7 @@
 		return
 	if(H.species.name == SPECIES_MOTH)
 		return
-	if (dose < 1 || prob(30))
+	if (prob(30)) // [SIERRA-EDIT] if (dose < 1 || prob(30))
 		return
 	remove_self(dose)
 	var/list/meatchunks = list()
@@ -226,3 +226,11 @@
 	)
 	allow_quick_gather = TRUE
 	allow_quick_empty = TRUE
+
+// Infinite slimecell
+
+/obj/item/cell/slime/check_charge()
+	return 1
+
+/obj/item/cell/slime/use(amount)
+	return amount
