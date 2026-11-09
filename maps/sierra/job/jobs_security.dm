@@ -1,11 +1,11 @@
 /datum/job/warden
 	title = "Warden"
-	department = "Охранный"
+	department = "Security"
 	department_flag = SEC
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "Главе Службы безопасности"
-	economic_power = 8
+	economic_power = 9
 	minimal_player_age = 14
 	minimum_character_age = list(SPECIES_HUMAN = 26)
 	ideal_character_age = 28
@@ -14,7 +14,7 @@
 		)
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/security/warden
 	allowed_branches = list(/datum/mil_branch/employee)
-	allowed_ranks = list(/datum/mil_rank/civ/nt)
+	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/acting, /datum/mil_rank/civ/probation_employee)
 	min_skill = list(   SKILL_BUREAUCRACY = SKILL_TRAINED,
 	                    SKILL_EVA         = SKILL_BASIC,
 	                    SKILL_HAULING	  = SKILL_BASIC,
@@ -29,7 +29,7 @@
 
 	access = list(access_seceva, access_guard, access_security, access_brig, access_armory, access_forensics_lockers,
 			            access_maint_tunnels, access_external_airlocks, access_emergency_storage,
-			            access_eva, access_sec_doors, access_gun, access_hangar, access_warden
+			            access_eva, access_sec_doors, access_gun, access_hangar, access_warden, access_security_records
 			            )
 
 
@@ -48,13 +48,13 @@
 
 /datum/job/detective
 	title = "Criminal Investigator"
-	department = "Охранный"
+	department = "Security"
 	department_flag = SEC
 	hud_icon = "huddetective"
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "Главе Службы безопасности"
-	economic_power = 5
+	economic_power = 8
 	minimal_player_age = 7
 	minimum_character_age = list(SPECIES_HUMAN = 25)
 	ideal_character_age = 30
@@ -64,7 +64,7 @@
 		)
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/security/detective
 	allowed_branches = list(/datum/mil_branch/employee, /datum/mil_branch/civilian, /datum/mil_branch/contractor)
-	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor, /datum/mil_rank/civ/civ)
+	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor, /datum/mil_rank/civ/civ, /datum/mil_rank/civ/probation_employee, /datum/mil_rank/civ/probation_contractor)
 	min_skill = list(   SKILL_BUREAUCRACY = SKILL_BASIC,
 	                    SKILL_COMPUTER    = SKILL_BASIC,
 	                    SKILL_EVA         = SKILL_BASIC,
@@ -79,7 +79,7 @@
 
 	access = list(access_seceva, access_security, access_brig, access_forensics_lockers,
 			            access_maint_tunnels, access_emergency_storage, access_eva,
-			            access_sec_doors, access_morgue, access_hangar)
+			            access_sec_doors, access_morgue, access_hangar, access_security_records)
 
 
 
@@ -92,7 +92,7 @@
 
 /datum/job/officer
 	title = "Security Guard"
-	department = "Охранный"
+	department = "Security"
 	department_flag = SEC
 	total_positions = 4
 	spawn_positions = 4
@@ -108,7 +108,7 @@
 
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/security/officer
 	allowed_branches = list(/datum/mil_branch/employee, /datum/mil_branch/contractor)
-	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor)
+	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor, /datum/mil_rank/civ/probation_employee, /datum/mil_rank/civ/probation_contractor)
 	min_skill = list(   SKILL_BUREAUCRACY = SKILL_BASIC,
 	                    SKILL_EVA         = SKILL_BASIC,
 	                    SKILL_COMBAT      = SKILL_BASIC,
@@ -121,7 +121,7 @@
 
 	access = list(access_seceva, access_guard, access_security, access_brig, access_maint_tunnels,
 						access_external_airlocks, access_emergency_storage,
-			            access_eva, access_sec_doors, access_hangar)
+			            access_eva, access_sec_doors, access_hangar, access_security_records)
 
 
 
@@ -135,7 +135,7 @@
 
 /datum/job/security_assistant
 	title = "Security Cadet"
-	department = "Охранный"
+	department = "Security"
 	department_flag = SEC
 
 	total_positions = 2
@@ -157,12 +157,14 @@
 			/datum/mil_branch/employee
 		)
 	allowed_ranks = list(
-			/datum/mil_rank/civ/nt
+			/datum/mil_rank/civ/nt,
+			/datum/mil_rank/civ/probation_employee,
+			/datum/mil_rank/civ/probation_contractor
 		)
 
 	access = list(access_seceva, access_security, access_brig, access_maint_tunnels,
 						access_external_airlocks, access_emergency_storage,
-			            access_eva, access_sec_doors, access_hangar)
+			            access_eva, access_sec_doors, access_hangar, access_security_records)
 
 
 

@@ -8,6 +8,9 @@
 
 /obj/machinery/computer/modular/Initialize()
 	set_extension(src, /datum/extension/interactive/ntos/console)
+	var/datum/extension/interactive/ntos/os = get_extension(src, /datum/extension/interactive/ntos)
+	if (os)
+		os.allow_multiple_windows = TRUE
 	. = ..()
 
 /obj/machinery/computer/modular/Destroy()
@@ -103,6 +106,10 @@
 		user.put_in_hands(portable_drive)
 	else
 		portable_drive.dropInto(loc)
+//[SIERRA-ADD]
+	if(portable_drive.find_file_by_name("DISK_NAME"))
+		portable_drive.name = portable_drive.get_disk_name()
+//[/SIERRA-ADD]
 	portable_drive = null
 	verbs -= /obj/machinery/computer/modular/proc/eject_usb
 

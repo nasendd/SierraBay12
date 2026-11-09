@@ -9,12 +9,20 @@ GLOBAL_VAR_AS(war_declared, FALSE)
 	antag_roles = list(MODE_MERCENARY)
 
 /datum/uplink_item/item/services/assault_declaration/get_goods(obj/item/device/uplink/U, loc)
-	if(world.time > 15 MINUTES || GLOB.war_declared)
-		U.visible_message("[U.loc] buzzez and declares, \"Unable to teleport telecrystals.\"")
-		return 0
+	if(round_duration_in_ticks > 15 MINUTES)
+		to_chat(usr, SPAN_BAD("Дополнительные средства не могут быть выделены, прошло слишком много времени."))
+		return
+	if(GLOB.war_declared)
+		to_chat(usr, SPAN_BAD("Дополнительные средства не могут быть выделены, превышен лимит средств."))
+		return
+	to_chat(usr, SPAN_GOOD("Запрос одобрен, доп средства выделены."))
 	command_announcement.Announce("В секторе была замечена телепортация большого объема телекристаллов, использующихся Горлекскими Мародерами. Рекомендуется вызвать поддержку с ЦК для урегулирования ситуации.", "Показания датчиков [station_name()]" , msg_sanitized = 1, zlevels = GLOB.using_map.station_levels)
 	GLOB.max_mech = 1
 	GLOB.war_declared = TRUE
+	var/singleton/public_access/public_method/open_door = GET_SINGLETON(/singleton/public_access/public_method/open_door)
+	for(var/obj/machinery/door/blast/D as anything in SSmachines.get_machinery_of_type(/obj/machinery/door/blast))
+		if(D.id_tag == "merc_war_door")
+			open_door.perform(D)
 	return new /obj/item/stack/telecrystal(loc, 781)
 //Запрос кристаллов
 

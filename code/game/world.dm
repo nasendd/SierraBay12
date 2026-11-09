@@ -101,6 +101,9 @@ GLOBAL_VAR(href_logfile)
 			// [/SIERRA-EDIT]
 		if (config.log_hrefs)
 			GLOB.href_logfile = file("data/logs/[date_string] hrefs.htm")
+			// show_browser() passes a file through as-is, so the page carries its own header
+			if (!fexists(GLOB.href_logfile))
+				to_file(GLOB.href_logfile, "<!doctype html><meta charset=utf-8>")
 
 	if (byond_version < RECOMMENDED_VERSION)
 		to_world_log("Your server's byond version does not meet the recommended requirements for this server. Please update BYOND")
@@ -183,21 +186,6 @@ GLOBAL_VAR_AS(world_topic_last, world.timeofday)
 		s["roundduration"] = roundduration2text()
 		s["map"] = replacetext(GLOB.using_map.full_name, "\improper", "") //Done to remove the non-UTF-8 text macros
 
-		// [SIERRA-ADD] - EX666_ECOSYSTEM
-		s["roundtime"] = roundduration2text()
-		switch(GAME_STATE)
-			if(RUNLEVEL_INIT)
-				s["ticker_state"] = 0
-			if(RUNLEVEL_LOBBY)
-				s["ticker_state"] = 1
-			if(RUNLEVEL_SETUP)
-				s["ticker_state"] = 2
-			if(RUNLEVEL_GAME)
-				s["ticker_state"] = 3
-			if(RUNLEVEL_POSTGAME)
-				s["ticker_state"] = 4
-		// [/SIERRA-ADD]
-
 		var/active = 0
 		var/list/players = list()
 		var/list/admins = list()
@@ -220,10 +208,6 @@ GLOBAL_VAR_AS(world_topic_last, world.timeofday)
 			s["adminlist"] = list2params(admins)
 			s["active_players"] = active
 
-		// [SIERRA-ADD] - EX666_ECOSYSTEM
-		if(input["format"] == "json")
-			return json_encode(s)
-		// [/SIERRA-ADD]
 		return list2params(s)
 
 	else if(T == "manifest")
@@ -349,44 +333,6 @@ GLOBAL_VAR_AS(world_topic_last, world.timeofday)
 				ret[M.key] = M.name
 			return list2params(ret)
 
-	// [SIERRA-ADD] - EX666_ECOSYSTEM
-	else if(copytext(T,1,15) == "playerlist_ext")
-		var/input[] = params2list(T)
-		if(input["key"] != config.comms_password)
-			SET_THROTTLE(30 SECONDS, "Bad Comms Key")
-			return "Bad Key"
-
-		var/list/players = list()
-		var/list/just_keys = list()
-
-		var/list/disconnected_observers = list()
-
-		for(var/mob/M in GLOB.dead_mobs)
-			if(!M.last_ckey)
-				continue
-			if(M.client)
-				continue
-			var/ckey = ckey(M.last_ckey)
-			disconnected_observers[ckey] = ckey
-
-		for(var/client/C as anything in GLOB.clients)
-			var/ckey = C.ckey
-			players[ckey] = ckey
-			just_keys += ckey
-
-		for(var/mob/M in GLOB.living_players)
-			if(!M.last_ckey)
-				continue
-			var/ckey = ckey(M.last_ckey)
-			if(players[ckey])
-				continue
-			if(disconnected_observers[ckey])
-				continue
-			players[ckey] = ckey
-			just_keys += ckey
-
-		return json_encode(just_keys)
-	// [/SIERRA-ADD]
 
 	else if(copytext(T,1,5) == "info")
 		var/input[] = params2list(T)

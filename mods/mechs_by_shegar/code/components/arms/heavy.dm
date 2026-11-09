@@ -12,8 +12,10 @@
 	min_damage = 150
 	repair_damage = 15
 	req_material = MATERIAL_PLASTEEL
-	back_modificator_damage = 2.5
+	back_modificator_damage = 3
 	front_modificator_damage = 0.5
+	matter = list(MATERIAL_STEEL = 48000, MATERIAL_PLASTEEL = 20000, MATERIAL_ALUMINIUM = 20000)
+
 	max_heat = 150
 	heat_cooling = 2
 	emp_heat_generation = 50

@@ -7,9 +7,6 @@
 #ifndef PSI_IMPLANT_WARN
 #define PSI_IMPLANT_WARN      "Issue Reprimand"
 #endif
-#ifndef PSI_IMPLANT_LOG
-#define PSI_IMPLANT_LOG       "Log Incident"
-#endif
 #ifndef PSI_IMPLANT_DISABLED
 #define PSI_IMPLANT_DISABLED  "Disabled"
 #endif
@@ -55,7 +52,7 @@
 	light_color_alarm = COLOR_VIOLET
 	light_color_status_display = COLOR_VIOLET
 
-	psionic_control_level = PSI_IMPLANT_LOG
+	psionic_control_level = PSI_IMPLANT_WARN
 
 	overlay_alarm = "alarm_violet"
 	overlay_status_display = "status_display_violet"
@@ -88,7 +85,7 @@
 	overlay_alarm = "alarm_orange"
 	overlay_status_display = "status_display_orange"
 	alert_border = "alert_border_orange"
-	psionic_control_level = PSI_IMPLANT_LOG
+	psionic_control_level = PSI_IMPLANT_WARN
 
 /singleton/security_level/default/sierradept/code_orange/switching_up_to()
 	security_announcement_up.Announce("Тяжелые нарушения в работе оборудования и повреждение переборок. \
@@ -118,7 +115,7 @@
 	overlay_alarm = "alarm_blue"
 	overlay_status_display = "status_display_blue"
 	alert_border = "alert_border_blue"
-	psionic_control_level = PSI_IMPLANT_LOG
+	psionic_control_level = PSI_IMPLANT_WARN
 
 /singleton/security_level/default/sierradept/code_blue/switching_up_to()
 	security_announcement_up.Announce("Согласно полученной информации на судне может присутствовать угроза для безопасности экипажа. \
@@ -137,6 +134,7 @@
 /singleton/security_level/default/sierradept/code_red
 	name = "code red"
 	alarm_level = "on"
+	alarm_sound = 'sound/obj/machinery/rotating_alarm/alert_red.ogg'
 
 	light_range = 4
 	light_power = 2
@@ -145,6 +143,8 @@
 	overlay_alarm = "alarm_red"
 	overlay_status_display = "status_display_red"
 	alert_border = "alert_border_red"
+
+	kick_vr_users = TRUE // [SIERRA-ADD] - MOD_VR
 
 	psionic_control_level = PSI_IMPLANT_DISABLED
 	var/static/datum/announcement/priority/security/security_announcement_red = new(do_log = 0, do_newscast = 1, new_sound = sound('sound/misc/redalert1.ogg'))
@@ -171,6 +171,7 @@
 /singleton/security_level/default/sierradept/code_delta
 	name = "code delta"
 	alarm_level = "on"
+	alarm_sound = 'sound/obj/machinery/rotating_alarm/alert_red.ogg'
 
 	light_range = 4
 	light_power = 2
@@ -180,6 +181,8 @@
 	overlay_alarm = "alarm_delta"
 	overlay_status_display = "status_display_delta"
 	alert_border = "alert_border_delta"
+
+	kick_vr_users = TRUE // [SIERRA-ADD] - MOD_VR
 
 	psionic_control_level = PSI_IMPLANT_DISABLED
 	var/static/datum/announcement/priority/security/security_announcement_delta = new(do_log = 0, do_newscast = 1, new_sound = sound('sound/effects/siren.ogg'))

@@ -6,6 +6,9 @@
 /datum/design/autolathe/general/datacrystal
 	build_path = /obj/item/stock_parts/computer/hard_drive/portable
 
+/datum/design/autolathe/general/design_disk
+	build_path = /obj/item/stock_parts/computer/hard_drive/portable/design/printable
+
 /datum/design/autolathe/general/flashlight
 	build_path = /obj/item/device/flashlight
 
@@ -29,6 +32,9 @@
 
 /datum/design/autolathe/general/suit_cooler
 	build_path = /obj/item/device/suit_cooling_unit
+
+/datum/design/autolathe/general/suit_cooler_mini
+	build_path = /obj/item/device/suit_cooling_unit/miniature
 
 /datum/design/autolathe/general/weldermask
 	build_path = /obj/item/clothing/head/welding
@@ -111,6 +117,7 @@
 
 /datum/design/autolathe/general/handcuffs
 	build_path = /obj/item/handcuffs
+	hidden = TRUE
 
 /datum/design/autolathe/general/plunger
 	build_path = /obj/item/clothing/mask/plunger
@@ -123,3 +130,8 @@
 
 /datum/design/autolathe/general/tape_roll
 	build_path = /obj/item/tape_roll
+
+// Material tweaks
+
+/obj/item/stock_parts/computer/hard_drive/portable
+	matter = list(MATERIAL_GLASS = 800)

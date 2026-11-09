@@ -69,32 +69,6 @@
 	range = 2
 
 
-/datum/microwave_recipe/cheesewheel_aged
-	consumed_reagents = list(
-		/datum/reagent/enzyme = 5
-	)
-	required_reagents = list(
-		/datum/reagent/sodiumchloride = 10
-	)
-	required_items = list(
-		/obj/item/reagent_containers/food/snacks/sliceable/cheesewheel
-	)
-	result_path = /obj/item/reagent_containers/food/snacks/sliceable/cheesewheel/aged
-
-
-/datum/microwave_recipe/cheesewedge_aged
-	consumed_reagents = list(
-		/datum/reagent/enzyme = 1
-	)
-	required_reagents = list(
-		/datum/reagent/sodiumchloride = 2
-	)
-	required_items = list(
-		/obj/item/reagent_containers/food/snacks/cheesewedge
-	)
-	result_path = /obj/item/reagent_containers/food/snacks/cheesewedge/aged
-
-
 /obj/item/reagent_containers/food/snacks/sliceable/cheesewheel/blue
 	name = "blue cheese wheel"
 	desc = "A wheel of intense blue cheese."
@@ -120,30 +94,32 @@
 	descriptor = SCENT_DESC_ODOR
 	range = 3
 
+/obj/item/reagent_containers/food/snacks/sliceable/cheesewheel/mozzarella
+	name = "lump of mozzarella"
+	desc = "A lump of mozzarella cheese."
+	icon_state = "cheesewheel-mozz"
+	filling_color = "#9eee86"
+	nutriment_desc = list("mild and stretchy cheese" = 10)
+	slice_path = /obj/item/reagent_containers/food/snacks/cheesewedge/mozz
 
-/datum/microwave_recipe/cheesewheel_blue
-	consumed_reagents = list(
-		/datum/reagent/enzyme = 5
-	)
-	required_reagents = list(
-		/datum/reagent/sodiumchloride = 5,
-		/datum/reagent/drink/kefir = 5
-	)
-	required_items = list(
-		/obj/item/reagent_containers/food/snacks/sliceable/cheesewheel
-	)
-	result_path = /obj/item/reagent_containers/food/snacks/sliceable/cheesewheel/blue
+/obj/item/reagent_containers/food/snacks/cheesewedge/mozz
+	name = "slice of mozzarella"
+	desc = "A slice of soft, stretchy mozzarella."
+	icon_state = "cheesewedge-mozz"
+	filling_color = "#9eee86"
+	nutriment_desc = list("mild and stretchy" = 10)
 
+/obj/item/reagent_containers/food/snacks/sliceable/cheesewheel/burrata
+	name = "lump of burrata"
+	desc = "A lump of burrata cheese."
+	icon_state = "cheesewheel-burrata"
+	filling_color = "#9eee86"
+	nutriment_desc = list("mild and soft cheese" = 10)
+	slice_path = /obj/item/reagent_containers/food/snacks/cheesewedge/burrata
 
-/datum/microwave_recipe/cheesewedge_blue
-	consumed_reagents = list(
-		/datum/reagent/enzyme = 1
-	)
-	required_reagents = list(
-		/datum/reagent/sodiumchloride = 1,
-		/datum/reagent/drink/kefir = 1
-	)
-	required_items = list(
-		/obj/item/reagent_containers/food/snacks/cheesewedge
-	)
-	result_path = /obj/item/reagent_containers/food/snacks/cheesewedge/blue
+/obj/item/reagent_containers/food/snacks/cheesewedge/burrata
+	name = "slice of burrata"
+	desc = "A slice of burrata cheese."
+	icon_state = "cheesewedge-burrata"
+	filling_color = "#9eee86"
+	nutriment_desc = list("mild and soft cheese" = 10)

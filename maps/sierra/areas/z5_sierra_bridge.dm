@@ -30,14 +30,17 @@
 	name = "Bridge - Maintenance - Port"
 	icon_state = "pmaint"
 
-/area/maintenance/substation/bridgedeck
-	name = "Bridge - Substation"
+
 
 /area/crew_quarters/sleep/cryo/bridge
 	name = "Bridge - Living - Cryogenic Storage"
 	area_flags = AREA_FLAG_RAD_SHIELDED | AREA_FLAG_ION_SHIELDED
 	holomap_color = HOLOMAP_AREACOLOR_CREW
 */
+
+/area/maintenance/substation/bridge
+	name = "Bridge - Substation"
+
 /* COMMAND AREAS
  * =============
  */
@@ -68,7 +71,7 @@
 
 /area/bridge/nano
 	icon = 'maps/sierra/icons/turf/areas.dmi'
-	name = "Second Deck - Bridge - Entrance"
+	name = "Second Deck - Bridge - Fore"
 	icon_state = "bridge_room"
 
 /area/bridge/meeting_room
@@ -82,12 +85,14 @@
 	name = "Second Deck - Command - Briefing Room"
 	icon_state = "bridge_room"
 
+/*
 /area/bridge/lobby
 	name = "Second Deck - Bridge - Lobby"
 	req_access = list()
+ */
 
 /area/bridge/hallway
-	name = "Second Deck - Bridge - Hallway"
+	name = "Second Deck - Bridge - Entrance"
 /*
 /area/bridge/storage
 	name = "Bridge - Storage"
@@ -100,6 +105,9 @@
 	req_access = list(access_teleporter)
 	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 
+/area/teleporter/seconddeck
+	name = "Second Deck - Teleporter"
+
 /area/crew_quarters/heads/office/iaa
 	icon_state = "heads_cl"
 	name = "Bridge - Command - IAA's Office"
@@ -108,6 +116,7 @@
 
 /area/crew_quarters/heads/office/iaa/high_sec
 	name = "Bridge - Command - IAA's Communication Relay"
+	area_flags = AREA_FLAG_RAD_SHIELDED
 	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 
 /area/crew_quarters/heads/office/hop
@@ -130,10 +139,13 @@
 	forced_ambience = list('maps/sierra/sound/ambience/ambxerxes_looped.wav')
 	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 
+// AI removal. Temporary or not? We'll see
+
+/*
 /area/turret_protected/ai
 	name = "AI Chamber"
 	icon_state = "ai_chamber"
-/*
+
 /area/turret_protected/ai_maint
 	name = "AI Chamber - Maintenance"
 	icon_state = "ai_chamber"
@@ -141,10 +153,24 @@
 /area/turret_protected/ai_teleport
 	name = "AI Chamber - Teleporter"
 	icon_state = "ai_upload"
-*/
+
 /area/turret_protected/ai_upload
 	name = "Third Deck - AI Upload"
 	icon_state = "ai_upload"
+*/
+/area/turret_protected/ai_cyborg_station
+	name = "Third Deck - Cyborg Station"
+	icon_state = "ai_cyborg"
+	sound_env = SMALL_ENCLOSED
+	area_flags = AREA_FLAG_RAD_SHIELDED | AREA_FLAG_ION_SHIELDED
+	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
+
+/area/turret_protected/ai_cyborg_upload
+	name = "Third Deck - Cyborg Upload"
+	icon_state = "ai_cyborg"
+	sound_env = SMALL_ENCLOSED
+	area_flags = AREA_FLAG_RAD_SHIELDED | AREA_FLAG_ION_SHIELDED
+	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 
 // Heads Quarters
 /*
@@ -214,26 +240,27 @@
 	area_flags = AREA_FLAG_RAD_SHIELDED | AREA_FLAG_ION_SHIELDED
 	holomap_color = HOLOMAP_AREACOLOR_CREW
 */
-// Solars
+// Solars - same path for 4 and 5 deck Sierra
 /*
+*/
 /area/maintenance/solar/bridge_port
-	name = "Bridge - Solar - Port"
+	name = "First Deck - Solar - Port"
 	icon_state = "SolarcontrolP"
 	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 /area/maintenance/solar/bridge_starboard
-	name = "Bridge - Solar - Starboard"
+	name = "First Deck - Solar - Starboard"
 	icon_state = "SolarcontrolS"
 	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 /area/solar/bridge_starboard
-	name = "Bridge - Solar - Starboard Array"
+	name = "First Deck - Solar - Starboard Array"
 	icon_state = "panelsS"
 
 /area/solar/bridge_port
-	name = "Bridge - Solar - Port Array"
+	name = "First Deck - Solar - Port Array"
 	icon_state = "panelsP"
-
+/*
 /area/engineering/atmos/bridge
 	name = "Bridge - Engineering - Atmospherics Suppliment"
 	icon_state = "atmos_storage"

@@ -8,6 +8,7 @@
 - https://github.com/SierraBay/SierraBay12/pull/1856
 - https://github.com/SierraBay/SierraBay12/pull/2230
 - https://github.com/SierraBay/SierraBay12/pull/2262
+- https://github.com/SierraBay/SierraBay12/pull/4175
 <!--
   Ссылки на PRы, связанные с модом:
   - Создание
@@ -75,6 +76,10 @@ ID мода: LOADOUT_ITEMS
 - `maps\torch\icons\obj\obj_under_solgov.dmi`
 - `maps\torch\icons\mob\onmob_under_solgov.dmi`
 - `maps\torch\icons\mob\unathi\onmob_under_solgov_unathi.dmi`
+- `maps\sierra\icons\obj\clothing\obj_under.dmi`
+- `maps\sierra\icons\mob\onmob\onmob_under.dmi`
+- `maps\sierra\icons\obj\clothing\obj_suit.dmi`
+- `maps\sierra\icons\mob\onmob\onmob_suit.dmi`
 
 <!--
   Будь то немодульный файл или модульный файл, который не содержится в папке,
@@ -88,6 +93,7 @@ ID мода: LOADOUT_ITEMS
 - UEDHighCommand
 - BrunoSamoyed (новый спрайт плаща)
 - Часть предметов портирована с билда Aurora
+- chichmuch (парик)
 <!--
   Здесь находится твой никнейм
   Если работал совместно - никнеймы тех, кто помогал.

@@ -25,7 +25,7 @@
 				),
 			SETUP_SPECIES_ONMOB = list(
 				SPECIES_HUMAN = 'icons/mob/onmob/onmob_head.dmi',
-				SPECIES_UNATHI = 'mods/hardsuits/icons/voidsuits/onmob_head_unathi.dmi',
+				SPECIES_UNATHI = 'mods/hardsuits/icons/voidsuits/species/onmob_head_unathi.dmi',
 				SPECIES_RESOMI = 'mods/resomi/icons/clothing/onmob_head_resomi.dmi',
 				SPECIES_TAJARA = 'mods/tajara/icons/sprite_sheets/helmet.dmi',
 				SPECIES_SKRELL = 'icons/mob/species/skrell/onmob_head_skrell.dmi'
@@ -45,7 +45,7 @@
 				),
 			SETUP_SPECIES_ONMOB = list(
 				SPECIES_HUMAN = 'icons/mob/onmob/onmob_suit.dmi',
-				SPECIES_UNATHI = 'mods/hardsuits/icons/voidsuits/onmob_suit_unathi.dmi',
+				SPECIES_UNATHI = 'mods/hardsuits/icons/voidsuits/species/onmob_suit_unathi.dmi',
 				SPECIES_RESOMI = 'mods/resomi/icons/clothing/onmob_suit_resomi.dmi',
 				SPECIES_TAJARA = 'mods/tajara/icons/sprite_sheets/suit.dmi',
 				SPECIES_SKRELL = 'icons/mob/onmob/onmob_suit.dmi'
@@ -135,9 +135,9 @@
 	helmet_setup[SETUP_NAME] = "pilot voidsuit helmet"
 	helmet_setup[SETUP_ICON_STATE] = "rig0_pilot"
 	helmet_setup[SETUP_ITEM_STATE] = "pilot_helm"
-	helmet_setup[SETUP_SPECIES_OBJ][SPECIES_UNATHI] = 'mods/hardsuits/icons/voidsuits/obj_head_unathi.dmi'
-	helmet_setup[SETUP_SPECIES_OBJ][SPECIES_SKRELL] = 'mods/hardsuits/icons/voidsuits/obj_head_skrell.dmi'
-	helmet_setup[SETUP_SPECIES_ONMOB][SPECIES_SKRELL] = 'mods/hardsuits/icons/voidsuits/onmob_head_skrell.dmi'
+	helmet_setup[SETUP_SPECIES_OBJ][SPECIES_UNATHI] = 'mods/hardsuits/icons/voidsuits/species/obj_head_unathi.dmi'
+	helmet_setup[SETUP_SPECIES_OBJ][SPECIES_SKRELL] = 'mods/hardsuits/icons/voidsuits/species/obj_head_skrell.dmi'
+	helmet_setup[SETUP_SPECIES_ONMOB][SPECIES_SKRELL] = 'mods/hardsuits/icons/voidsuits/species/onmob_head_skrell.dmi'
 
 	var/suit_setup = type_setups[/obj/item/clothing/suit/space/void]
 	suit_setup[SETUP_NAME] = "pilot voidsuit"
@@ -146,9 +146,9 @@
 			slot_l_hand_str = "s_suit",
 			slot_r_hand_str = "s_suit"
 		)
-	suit_setup[SETUP_SPECIES_OBJ][SPECIES_UNATHI] = 'mods/hardsuits/icons/voidsuits/obj_suit_unathi.dmi'
-	suit_setup[SETUP_SPECIES_OBJ][SPECIES_SKRELL] = 'mods/hardsuits/icons/voidsuits/obj_suit_skrell.dmi'
-	suit_setup[SETUP_SPECIES_ONMOB][SPECIES_SKRELL] = 'mods/hardsuits/icons/voidsuits/onmob_suit_skrell.dmi'
+	suit_setup[SETUP_SPECIES_OBJ][SPECIES_UNATHI] = 'mods/hardsuits/icons/voidsuits/species/obj_suit_unathi.dmi'
+	suit_setup[SETUP_SPECIES_OBJ][SPECIES_SKRELL] = 'mods/hardsuits/icons/voidsuits/species/obj_suit_skrell.dmi'
+	suit_setup[SETUP_SPECIES_ONMOB][SPECIES_SKRELL] = 'mods/hardsuits/icons/voidsuits/species/onmob_suit_skrell.dmi'
 
 /singleton/item_modifier/space_suit/sol/sierra
 	name = "Standard, SCG"
@@ -168,7 +168,7 @@
 				),
 			SETUP_SPECIES_ONMOB = list(
 				SPECIES_HUMAN = 'maps/torch/icons/mob/onmob_head_solgov.dmi',
-				SPECIES_UNATHI = 'mods/hardsuits/icons/voidsuits/onmob_head_unathi.dmi',
+				SPECIES_UNATHI = 'mods/hardsuits/icons/voidsuits/species/onmob_head_unathi.dmi',
 				SPECIES_RESOMI = 'mods/resomi/icons/clothing/onmob_head_resomi.dmi',
 				SPECIES_TAJARA = 'mods/tajara/icons/sprite_sheets/helmet.dmi',
 				SPECIES_SKRELL = 'maps/torch/icons/mob/skrell/onmob_head_solgov_skrell.dmi'
@@ -188,7 +188,7 @@
 				),
 			SETUP_SPECIES_ONMOB = list(
 				SPECIES_HUMAN = 'maps/torch/icons/mob/onmob_suit_solgov.dmi',
-				SPECIES_UNATHI = 'mods/hardsuits/icons/voidsuits/onmob_suit_unathi.dmi',
+				SPECIES_UNATHI = 'mods/hardsuits/icons/voidsuits/species/onmob_suit_unathi.dmi',
 				SPECIES_RESOMI = 'mods/resomi/icons/clothing/onmob_suit_resomi.dmi',
 				SPECIES_TAJARA = 'mods/tajara/icons/sprite_sheets/suit.dmi',
 				SPECIES_SKRELL = 'maps/torch/icons/mob/skrell/onmob_suit_solgov_skrell.dmi'
@@ -219,16 +219,16 @@
 	helmet_setup[SETUP_NAME] = "exploration voidsuit helmet"
 	helmet_setup[SETUP_ICON_STATE] = "rig0_explorer"
 	helmet_setup[SETUP_ITEM_STATE] = "explorer_helm"
-	helmet_setup[SETUP_SPECIES_OBJ][SPECIES_UNATHI] = 'mods/hardsuits/icons/voidsuits/obj_head_unathi.dmi'
-	helmet_setup[SETUP_SPECIES_OBJ][SPECIES_SKRELL] = 'mods/hardsuits/icons/voidsuits/obj_head_skrell.dmi'
-	helmet_setup[SETUP_SPECIES_ONMOB][SPECIES_SKRELL] = 'mods/hardsuits/icons/voidsuits/onmob_head_skrell.dmi'
+	helmet_setup[SETUP_SPECIES_OBJ][SPECIES_UNATHI] = 'mods/hardsuits/icons/voidsuits/species/obj_head_unathi.dmi'
+	helmet_setup[SETUP_SPECIES_OBJ][SPECIES_SKRELL] = 'mods/hardsuits/icons/voidsuits/species/obj_head_skrell.dmi'
+	helmet_setup[SETUP_SPECIES_ONMOB][SPECIES_SKRELL] = 'mods/hardsuits/icons/voidsuits/species/onmob_head_skrell.dmi'
 
 	var/suit_setup = type_setups[/obj/item/clothing/suit/space/void]
 	suit_setup[SETUP_NAME] = "exploration voidsuit"
 	suit_setup[SETUP_ICON_STATE] = "rig_explorer"
-	suit_setup[SETUP_SPECIES_OBJ][SPECIES_UNATHI] = 'mods/hardsuits/icons/voidsuits/obj_suit_unathi.dmi'
-	suit_setup[SETUP_SPECIES_OBJ][SPECIES_SKRELL] = 'mods/hardsuits/icons/voidsuits/obj_suit_skrell.dmi'
-	suit_setup[SETUP_SPECIES_ONMOB][SPECIES_SKRELL] = 'mods/hardsuits/icons/voidsuits/onmob_suit_skrell.dmi'
+	suit_setup[SETUP_SPECIES_OBJ][SPECIES_UNATHI] = 'mods/hardsuits/icons/voidsuits/species/obj_suit_unathi.dmi'
+	suit_setup[SETUP_SPECIES_OBJ][SPECIES_SKRELL] = 'mods/hardsuits/icons/voidsuits/species/obj_suit_skrell.dmi'
+	suit_setup[SETUP_SPECIES_ONMOB][SPECIES_SKRELL] = 'mods/hardsuits/icons/voidsuits/species/onmob_suit_skrell.dmi'
 
 /singleton/item_modifier/space_suit/mining
 	name = "Mining"
@@ -373,3 +373,88 @@
 #undef SETUP_ITEM_STATE_SLOTS
 #undef SETUP_SPECIES_OBJ
 #undef SETUP_SPECIES_ONMOB
+
+/obj/item/clothing/head/helmet/space/void/Initialize()
+	. = ..()
+	valid_accessory_slots += ACCESSORY_SLOT_HELMET_DECOR
+	restricted_accessory_slots += ACCESSORY_SLOT_HELMET_DECOR
+
+/obj/item/clothing/head/helmet/space/vox/stealth
+	armor = list(
+		melee = ARMOR_MELEE_KNIVES,
+		bullet = ARMOR_BALLISTIC_SMALL,
+		laser = ARMOR_LASER_SMALL,
+		energy = ARMOR_ENERGY_MINOR,
+		bomb = ARMOR_BOMB_MINOR,
+		bio = ARMOR_BIO_SMALL,
+		rad = ARMOR_RAD_SMALL
+		)
+
+/obj/item/clothing/suit/space/vox/stealth
+	armor = list(
+		melee = ARMOR_MELEE_KNIVES,
+		bullet = ARMOR_BALLISTIC_SMALL,
+		laser = ARMOR_LASER_SMALL,
+		energy = ARMOR_ENERGY_MINOR,
+		bomb = ARMOR_BOMB_MINOR,
+		bio = ARMOR_BIO_SMALL,
+		rad = ARMOR_RAD_SMALL
+		)
+	action_button_name = "Toggle Cloak"
+	var/cloak = FALSE
+	var/cloak_charge = 120
+	var/cloak_charge_max = 120
+
+/obj/item/clothing/suit/space/vox/stealth/attack_self(mob/user)
+	var/mob/living/carbon/human/H = user
+	if(!istype(H))
+		return
+	if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/stealth) || !istype(H.wear_suit, /obj/item/clothing/suit/space/vox/stealth))
+		return
+	if(!cloak)
+		if(!do_after(H, 5 SECONDS, do_flags = DO_PUBLIC_UNIQUE | DO_USER_CAN_MOVE))
+			return
+	cloak(H)
+
+/obj/item/clothing/suit/space/vox/stealth/proc/cloak(mob/living/carbon/human/H)
+	if(cloak)
+		cloak = FALSE
+		return 1
+	if(cloak_charge <= 60)
+		to_chat(H, SPAN_BOLD(SPAN_CLASS("vox", "Cloak is out of charge!")))
+		return
+	to_chat(H, SPAN_BOLD(SPAN_CLASS("vox", "Stealth mode enabled. Charge: [cloak_charge] seconds")))
+	cloak = TRUE
+	animate(H, alpha = 255, alpha = 1, time = 10)
+
+	var/currentbrute = 0
+	var/currentburn = 0
+	var/datum/effect/spark_spread/spark_system = new /datum/effect/spark_spread
+	var/remain_cloaked = TRUE
+	while(remain_cloaked && cloak_charge > 0)
+		currentbrute = H.getBruteLoss()
+		currentburn = H.getFireLoss()
+		sleep(1 SECOND)
+		cloak_charge--
+		if(cloak_charge == 60)
+			to_chat(H, SPAN_CLASS("vox", "60 seconds untill reveal!"))
+		if(cloak_charge == 20)
+			to_chat(H, SPAN_BOLD(SPAN_CLASS("vox", "20 seconds untill reveal!")))
+		if(!cloak)
+			remain_cloaked = FALSE
+		if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/stealth))
+			remain_cloaked = FALSE
+		if(currentbrute < H.getBruteLoss() || currentburn < H.getFireLoss())
+			spark_system.set_up(5, 0, src)
+			spark_system.attach(src)
+			spark_system.start()
+			remain_cloaked = FALSE
+
+	H.visible_message(SPAN_WARNING("[H] suddenly fades in, seemingly from nowhere!"))
+	to_chat(H, SPAN_NOTICE("Stealth mode disabled."))
+	cloak = FALSE
+	animate(H, alpha = 1, alpha = 255, time = 10)
+
+	while(!cloak && cloak_charge < cloak_charge_max)
+		sleep(1 SECOND)
+		cloak_charge += 2

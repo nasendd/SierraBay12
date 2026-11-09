@@ -55,7 +55,7 @@ meteor_act
 			tally += organ_rel_size[zone]
 		for(var/zone in organ_rel_size)
 			def_zone = zone
-			. += .() * organ_rel_size/tally
+			. += .() * organ_rel_size[zone]/tally
 		return
 	return ..()
 /*[SIERRA-REMOVE] - IPC-MODS убираем потому что оверрайдим а тут наследство стоит, и вызывает другие проки
@@ -144,11 +144,15 @@ meteor_act
 
 /mob/living/carbon/human/proc/check_shields(damage = 0, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 
+	// [SIERRA-REMOVE] - PSIONICS
+	/*
 	var/obj/item/projectile/P = damage_source
 	if(istype(P) && !P.disrupts_psionics() && psi && P.starting && prob(psi.get_armour(get_armor_key(P.damage_type, P.damage_flags())) * 0.5) && psi.spend_power(round(damage/10)))
 		visible_message(SPAN_DANGER("\The [src] deflects [attack_text]!"))
 		P.redirect(P.starting.x + rand(-2,2), P.starting.y + rand(-2,2), get_turf(src), src)
 		return PROJECTILE_FORCE_MISS
+	*/
+	// [/SIERRA-REMOVE]
 
 	for(var/obj/item/shield in list(l_hand, r_hand, wear_suit))
 		if(!shield) continue
@@ -166,7 +170,8 @@ meteor_act
 
 	if (!hit_zone)
 		return
-	if (check_shields(damage, null, user, hit_zone, user.name))
+	// if (check_shields(damage, null, user, hit_zone, user.name)) [SIERRA-EDIT]
+	if (check_shields(damage, null, user, hit_zone, user.name) || !aura_check(AURA_TYPE_UNARMED, user))
 		return
 
 	var/obj/item/organ/external/affecting = get_organ(hit_zone)
@@ -325,6 +330,12 @@ meteor_act
 	if(isobj(AM))
 		var/obj/O = AM
 
+		if(TT.thrower)
+			var/client/assailant = TT.thrower.client
+			if(assailant)
+				var/active_flame = "[O.IsFlameSource() ? "(on fire)" : ""]"
+				admin_attack_log(TT.thrower, src, "Threw \an [O][active_flame] at their victim.", "Had \an [O][active_flame] thrown at them", "threw \an [O][active_flame] at")
+
 		if(in_throw_mode && !get_active_hand() && TT.speed <= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
 			if(!incapacitated())
 				if(isturf(O.loc))
@@ -368,11 +379,6 @@ meteor_act
 		src.visible_message(SPAN_WARNING("\The [src] has been hit in the [hit_area] by \the [O]."))
 		created_wound = apply_damage(throw_damage, dtype, zone, O.damage_flags(), O, O.armor_penetration)
 
-		if(TT.thrower)
-			var/client/assailant = TT.thrower.client
-			if(assailant)
-				admin_attack_log(TT.thrower, src, "Threw \an [O] at their victim.", "Had \an [O] thrown at them", "threw \an [O] at")
-
 		//thrown weapon embedded object code.
 		if (dtype == DAMAGE_BRUTE && istype(O,/obj/item))
 			var/obj/item/I = O
@@ -390,6 +396,9 @@ meteor_act
 				if((sharp && prob(damage/(10*I.w_class)*100)) || (damage > embed_threshold && prob(embed_chance)))
 					affecting.embed(I, supplied_wound = created_wound)
 					I.has_embedded()
+
+		if (AM.IsFlameSource())
+			IgniteMob()
 
 		process_momentum(AM, TT)
 

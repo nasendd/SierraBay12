@@ -45,7 +45,7 @@
 
 	Otherwise pretty standard.
 */
-/mob/living/carbon/human/UnarmedAttack(atom/A, proximity)
+/mob/living/carbon/human/UnarmedAttack(atom/A, proximity, use_in_world_flag)
 
 	if(!..())
 		return
@@ -57,7 +57,10 @@
 	if(istype(G) && G.Touch(A,1))
 		return
 
-	A.attack_hand(src)
+	if (use_in_world_flag)
+		A.use_in_world(src)
+	else
+		A.attack_hand(src)
 
 
 /**
@@ -69,6 +72,14 @@
 /atom/proc/attack_hand(mob/user)
 	return
 
+/**
+ * Called when the atom is clicked on by a mob attempting to interact with it in the world.
+ *
+ * **Parameters**:
+ * - `user` - The mob that clicked on the atom.
+ */
+/atom/proc/use_in_world(mob/user)
+	attack_hand(user)
 
 /**
  * Called when a mob attempts to use an empty hand on itself.
@@ -189,7 +200,7 @@
 /*
 	Animals
 */
-/mob/living/simple_animal/UnarmedAttack(atom/A, proximity)
+/mob/living/simple_animal/UnarmedAttack(atom/A, proximity, use_in_world_flag, params) // SIERRA ADD: было  /mob/living/simple_animal/UnarmedAttack(atom/A, proximity)
 	if (!..())
 		return
 	setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -203,7 +214,7 @@
 		A.attack_animal(src)
 	else if (get_natural_weapon())
 		var/obj/item/weapon = get_natural_weapon()
-		weapon.resolve_attackby(A, src)
+		weapon.resolve_attackby(A, src, params) //SIERRA ADD: было "weapon.resolve_attackby(A, src)"
 
 
 /**

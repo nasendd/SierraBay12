@@ -281,3 +281,63 @@
 	icon = 'mods/loadout_items/icons/obj_suit.dmi'
 	item_icons = list(slot_wear_suit_str = 'mods/loadout_items/icons/onmob_suit.dmi')
 	icon_state = "veryshort_jacket_green"
+
+/obj/item/clothing/suit/storage/furcoat
+	name = "fur coat"
+	desc = "Black fur coat made of synthetic fur. Label says it was made in Iolaus for Chatka"
+	icon = 'mods/loadout_items/icons/obj_suit.dmi'
+	item_icons = list(slot_wear_suit_str = 'mods/loadout_items/icons/onmob_suit.dmi')
+	icon_state = "furcoat"
+	item_state = "furcoat"
+	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
+	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
+
+/obj/item/clothing/suit/storage/furcoat/brown
+	name = "brown fur coat"
+	desc = "Brown fur coat made of synthetic fur and natural leather. Label says it was made in Iolaus for Chatka"
+	icon_state = "furcoat_brown"
+	item_state = "furcoat_brown"
+
+/obj/item/clothing/suit/storage/piratecoat
+	name = "leather big coat"
+	desc = "Large coat with shoulder pads made of synthetic leather. Label says it was made in Iolaus"
+	icon = 'mods/loadout_items/icons/obj_suit.dmi'
+	item_icons = list(slot_wear_suit_str = 'mods/loadout_items/icons/onmob_suit.dmi')
+	icon_state = "elite_coat"
+	item_state = "elite_coat"
+
+/obj/item/clothing/suit/storage/toggle/color/blazer
+	name = "blazer"
+	desc = "A charming jacket."
+	icon = 'mods/loadout_items/icons/obj_suit.dmi'
+	icon_state = "blazer"
+	item_state = "blazer_su"
+	item_icons = list(slot_wear_suit_str = 'mods/loadout_items/icons/onmob_suit.dmi')
+	blood_overlay_type = "coatblood"
+	body_parts_covered = UPPER_TORSO|ARMS
+	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
+
+/obj/item/clothing/suit/storage/toggle/color/blazer/update_clothing_icon()
+	item_state = "[icon_state]_su"
+	..()
+
+/obj/item/clothing/suit/storage/toggle/color/blazer/long
+	name = "long blazer"
+	desc = "A charming long jacket."
+	icon_state = "longblazer"
+	item_state = "longblazer_su"
+
+/obj/item/clothing/suit/storage/punk_jacket
+	name = "classic leather jacket"
+	desc = "Legendary design, never getting old."
+	icon = 'maps/sierra/icons/obj/clothing/obj_suit.dmi'
+	item_icons = list(slot_wear_suit_str = 'maps/sierra/icons/mob/onmob/onmob_suit.dmi')
+	icon_state = "punk_jacket_clean"
+	item_state = "punk_jacket_clean"
+
+/obj/item/clothing/suit/storage/punk_jacket/edgy
+	name = "punk jacket"
+	desc = "Embroidered with colorful patches, insignias, spikes and chains. It also reeks sharply of sweat."
+	icon_state = "punk_jacket_edgy"
+	item_state = "punk_jacket_edgy"
+

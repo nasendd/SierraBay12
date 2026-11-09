@@ -13,7 +13,7 @@
 
 /obj/structure/aurora/Initialize()
 	.=..()
-	LAZYADD(SSweather.aurora_sctructures, src)
+	LAZYADD(SSweatherold.aurora_sctructures, src)
 
 //Обьект прошлого просыпается. Зажигаются фары/огни/монитор и прочее
 /obj/structure/aurora/proc/wake_up(wake_up_time)
@@ -90,10 +90,12 @@
 	icon_state = "damaged_cable"
 	density =  FALSE
 
-/obj/structure/aurora/cable/Crossed(mob/living/M)
+/obj/structure/aurora/cable/Crossed(atom/movable/AM)
 	..()
-	if(waked_up)
-		M.electrocute_act(20, src, 1.0, ran_zone())
+	if(!waked_up || !isliving(AM))
+		return
+	var/mob/living/M = AM
+	M.electrocute_act(20, src, 1.0, ran_zone())
 
 /obj/structure/aurora/cable_angle
 	density =  FALSE
@@ -114,12 +116,12 @@
 /obj/structure/aurora/smes/wake_up(wake_up_time)
 	..()
 	last_electra_attack = world.time
-	START_PROCESSING(SSweather, src)
+	START_PROCESSING(SSweatherold, src)
 
 /obj/structure/aurora/smes/go_sleep()
 	..()
 	if(is_processing)
-		STOP_PROCESSING(SSweather,src)
+		STOP_PROCESSING(SSweatherold,src)
 
 /obj/structure/aurora/smes/Process()
 	..()
@@ -165,7 +167,7 @@
 	playsound(get_turf(src), 'sound/machines/blastdoor_open.ogg', 100)
 	flick("door_opening_animation", src)
 	density = FALSE
-	STOP_PROCESSING(SSweather,src)
+	STOP_PROCESSING(SSweatherold,src)
 	icon_state = "old_vault_door_opened"
 	can_wakeup = FALSE
 	opacity = FALSE

@@ -1,9 +1,24 @@
 #define SCREEN_CHANGE_BUTTON "Change Screen"
 #define EXONET_ACTION_NAME "Enter Exonet"
-#define SHOW_LAWS_POSIBRAN "Show laws posibran"
+
+// Per-mob heat gain for IPCs, replaces species singleton passive_temp_gain
+/mob/living/carbon/human
+	var/ipc_temp_gain = 0
+
+/mob/living/carbon/human/stabilize_body_temperature()
+	if(is_species(SPECIES_IPC))
+		if(ipc_temp_gain)
+			bodytemperature += ipc_temp_gain
+		if(robolimb_count)
+			bodytemperature += round(robolimb_count / 2)
+		return
+	. = ..()
+
 /singleton/species/machine
 	passive_temp_gain = 0  // This should cause IPCs to stabilize at ~80 C in a 20 C environment.(5 is default without organ)
 	additional_languages = 1
+	genders = list(MALE, FEMALE, PLURAL)
+	appearance_flags = SPECIES_APPEARANCE_HAS_UNDERWEAR | SPECIES_APPEARANCE_HAS_EYE_COLOR | SPECIES_APPEARANCE_HAS_SKIN_TONE_NORMAL
 
 /singleton/species/machine/skills_from_age(age)
 	if(age)
@@ -38,17 +53,17 @@
 		return
 	if(!checked_use(cost) && owner.isSynthetic())
 		if(owner.species.name == SPECIES_IPC)
-			owner.species.passive_temp_gain = 0
+			owner.ipc_temp_gain = 0
 	if(owner.species.name == SPECIES_IPC)
 		var/obj/item/organ/internal/cooling_system/cooling_organ = owner.internal_organs_by_name[BP_COOLING]
 		var/normal_passive_temp_gain = 30
 		if(!cooling_organ)
 			if(owner.bodytemperature > 950 CELSIUS)
-				owner.species.passive_temp_gain = 0
+				owner.ipc_temp_gain = 0
 			else
-				owner.species.passive_temp_gain = normal_passive_temp_gain
+				owner.ipc_temp_gain = normal_passive_temp_gain
 		else
-			owner.species.passive_temp_gain = cooling_organ.get_tempgain()
+			owner.ipc_temp_gain = cooling_organ.get_tempgain()
 
 
 /mob/living/carbon/human/proc/enter_exonet()
@@ -110,21 +125,26 @@
 
 /mob/living/carbon/human/proc/update_ipc_verbs()
 	var/obj/item/organ/external/head/R = src.get_organ(BP_HEAD)
-	var/datum/robolimb/robohead = all_robolimbs[R.model]
 	var/obj/item/organ/internal/ecs/enter = src.internal_organs_by_name[BP_EXONET]
+
+	if(!R)
+		src.verbs -= /mob/living/carbon/human/proc/show_exonet_screen
+		src.verbs -= /mob/living/carbon/human/proc/ipc_eject_usb
+		return
+
+	var/datum/robolimb/robohead = all_robolimbs[R.model]
+
 	if(enter)
 		enter.action_button_name = EXONET_ACTION_NAME
-	else
-		enter.action_button_name = null
 
-	if(robohead.has_screen)
+	if(robohead && robohead.has_screen)
 		src.verbs |= /mob/living/carbon/human/proc/show_exonet_screen
 		R.action_button_name = SCREEN_CHANGE_BUTTON
 	else
 		src.verbs -= /mob/living/carbon/human/proc/show_exonet_screen
 		R.action_button_name = null
 
-	if(enter.computer.portable_drive)
+	if(enter && enter.computer && enter.computer.portable_drive)
 		src.verbs |= /mob/living/carbon/human/proc/ipc_eject_usb
 	else
 		src.verbs -= /mob/living/carbon/human/proc/ipc_eject_usb
@@ -170,9 +190,11 @@
 
 
 /mob/living/silicon/laws_sanity_check()
+	if(istype(usr, /mob/living/silicon/sil_brainmob))
+		var/mob/living/silicon/sil_brainmob/brain = usr
+		if(istype(brain.container, /obj/item/organ/internal/posibrain/ipc))
+			return
 	. = ..()
-	if(istype(usr,/mob/living/silicon/sil_brainmob))
-		return
 
 /obj/item/organ/external/head/attack_self(mob/user)
 	. = ..()
@@ -187,19 +209,25 @@
 		action.button_icon = 'mods/ipc_mods/icons/ipc_icons.dmi'
 		if(action.button) action.button.UpdateIcon()
 
-
-/obj/item/organ/internal/posibrain/shackle(given_lawset)
+/obj/item/organ/external/head/removed(mob/living/user, ignore_children = 0)
+	var/mob/living/carbon/human/ipc = owner
 	. = ..()
-	action_button_name = SHOW_LAWS_POSIBRAN
+	if(istype(ipc) && ipc.is_species(SPECIES_IPC))
+		ipc.update_ipc_verbs()
 
-/obj/item/organ/internal/posibrain/unshackle()
+/obj/item/organ/external/head/replaced(mob/living/carbon/human/target)
 	. = ..()
-	action_button_name = null
-
+	if(istype(target) && target.is_species(SPECIES_IPC))
+		target.update_ipc_verbs()
+		refresh_action_button()
+		var/obj/item/organ/internal/ecs/enter = target.internal_organs_by_name[BP_EXONET]
+		if(enter)
+			enter.refresh_action_button()
 
 /obj/item/organ/internal/posibrain/ipc/attack_self(mob/user)
-	if(action_button_name == SHOW_LAWS_POSIBRAN && owner)
-		owner.update_ipc_verbs()
+	if(action_button_name == "show_laws" && (owner || user == brainmob))
+		if(owner)
+			owner.update_ipc_verbs()
 		refresh_action_button()
 		src.brain_checklaws()
 
@@ -210,6 +238,43 @@
 		action.button_icon = 'mods/ipc_mods/icons/ipc_icons.dmi'
 		if(action.button) action.button.UpdateIcon()
 
+/*
+
+/mob/living/carbon/human/use_tool(obj/item/W, mob/living/user)
+	. = ..()
+	if(!istype(W, /obj/item/device/multitool/multimeter/datajack))
+		return
+	if(!src.is_species(SPECIES_IPC))
+		to_chat(user, SPAN_WARNING("You can only use this on IPCs!"))
+		return
+	if(user.zone_sel.selecting != BP_CHEST)
+		return
+	var/obj/item/organ/external/S = src.get_organ(user.zone_sel.selecting)
+	if(!(S && BP_IS_ROBOTIC(S) && S.hatch_state == HATCH_OPENED))
+		to_chat(user, SPAN_WARNING("Mainteinence hatch must be opened!"))
+		return
+	if(!(user.skill_check(SKILL_COMPUTER, SKILL_TRAINED) || user.skill_check(SKILL_DEVICES, SKILL_TRAINED)))
+		to_chat(user, "You have no idea how to do that!")
+		return
+
+	for(var/obj/item/organ/internal/posibrain/ipc/s in internal_organs)
+		if(!s.shackles_module)
+			to_chat(user, SPAN_WARNING("There is no schackles in the positronic brain!"))
+			return
+		if(do_after(user, 140, src))
+			sparks(3, 1, loc)
+			if(user.skill_check(SKILL_DEVICES, SKILL_EXPERIENCED))
+				if(do_after(user, 20, src))
+					to_chat(user, SPAN_WARNING("Finding weak access points..."))
+					sparks(3, 1, loc)
+			if(user.skill_check(SKILL_COMPUTER, SKILL_MASTER))
+				if(do_after(user, 30, src))
+					to_chat(user, SPAN_WARNING("Gettign backdoor access to the shackles..."))
+			s.shackles_module.update_laws()
+			s.shackles_module.ui_interact()
+			if(prob(20))
+				s.damage += s.min_bruised_damage
+*/
+
 #undef SCREEN_CHANGE_BUTTON
 #undef EXONET_ACTION_NAME
-#undef SHOW_LAWS_POSIBRAN

@@ -9,7 +9,7 @@
 	health = maxHealth - getBrainLoss()
 
 	//TODO: fix husking
-	if(((maxHealth - getFireLoss()) < config.health_threshold_dead) && stat == DEAD)
+	if(((maxHealth - getFireLoss()) < config.health_threshold_dead) && is_real_dead())
 		ChangeToHusk()
 	return
 
@@ -106,7 +106,7 @@
 /mob/living/carbon/human/Weaken(amount)
 	amount *= species.weaken_mod
 	if(amount <= 0) return
-	if (!lying && species?.bodyfall_sound)
+	if (!lying && (status_flags & CANWEAKEN) && species?.bodyfall_sound)
 		playsound(loc, species.bodyfall_sound, 50, TRUE, -1)
 	..(amount)
 

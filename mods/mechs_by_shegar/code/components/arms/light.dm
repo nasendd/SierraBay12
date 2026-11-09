@@ -6,6 +6,8 @@
 	punch_sound = 'sound/mecha/mech_punch_fast.ogg'
 	action_delay = 8
 	power_use = 5
+	matter = list(MATERIAL_STEEL = 30000, MATERIAL_PLASTIC = 5000, MATERIAL_ALUMINIUM = 5000)
+
 	allow_passengers = FALSE
 	max_hp = 40
 	min_damage = 50
@@ -13,7 +15,6 @@
 	melee_damage = 30
 	repair_damage = 15
 	req_material = MATERIAL_ALUMINIUM
-	back_modificator_damage = 1.3
 	front_modificator_damage = 1
 	max_heat = 50
 	heat_cooling = 6

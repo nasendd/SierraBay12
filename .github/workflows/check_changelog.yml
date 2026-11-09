@@ -6,8 +6,8 @@ permissions:
   issues: write
 
 on:
-  pull_request_target:
-    types: [opened, reopened, edited]
+  pull_request:
+    types: [opened, reopened, edited, ready_for_review]
 
 jobs:
   CheckCL:
@@ -19,7 +19,7 @@ jobs:
           wget https://raw.githubusercontent.com/SierraBay/SierraBay12/dev-sierra/tools/changelog/sierra_check_changelog.py
           wget https://raw.githubusercontent.com/SierraBay/SierraBay12/dev-sierra/tools/changelog/tags.yml
       - name: Установка Python
-        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: '3.x'
       - name: Установка зависимостей
@@ -28,5 +28,7 @@ jobs:
           pip install ruamel.yaml PyGithub
       - name: Проверка чейнджлога
         env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN || secrets.GITHUB_TOKEN }}
+          # Метки ставит check_changelog_labels.yml: у PR из форков нет токена на запись
+          CL_MODE: check
         run: python sierra_check_changelog.py

@@ -54,7 +54,7 @@
 	var/data[0]
 	data["src"] = "\ref[src]"
 	data["id_inserted"] = !!held_card
-	data["id_card"] = held_card ? text("[held_card.registered_name], [held_card.assignment]") : "-----"
+	data["id_card"] = held_card ? "[held_card.registered_name], [held_card.assignment]" : "-----"
 	data["access_level"] = has_access(needed_access, held_card && held_card.GetAccess())
 	data["machine_id"] = machine_id
 	data["creating_new_account"] = creating_new_account
@@ -123,7 +123,7 @@
 				starting_funds = clamp(starting_funds, 0, station_account.money)	// Not authorized to put the station in debt.
 				starting_funds = min(starting_funds, fund_cap)						// Not authorized to give more than the fund cap.
 
-				var/datum/money_account/new_account = create_account("[account_name]'s Personal Account", account_name, starting_funds, ACCOUNT_TYPE_PERSONAL, src)
+				var/datum/money_account/new_account = create_account("[account_name]'s Personal Account", account_name, 0, ACCOUNT_TYPE_PERSONAL, src)
 				if(starting_funds > 0)
 					//subtract the money
 					station_account.money -= starting_funds

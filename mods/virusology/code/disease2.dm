@@ -82,7 +82,10 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		if((mob.species.name == SPECIES_DIONA) && prob(mob.radiation/25))
 			cure(mob)
 		else if(prob(1))
+			var/old_uniqueID = uniqueID
 			majormutate()
+			mob.virus2["[uniqueID]"] = src
+			mob.virus2.Remove("[old_uniqueID]")
 
 	if(prob(mob.virus_immunity()) && prob(stage)) // Increasing chance of curing as the virus progresses
 		cure(mob,1)
@@ -132,7 +135,8 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	if(istype(mob, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = mob
 		H.cure_virus(uniqueID)
-		H.immunity = min(H.immunity + 25, H.immunity_norm)
+		var/immunity_boost = rand(25, 50)
+		H.immunity = min(H.immunity + immunity_boost, H.immunity_norm * 1.5)
 		// On virus cure, give a small boost to immunity to help prevent instant reinfection with another virus
 
 	if (mob_gains_antigens)

@@ -675,3 +675,106 @@
 	item_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_under.dmi')
 	icon_state = "blackpurple_shirt"
 	item_state = "blackpurple_shirt"
+
+/obj/item/clothing/under/kms_uniform
+	name = "KMS uniform"
+	desc = "Unisex! Komatsu Medical Services uniform featuring traditional jukata shirt and hakama pants. Sleeves conveniently tied with blue ribbon"
+	icon = 'mods/loadout_items/icons/obj_under.dmi'
+	item_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_under.dmi')
+	icon_state = "kms_uniform"
+	item_state = "kms_uniform"
+	worn_state = "kms_uniform"
+	rolled_down = 0
+	rolled_sleeves = 0
+	gender_icons = 1
+
+/obj/item/clothing/under/kms_utility_uniform
+	name = "KMS utility uniform"
+	desc = "Unisex! Well-designed uniform, provided by Komatsu Medical Services to their employees. Intended to be worn under armor."
+	icon = 'mods/loadout_items/icons/obj_under.dmi'
+	item_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_under.dmi')
+	icon_state = "kms_utility_uniform"
+	item_state = "kms_utility_uniform"
+	worn_state = "kms_utility_uniform"
+	rolled_down = 0
+	gender_icons = 1
+
+/obj/item/clothing/under/thermoactive
+	name = "thermoactive uniform"
+	desc = "Synthetic cotton thermal uniform made for Chatka to protect local colonists from freezing atmosphere. Label says it was made in Iolaus"
+	icon = 'mods/loadout_items/icons/obj_under.dmi'
+	item_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_under.dmi')
+	icon_state = "thermoactive"
+	item_state = "thermoactive"
+	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
+	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
+
+/obj/item/clothing/under/westernpants
+	name = "leather chaps"
+	desc = "Some leather pants. Label says it was made in Iolaus"
+	icon = 'mods/loadout_items/icons/obj_under.dmi'
+	item_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_under.dmi')
+	icon_state = "western_pants"
+	item_state = "western_pants"
+
+/obj/item/clothing/under/westernpants/black
+	name = "black leather chaps"
+	desc = "Some black leather pants. Label says it was made in Iolaus"
+	icon_state = "western_black"
+	item_state = "western_black"
+
+/obj/item/clothing/under/facloth
+	name = "Salvation Army uniform"
+	desc = "White top and black jeans with metal plate on leg. Label says it was made in Iolaus"
+	icon = 'mods/loadout_items/icons/obj_under.dmi'
+	item_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_under.dmi')
+	icon_state = "fa_cloth"
+	item_state = "fa_cloth"
+
+/obj/item/clothing/under/solgov/utility
+	name = "utility uniform"
+	desc = "A comfortable turtleneck and black utility trousers."
+	icon = 'mods/loadout_items/icons/obj_under.dmi'
+	item_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_under.dmi')
+	icon_state = "sblackutility"
+	item_state = "bl_suit"
+	worn_state = "sblackutility"
+	gender_icons = 1
+	armor = list(
+		melee = ARMOR_MELEE_MINOR,
+		energy = ARMOR_ENERGY_MINOR
+		)
+
+// Children override
+/obj/item/clothing/under/solgov/utility/fleet
+	icon = 'maps/torch/icons/obj/obj_under_solgov.dmi'
+	item_icons = list(slot_w_uniform_str = 'maps/torch/icons/mob/onmob_under_solgov.dmi')
+	sprite_sheets = list(
+		SPECIES_UNATHI = 'maps/torch/icons/mob/unathi/onmob_under_solgov_unathi.dmi'
+		)
+// Override end
+
+/obj/item/clothing/under/barc
+	name = "P317 jumpsuit"
+	desc = "It’s a Pioneer Corps jumpsuit resewn with “Periphery 317” patches - Mercenary Enclave under the wing of BARC. 100% guaranteed non-space-proof."
+	icon = 'mods/loadout_items/icons/obj_under.dmi'
+	item_icons = list(slot_w_uniform_str = 'mods/loadout_items/icons/onmob_under.dmi')
+	sprite_sheets = list(
+		SPECIES_UNATHI = 'mods/loadout_items/icons/unathi/onmob_under_unathi.dmi',
+		SPECIES_RESOMI = "mods/resomi/icons/clothing/onmob_under_resomi.dmi"
+		)
+	icon_state = "barc"
+	item_state = "barc"
+	worn_state = "barc"
+	rolled_down = 0
+	rolled_sleeves = 0
+	gender_icons = 1
+
+/obj/item/clothing/under/tattered_clothes
+	name = "tattered clothes"
+	desc = "This outfit is definitely not suitable for formal affairs, and in fact belongs in a moshpit."
+	icon = 'maps/sierra/icons/obj/clothing/obj_under.dmi'
+	item_icons = list(slot_w_uniform_str = 'maps/sierra/icons/mob/onmob/onmob_under.dmi')
+	icon_state = "edgy"
+	item_state = "edgy"
+	worn_state = "edgy"

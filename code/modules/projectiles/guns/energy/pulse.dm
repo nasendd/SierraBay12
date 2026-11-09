@@ -17,6 +17,7 @@
 	accuracy = 1
 	wielded_item_state = "gun_wielded"
 	bulk = GUN_BULK_RIFLE
+	manufacturer = MANUFACTURER_LAWSON_ARMS
 
 /obj/item/gun/energy/pulse_rifle/carbine
 	name = "pulse carbine"
@@ -84,9 +85,28 @@
 	burst_delay=null
 	wielded_item_state = "skrell_carbine-wielded"
 	accuracy = 1
+	manufacturer = null
 
 	firemodes = list(
-		list(mode_name="single", projectile_type=/obj/item/projectile/beam/pulse/skrell/single, charge_cost=120, burst=1, burst_delay=null),
-		list(mode_name="heavy", projectile_type=/obj/item/projectile/beam/pulse/skrell/heavy, charge_cost=55, burst=2, burst_delay=3),
-		list(mode_name="light", projectile_type=/obj/item/projectile/beam/pulse/skrell, charge_cost=40, burst=3, burst_delay=2)
+		list(
+			"mode_name" = "single",
+			"projectile_type" = /obj/item/projectile/beam/pulse/skrell/single,
+			"charge_cost" = 120,
+			"burst" = 1,
+			"burst_delay" = null
+		),
+		list(
+			"mode_name" = "heavy",
+			"projectile_type" = /obj/item/projectile/beam/pulse/skrell/heavy,
+			"charge_cost" = 55,
+			"burst" = 2,
+			"burst_delay" = 3
+		),
+		list(
+			mode_name = "light",
+			"projectile_type" = /obj/item/projectile/beam/pulse/skrell,
+			"charge_cost" = 40,
+			"burst" = 3,
+			"burst_delay" = 2
 		)
+	)

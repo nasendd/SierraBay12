@@ -1,6 +1,6 @@
 /datum/job/senior_scientist
 	title = "Senior Researcher"
-	department = "Научный"
+	department = "Science"
 	department_flag = SCI
 
 	total_positions = 1
@@ -17,13 +17,13 @@
 		)
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/research/senior_scientist
 	allowed_branches = list(/datum/mil_branch/employee)
-	allowed_ranks = list(/datum/mil_rank/civ/nt)
+	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/acting, /datum/mil_rank/civ/probation_employee)
 
 	access = list(
 			access_tox,					access_tox_storage,	access_research,	access_mining,		access_mining_office,
 			access_mining_station,		access_xenobiology,	access_xenoarch,	access_robotics,	access_guppy_helm,
 			access_expedition_shuttle,	access_guppy,		access_hangar,		access_petrov,		access_petrov_helm,
-			access_research_storage
+			access_research_storage, access_rnd_network
 		)
 
 
@@ -55,12 +55,12 @@
 
 /datum/job/scientist
 	title = "Scientist"
-	department = "Научный"
+	department = "Science"
 	department_flag = SCI
 	total_positions = 6
 	spawn_positions = 6
 	supervisors = "Директору Исследований и Старшему Исследователю"
-	economic_power = 10
+	economic_power = 9
 	minimum_character_age = list(SPECIES_HUMAN = 25)
 	ideal_character_age = 27
 	alt_titles = list(
@@ -90,13 +90,15 @@
 		)
 	allowed_ranks = list(
 			/datum/mil_rank/civ/nt,
-			/datum/mil_rank/civ/contractor
+			/datum/mil_rank/civ/contractor,
+			/datum/mil_rank/civ/probation_employee,
+			/datum/mil_rank/civ/probation_contractor
 		)
 
 	access = list(
 			access_tox,				access_tox_storage,			access_research,	access_petrov,		access_petrov_helm,
 			access_mining_office,	access_mining_station,		access_xenobiology,	access_guppy_helm, 	access_hangar,
-			access_xenoarch,		access_expedition_shuttle,	access_guppy, access_research_storage
+			access_xenoarch,		access_expedition_shuttle,	access_guppy, access_research_storage, access_rnd_network
 		)
 
 
@@ -108,68 +110,9 @@
 	Будучи ученым на Сьерре, Вы можете собирать и исследовать множество уникальных инструментов и гаджетов,\
 	создавать взрывоопасные или очень полезные бомбы, улетать на поверхность планет и странные места за пределами корабля на Хароне или Гуппи в горных или археологических целях, и даже взаимодействовать с неизвестной инопланетной жизнью."
 
-/datum/job/roboticist
-	title = "Roboticist"
-	department = "Научный"
-	department_flag = SCI|ROB
-
-	total_positions = 2
-	spawn_positions = 2
-	supervisors = "Директору Исследований и Старшему Исследователю"
-	selection_color = "#633d63"
-	economic_power = 6
-	minimum_character_age = list(SPECIES_HUMAN = 25)
-	ideal_character_age = 27
-	alt_titles = list(
-			"Biomechanical Engineer",
-			"Exosuit Technician",
-		)
-	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/research/roboticist
-	allowed_branches = list(
-			/datum/mil_branch/employee,
-			/datum/mil_branch/contractor
-		)
-	allowed_ranks = list(
-			/datum/mil_rank/civ/nt,
-			/datum/mil_rank/civ/contractor
-		)
-	min_skill = list(
-			SKILL_COMPUTER		=	SKILL_TRAINED,
-			SKILL_DEVICES		=	SKILL_TRAINED,
-			SKILL_EVA			=	SKILL_TRAINED,
-			SKILL_ANATOMY		=	SKILL_TRAINED,
-			SKILL_MECH			=	HAS_PERK,
-			SKILL_MEDICAL		=	SKILL_BASIC,
-			SKILL_ELECTRICAL	=	SKILL_TRAINED
-		)
-
-	max_skill = list(
-			SKILL_CONSTRUCTION	=	SKILL_MAX,
-			SKILL_ELECTRICAL	=	SKILL_MAX,
-			SKILL_ATMOS			=	SKILL_EXPERIENCED,
-			SKILL_ENGINES		=	SKILL_EXPERIENCED,
-			SKILL_DEVICES		=	SKILL_MAX,
-			SKILL_MEDICAL		=	SKILL_EXPERIENCED,
-			SKILL_ANATOMY		=	SKILL_EXPERIENCED
-		)
-
-	skill_points = 22
-
-	access = list(
-			access_robotics,
-			access_research,
-			access_tech_storage,
-			access_research_storage
-		)
-
-
-/datum/job/roboticist/get_description_blurb()
-	return "Корабельный роботехник, в первую очередь, занимается производством и обслуживанием киборгов и роботов корабля.\
-	Он также может быть призван собирать различные экзокостюмы, ремонтировать протезированные конечности у членов экипажа и пересаживать чей-то мозг в корпус киборга или полностью синтетический юнит."
-
 /datum/job/scientist_assistant
 	title = "Research Assistant"
-	department = "Научный"
+	department = "Science"
 	department_flag = SCI
 
 	total_positions = 4
@@ -201,7 +144,9 @@
 		)
 	allowed_ranks = list(
 			/datum/mil_rank/civ/nt,
-			/datum/mil_rank/civ/contractor
+			/datum/mil_rank/civ/contractor,
+			/datum/mil_rank/civ/probation_employee,
+			/datum/mil_rank/civ/probation_contractor
 		)
 
 	access = list(

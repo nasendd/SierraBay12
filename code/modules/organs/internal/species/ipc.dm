@@ -34,8 +34,11 @@
 
 /obj/item/organ/internal/posibrain/Initialize()
 	. = ..()
-	if(!brainmob && iscarbon(loc))
-		init(loc)
+	if(!brainmob)
+		if(iscarbon(loc))
+			init(loc)
+		else
+			brainmob = new(src)
 // [SIERRA-REMOVE] - IPC_MODS
 /*
 	unshackle()
@@ -164,7 +167,7 @@
 	if (brainmob.mind && brainmob.mind.special_role)
 		return
 	var/datum/ghosttrap/T = get_ghost_trap("positronic brain")
-	if (!T.assess_candidate(user))
+	if (!T.assess_candidate(user, brainmob))
 		return
 	var/possess = alert(user, "Do you wish to become \the [src]?", "Become [src]?", "Yes", "No")
 	if (possess != "Yes")
@@ -359,12 +362,28 @@
 	set name = "Show Laws"
 	set src in usr
 
-	brainmob.show_laws(owner)
+// [SIERRA-REMOVE] - IPC_MODS
+	//brainmob.show_laws(owner)
+// [/SIERRA-REMOVE]
+// [SIERRA-ADD] - IPC_MODS
+	if(!brainmob)
+		return
+	if(!owner && usr != brainmob)
+		to_chat(usr, SPAN_WARNING("ERROR: Unauthorized access. Establish external datajack link."))
+		return
+	brainmob.show_laws(owner || brainmob)
+// [/SIERRA-ADD]
 
 /obj/item/organ/internal/posibrain/proc/brain_checklaws()
 	set category = "Shackle"
 	set name = "State Laws"
 	set src in usr
 
-
+//[SIERRA-ADD] - IPC_MODS
+	if(!brainmob)
+		return
+	if(!owner && usr != brainmob)
+		to_chat(usr, SPAN_WARNING("ERROR: Unauthorized access. Establish external datajack link."))
+		return
+// [/SIERRA-ADD]
 	brainmob.open_subsystem(/datum/nano_module/law_manager, usr)

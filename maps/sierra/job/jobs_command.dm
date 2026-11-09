@@ -1,6 +1,6 @@
 /datum/job/captain
 	title = "Captain"
-	department = "Командный"
+	department = "Command"
 	supervisors = "Центральному Командованию"
 	department_flag = COM
 	head_position = 1
@@ -45,12 +45,12 @@
 /datum/job/hop
 	title = "Head of Personnel"
 	supervisors = "Капитану"
-	department = "Командный"
+	department = "Command"
 	department_flag = COM
 
 	minimal_player_age = 14
 	ideal_character_age = 45
-	economic_power = 14
+	economic_power = 12
 	skill_points = 30
 
 	minimum_character_age = list(SPECIES_HUMAN = 28)
@@ -64,7 +64,9 @@
 		/datum/mil_branch/employee
 	)
 	allowed_ranks = list(
-		/datum/mil_rank/civ/nt
+		/datum/mil_rank/civ/nt,
+		/datum/mil_rank/civ/acting,
+		/datum/mil_rank/civ/acting_temp
 	)
 	min_skill = list(
 		SKILL_BUREAUCRACY = SKILL_TRAINED,
@@ -80,14 +82,14 @@
 	// exp_track_branch = COM
 
 	access = list(
-		access_seceva, access_guard, access_security, access_brig, access_armory,
-		access_forensics_lockers, access_heads, access_medical, access_morgue,
+		access_seceva, access_guard, access_security_records, access_security, access_brig, access_armory, access_warden,
+		access_forensics_lockers, access_heads, access_medical, access_morgue, access_biomech,
 		access_engine, access_engine_equip, access_maint_tunnels, access_external_airlocks,
 		access_emergency_storage, access_change_ids, access_ai_upload, access_teleporter,
 		access_eva, access_bridge, access_all_personal_lockers, access_chapel_office,
 		access_tech_storage, access_atmospherics, access_janitor, access_crematorium,
 		access_robotics, access_kitchen, access_cargo, access_construction, access_chemistry,
-		access_cargo_bot, access_hydroponics, access_library, access_virology, access_cmo,
+		access_cargo_bot, access_hydroponics, access_library, access_virology, access_medical_records, access_cmo,
 		access_qm, access_network, access_surgery, access_mailsorting, access_heads_vault,
 		access_ce, access_rd, access_hop, access_hos, access_RC_announce, access_keycard_auth, access_tcomsat,
 		access_gateway, access_sec_doors, access_psychiatrist, access_medical_equip, access_gun,
@@ -95,7 +97,8 @@
 		access_guppy_helm, access_expedition_shuttle_helm, access_explorer, access_el, access_tox,
 		access_tox_storage, access_research, access_mining, access_mining_office, access_mining_station,
 		access_xenobiology, access_xenoarch, access_petrov, access_petrov_helm, access_actor, access_chief_steward,
-		access_bar, access_commissary, access_pilot, access_field_eng, access_field_med, access_network_admin, access_research_storage, access_adjutants
+		access_bar, access_commissary, access_pilot, access_field_eng, access_field_med, access_network_admin,
+		access_research_storage, access_adjutants, access_employment_records, access_rnd_network
 	)
 	software_on_spawn = list(
 		/datum/computer_file/program/comm,
@@ -114,7 +117,7 @@
 /datum/job/rd
 	title = "Research Director"
 	supervisors = "Капитану"
-	department = "Научный"
+	department = "Science"
 	department_flag = SCI|COM
 	head_position = 1
 	total_positions = 1
@@ -125,7 +128,7 @@
 
 	minimum_character_age = list(SPECIES_HUMAN = 37)
 	ideal_character_age = 42
-	economic_power = 20
+	economic_power = 17
 	skill_points = 36
 
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/research/rd
@@ -133,7 +136,9 @@
 		/datum/mil_branch/employee
 	)
 	allowed_ranks = list(
-		/datum/mil_rank/civ/nt
+		/datum/mil_rank/civ/nt,
+		/datum/mil_rank/civ/acting,
+		/datum/mil_rank/civ/acting_temp
 	)
 	min_skill = list(
 		SKILL_BUREAUCRACY	=	SKILL_TRAINED,
@@ -155,13 +160,15 @@
 	access = list(
 		access_tox, access_tox_storage, access_emergency_storage,
 		access_teleporter, access_bridge, access_rd, access_ai_upload,
-		access_research, access_robotics, access_mining, access_mining_office,
+		access_research, access_mining, access_mining_office,
 		access_mining_station, access_xenobiology, access_RC_announce,
 		access_keycard_auth, access_xenoarch, access_heads,
 		access_sec_doors, access_medical, access_network,
 		access_maint_tunnels, access_eva, access_expedition_shuttle, access_expedition_shuttle_helm,
 		access_guppy, access_hangar, access_petrov, access_petrov_helm,
-		access_guppy_helm, access_explorer, access_el, access_network_admin, access_research_storage
+		access_guppy_helm, access_explorer, access_el, access_network_admin, access_research_storage,
+		access_employment_records, access_medical_records, access_security_records, access_rnd_network
+
 	)
 	software_on_spawn = list(
 		/datum/computer_file/program/comm,
@@ -182,12 +189,12 @@
 	title = "Chief Medical Officer"
 	supervisors = "Капитану"
 	head_position = 1
-	department = "Медицинский"
+	department = "Medical"
 	department_flag = MED|COM
 	total_positions = 1
 	spawn_positions = 1
 	req_admin_notify = 1
-	economic_power = 10
+	economic_power = 14
 
 	minimal_player_age = 21
 
@@ -224,7 +231,9 @@
 		access_sec_doors,access_chapel_office, access_crematorium,
 		access_chemistry, access_virology, access_cmo, access_surgery,
 		access_RC_announce, access_keycard_auth, access_psychiatrist,
-		access_medical_equip, access_senmed, access_hangar
+		access_medical_equip, access_senmed, access_hangar, access_medical_records,
+		access_employment_records, access_security_records, access_rnd_network, access_biomech
+
 	)
 
 
@@ -250,12 +259,12 @@
 	title = "Chief Engineer"
 	supervisors = "Капитану"
 	head_position = 1
-	department = "Инженерный"
+	department = "Engineering"
 	department_flag = ENG|COM
 	total_positions = 1
 	spawn_positions = 1
 	req_admin_notify = 1
-	economic_power = 10
+	economic_power = 14
 
 	minimal_player_age = 21
 
@@ -266,7 +275,9 @@
 		/datum/mil_branch/employee
 	)
 	allowed_ranks = list(
-		/datum/mil_rank/civ/nt
+		/datum/mil_rank/civ/nt,
+		/datum/mil_rank/civ/acting,
+		/datum/mil_rank/civ/acting_temp
 	)
 	min_skill = list(
 		SKILL_BUREAUCRACY	=	SKILL_BASIC,
@@ -295,7 +306,10 @@
 		access_atmospherics, access_janitor, access_construction,
 		access_sec_doors, access_medical, access_network, access_ce,
 		access_RC_announce, access_keycard_auth, access_tcomsat,
-		access_seneng, access_hangar, access_network_admin
+		access_seneng, access_hangar, access_network_admin,
+		access_employment_records, access_medical_records,
+		access_security_records, access_rnd_network, access_robotics
+
 	)
 
 
@@ -328,12 +342,12 @@
 	title = "Head of Security"
 	supervisors = "Капитану"
 	head_position = 1
-	department = "Охранный"
+	department = "Security"
 	department_flag = SEC|COM
 	total_positions = 1
 	spawn_positions = 1
 	req_admin_notify = 1
-	economic_power = 10
+	economic_power = 12
 
 	minimal_player_age = 21
 
@@ -341,7 +355,7 @@
 	ideal_character_age = 40
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/command/hos
 	allowed_branches = list(/datum/mil_branch/employee)
-	allowed_ranks = list(/datum/mil_rank/civ/nt)
+	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/acting, /datum/mil_rank/civ/acting_temp)
 	min_skill = list(
 		SKILL_BUREAUCRACY	=	SKILL_TRAINED,
 		SKILL_EVA			=	SKILL_BASIC,
@@ -359,14 +373,14 @@
 	skill_points = 28
 
 	access = list(
-		access_seceva, access_guard, access_security,
-		access_medical, access_brig, access_armory,
+		access_seceva, access_guard, access_security, access_security_records,
+		access_medical, access_medical_records, access_brig, access_armory,
 		access_forensics_lockers, access_maint_tunnels,
 		access_external_airlocks, access_emergency_storage,
 		access_teleporter, access_eva, access_bridge,
 		access_heads, access_hos, access_RC_announce,
 		access_keycard_auth, access_sec_doors, access_hangar,
-		access_gun, access_warden
+		access_gun, access_warden, access_employment_records, access_rnd_network
 	)
 
 
@@ -391,13 +405,13 @@
 
 /datum/job/iaa
 	title = "Internal Affairs Agent"
-	department = "Командный"
+	department = "Command"
 	department_flag = SPT
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "Центральному Командованию"
 	selection_color = "#2f2f7f"
-	economic_power = 15
+	economic_power = 14
 
 	minimal_player_age = 10
 
@@ -418,12 +432,12 @@
 	skill_points = 20
 
 	access = list(
-		access_security, access_sec_doors, access_medical,
+		access_security, access_security_records, access_sec_doors, access_medical, access_medical_records,
 		access_iaa, access_research, access_xenoarch,
-		access_heads, access_bridge, access_hangar,
+		access_heads, access_bridge, access_hangar, access_employment_records,
 		access_petrov, access_commissary, access_maint_tunnels,
 		access_tox, access_tox_storage, access_xenobiology, access_research_storage, access_robotics,
-		access_morgue, access_senmed, access_surgery, access_medical_equip
+		access_morgue, access_senmed, access_surgery, access_medical_equip, access_rnd_network
 	)
 
 
@@ -444,7 +458,7 @@
 
 /datum/job/iso
 	title = "Internal Security Operative"
-	department = "Командный"
+	department = "Command"
 	department_flag = SPT
 	total_positions = 1
 	spawn_positions = 1
@@ -477,9 +491,9 @@
 	skill_points = 20
 
 	access = list(
-		access_security, access_sec_doors, access_medical,
+		access_security, access_security_records, access_sec_doors, access_medical, access_medical_records,
 		access_iaa, access_research, access_xenoarch,
-		access_heads, access_bridge, access_hangar,
+		access_heads, access_bridge, access_hangar, access_employment_records,
 		access_petrov, access_commissary, access_maint_tunnels
 	)
 
@@ -499,7 +513,7 @@
 
 /datum/job/adjutant
 	title = "Adjutant"
-	department = "Командный"
+	department = "Command"
 	department_flag = SPT
 	total_positions = 3
 	spawn_positions = 3
@@ -515,18 +529,20 @@
 
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/command/adjutant
 	allowed_branches = list(/datum/mil_branch/employee)
-	allowed_ranks = list(/datum/mil_rank/civ/nt)
+	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/probation_employee)
 	min_skill = list(
 		SKILL_BUREAUCRACY	=	SKILL_BASIC,
 		SKILL_PILOT			=	SKILL_TRAINED
 	)
 	max_skill = list(SKILL_PILOT = SKILL_MAX)
 	access = list(
-		access_sec_doors, access_security, access_medical, access_engine, access_maint_tunnels, access_emergency_storage,
+		access_sec_doors, access_security, access_security_records, access_medical, access_medical_records, access_engine,
+		access_maint_tunnels, access_emergency_storage,
 		access_heads, access_bridge, access_janitor, access_kitchen, access_actor, access_cargo,
 		access_RC_announce, access_keycard_auth, access_guppy, access_guppy_helm,
 		access_external_airlocks, access_expedition_shuttle, access_eva, access_hangar,
-		access_explorer, access_expedition_shuttle_helm, access_gun, access_bar, access_adjutants
+		access_explorer, access_expedition_shuttle_helm, access_gun, access_bar, access_adjutants, access_employment_records,
+		access_rnd_network
 	)
 
 	software_on_spawn = list(

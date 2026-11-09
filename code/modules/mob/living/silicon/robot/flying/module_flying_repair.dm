@@ -4,8 +4,8 @@
 	channels = list ("Engineering" = TRUE)
 	networks = list(NETWORK_ENGINEERING)
 	subsystems = list(
-		/datum/nano_module/power_monitor,
-		/datum/nano_module/supermatter_monitor
+		/datum/nano_module/program/power_monitor,
+		/datum/nano_module/program/supermatter_monitor
 	)
 	sprites = list(
 		"Drone" = "drone-engineer",
@@ -32,7 +32,7 @@
 		/obj/item/inflatable_dispenser/robot,
 		/obj/item/reagent_containers/spray/cleaner/drone,
 		/obj/item/inducer/borg,
-		/obj/item/device/plunger/robot,
+		/obj/item/clothing/mask/plunger,
 		/obj/item/matter_decompiler,
 		/obj/item/stack/material/cyborg/steel,
 		/obj/item/stack/material/cyborg/aluminium,

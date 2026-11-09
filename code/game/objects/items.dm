@@ -331,6 +331,7 @@
 	if(user)
 		for (var/obj/item/item as anything in user.GetAllHeld())
 			item.update_twohanding()
+		user.update_mouse_pointer()
 	GLOB.mob_unequipped_event.raise_event(user, src)
 	GLOB.item_unequipped_event.raise_event(src, user)
 
@@ -367,6 +368,7 @@ note this isn't called during the initial dressing of a player
 	if(user.client)	user.client.screen |= src
 	if(user.pulling == src)
 		user.stop_pulling()
+	user.update_mouse_pointer()
 	var/mob/M = loc
 	if(!istype(M))
 		return
@@ -477,8 +479,6 @@ var/global/list/slot_flags_enumeration = list(
 					to_chat(H, SPAN_WARNING("You need a suit before you can attach this [name]."))
 				return 0
 			if(!H.wear_suit.allowed)
-				if(!disable_warning)
-					to_chat(usr, SPAN_WARNING("You somehow have a suit with no defined allowed items for suit storage, stop that."))
 				return 0
 			if( !(istype(src, /obj/item/modular_computer/pda) || istype(src, /obj/item/pen) || is_type_in_list(src, H.wear_suit.allowed)) )
 				return 0
@@ -669,8 +669,6 @@ var/global/list/slot_flags_enumeration = list(
 
 		var/obj/item/organ/external/affecting = H.get_organ(eyes.parent_organ)
 		affecting.take_external_damage(7)
-	else
-		M.take_organ_damage(7, 0)
 
 	M.eye_blurry += rand(3,4)
 	return TRUE
@@ -798,11 +796,16 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 	if(user.hud_used.hud_shown)
 		user.toggle_zoom_hud()	// If the user has already limited their HUD this avoids them having a HUD when they zoom in
-	if(istype(H))
-		H.handle_vision()
 
 	user.client.view = viewsize
+	//[SIERRA-ADD]
+	user.client.update_click_catcher()
+	//[/SIERRA-ADD]
 	zoom = 1
+	user.client.viewoffset = TRUE //[SIERRA-ADD] - FOV
+	if(istype(H))
+		H.handle_vision()
+	user.check_fov() //[SIERRA-ADD]
 
 	GLOB.destroyed_event.register(src, src, TYPE_PROC_REF(/obj/item, unzoom))
 	GLOB.moved_event.register(user, src, TYPE_PROC_REF(/obj/item, unzoom))
@@ -816,6 +819,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 /mob/living/proc/unzoom(obj/item/I)
 	if(I)
 		I.unzoom(src)
+		client.viewoffset = FALSE //[SIERRA-ADD] - FOV
 
 /obj/item/proc/unzoom(mob/user)
 	if(!zoom)
@@ -838,16 +842,21 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		return
 
 	user.client.view = user.get_preference_value(/datum/client_preference/client_view)
+	//[SIERRA-ADD]
+	user.client.update_click_catcher()
+	//[/SIERRA-ADD]
 	if(!user.hud_used.hud_shown)
 		user.toggle_zoom_hud()
 
 	user.client.pixel_x = 0
 	user.client.pixel_y = 0
 
+	user.client.viewoffset = FALSE //[SIERRA-ADD] - FOV
 	var/mob/living/carbon/human/H = user
 	if(istype(H))
 		H.handle_vision()
 	user.visible_message("[zoomdevicename ? "\The [user] looks up from [src]" : "\The [user] lowers [src]"].")
+	user.client.reload_fov() //[SIERRA-ADD] - FOV
 
 /obj/item/proc/pwr_drain()
 	return 0 // Process Kill
@@ -856,6 +865,8 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	if(!sprite_sheets || !sprite_sheets[bodytype])
 		return 0
 	if(slot == slot_r_hand_str || slot == slot_l_hand_str)
+		return 0
+	if(slot == slot_s_store_str)
 		return 0
 
 	if(icon_state in icon_states(sprite_sheets[bodytype]))
@@ -996,3 +1007,19 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	if (href_list["examine"])
 		examinate(usr, src)
 		return TOPIC_HANDLED
+
+
+/obj/item/MouseEntered()
+	if (usr.client?.outline_enabled)
+		usr.client.SetOutlineAtom(src)
+
+
+/obj/item/MouseExited()
+	if (usr.client?.outline_atom)
+		usr.client.SetOutlineAtom()
+
+
+/obj/item/MouseDrop()
+	. = ..()
+	if (usr.client?.outline_atom)
+		usr.client.SetOutlineAtom()

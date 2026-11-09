@@ -2,6 +2,11 @@
 /datum/design/item/modularcomponent/
 	category = list("Computer Parts")
 
+/datum/design/item/modularcomponent/AssembleDesignDesc()
+	if(build_path)
+		var/obj/item/stock_parts/computer/C = build_path
+		desc = "[C.desc]"
+
 /datum/design/item/modularcomponent/disk/normal
 	name = "basic hard drive"
 	id = "hdd_basic"
@@ -342,4 +347,15 @@
 	materials = list(MATERIAL_STEEL = 2000, MATERIAL_GLASS = 1500)
 	build_path = /obj/item/modular_computer/telescreen
 
+
 //[/SIERRA-ADD] - MODPACK_RND
+
+/datum/design/item/modularcomponent/ship_interface
+	name = "ship-linked control interface"
+	id = "ship_interface"
+	req_tech = list(TECH_DATA = 2, TECH_POWER = 2, TECH_ENGINEERING = 2)
+	build_type = IMPRINTER
+	materials = list(MATERIAL_PLASTIC = 1000, MATERIAL_ALUMINIUM = 1000)
+	chemicals = list(/datum/reagent/acid = 20)
+	build_path = /obj/item/stock_parts/computer/ship_interface
+	sort_string = "VBAGA"

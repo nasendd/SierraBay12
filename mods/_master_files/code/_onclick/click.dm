@@ -53,3 +53,12 @@
 			next_click = world.time + 2 SECONDS
 			return
 	return ..()
+
+/// Ctrl+click past point-blank range fires an armed eye laser (see clicker.dm).
+/mob/living/carbon/human/CtrlClickOn(atom/A)
+	if(get_dist(src, A) < 2 || stat || !mind)
+		return ..()
+	var/obj/item/organ/internal/augment/active/clicker/bale_eye/eye_laser = locate() in internal_organs
+	if(eye_laser?.try_fire(A))
+		return
+	return ..()

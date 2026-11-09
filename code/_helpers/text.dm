@@ -450,9 +450,16 @@
 	t = replacetext(t, "\[leaguelogo\]", "<img src = leaguelogo.png>")
 	t = replacetext(t, "\[ouerelogo\]", "<img src = ouerelogo.png>")
 	t = replacetext(t, "\[terstenlogo\]", "<img src = terstenlogo.png>")
+	t = replacetext(t, "\[kmslogo\]", "<img src = kmslogo.png>")
+	t = replacetext(t, "\[krriglilogo\]", "<img src = krriglilogo.png>")
+	t = replacetext(t, "\[barclogo\]", "<img src = barclogo.png>")
+	t = replacetext(t, "\[barcblacklogo\]", "<img src = barcblacklogo.png>")
 	// [/SIERRA-ADD]
 	t = replacetext(t, "\[zhlogo\]", "<img src = zhlogo.png>")
 	t = replacetext(t, "\[editorbr\]", "")
+	// [SIERRA-ADD] - PENCODE_IMAGES
+	t = pencode_images_to_html(t)
+	// [/SIERRA-ADD]
 	return t
 
 //pencode translation to html for tags exclusive to digital files (currently email, nanoword, report editor fields,
@@ -527,6 +534,9 @@
 	t = replacetext(t, "<img src = zhlogo.png", "\[zhlogo\]")
 	t = replacetext(t, "<span class=\"paper_field\"></span>", "\[field\]")
 	t = replacetext(t, "<span class=\"redacted\">R E D A C T E D</span>", "\[redacted\]")
+	// [SIERRA-ADD] - PENCODE_IMAGES
+	t = pencode_images_to_pencode(t)
+	// [/SIERRA-ADD]
 	t = strip_html_properly(t)
 	return t
 
@@ -562,34 +572,34 @@
 	switch(macro)
 		//prefixes/agnostic
 		if("the")
-			rest = text("\the []", rest)
+			rest = "\the [rest]"
 		if("a")
-			rest = text("\a []", rest)
+			rest = "\a [rest]"
 		if("an")
-			rest = text("\an []", rest)
+			rest = "\an [rest]"
 		if("proper")
-			rest = text("\proper []", rest)
+			rest = "\proper [rest]"
 		if("improper")
-			rest = text("\improper []", rest)
+			rest = "\improper [rest]"
 		if("roman")
-			rest = text("\roman []", rest)
+			rest = "\roman [rest]"
 		//postfixes
 		if("th")
-			base = text("[]\th", rest)
+			base = "[rest]\th"
 		if("s")
-			base = text("[]\s", rest)
+			base = "[rest]\s"
 		if("he")
-			base = text("[]\he", rest)
+			base = "[rest]\he"
 		if("she")
-			base = text("[]\she", rest)
+			base = "[rest]\she"
 		if("his")
-			base = text("[]\his", rest)
+			base = "[rest]\his"
 		if("himself")
-			base = text("[]\himself", rest)
+			base = "[rest]\himself"
 		if("herself")
-			base = text("[]\herself", rest)
+			base = "[rest]\herself"
 		if("hers")
-			base = text("[]\hers", rest)
+			base = "[rest]\hers"
 
 	. = base
 	if(rest)

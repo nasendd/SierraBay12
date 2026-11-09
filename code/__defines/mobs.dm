@@ -180,7 +180,10 @@
 #define INCAPACITATION_DISRUPTED (INCAPACITATION_UNRESISTING|INCAPACITATION_WEAKENED)
 #define INCAPACITATION_KNOCKDOWN (INCAPACITATION_KNOCKOUT|INCAPACITATION_FORCELYING)
 #define INCAPACITATION_DISABLED (INCAPACITATION_KNOCKDOWN|INCAPACITATION_STUNNED)
-#define INCAPACITATION_DEFAULT (INCAPACITATION_RESTRAINED|INCAPACITATION_BUCKLED_FULLY|INCAPACITATION_DISABLED)
+//SIERRA-EDIT - LYING REFACTOR
+//#define INCAPACITATION_DEFAULT (INCAPACITATION_RESTRAINED|INCAPACITATION_BUCKLED_FULLY|INCAPACITATION_DISABLED)
+#define INCAPACITATION_DEFAULT (INCAPACITATION_STUNNED | INCAPACITATION_KNOCKOUT | INCAPACITATION_RESTRAINED)
+//
 #define INCAPACITATION_ALL (~INCAPACITATION_NONE)
 
 // Organs.
@@ -368,7 +371,10 @@
 #define SPECIES_NEAERA      "Neaera"
 #define SPECIES_STOK        "Stok"
 
-#define UNRESTRICTED_SPECIES list(SPECIES_HUMAN, SPECIES_DIONA, SPECIES_IPC, SPECIES_UNATHI, SPECIES_YEOSA, SPECIES_SKRELL, SPECIES_TRITONIAN, SPECIES_SPACER, SPECIES_VATGROWN, SPECIES_GRAVWORLDER, SPECIES_MULE)
+// [SIERRA-EDIT]
+// #define UNRESTRICTED_SPECIES list(SPECIES_HUMAN, SPECIES_DIONA, SPECIES_IPC, SPECIES_UNATHI, SPECIES_YEOSA, SPECIES_SKRELL, SPECIES_TRITONIAN, SPECIES_SPACER, SPECIES_VATGROWN, SPECIES_GRAVWORLDER, SPECIES_MULE)
+#define UNRESTRICTED_SPECIES list(SPECIES_HUMAN, SPECIES_DIONA, SPECIES_IPC, SPECIES_UNATHI, SPECIES_YEOSA, SPECIES_SKRELL, SPECIES_TRITONIAN, SPECIES_SPACER, SPECIES_VATGROWN, SPECIES_GRAVWORLDER, SPECIES_MULE, SPECIES_TAJARA, SPECIES_RESOMI)
+// [/SIERRA-EDIT]
 #define RESTRICTED_SPECIES   list(SPECIES_VOX, SPECIES_ALIEN, SPECIES_GOLEM)
 #define HUMAN_SPECIES        list(SPECIES_HUMAN, SPECIES_VATGROWN, SPECIES_SPACER, SPECIES_GRAVWORLDER, SPECIES_MULE)
 #define PRIMITIVE_SPECIES    list(SPECIES_FARWA, SPECIES_MONKEY, SPECIES_NEAERA, SPECIES_STOK)
@@ -396,6 +402,9 @@
 #define AURA_TYPE_THROWN "Thrown"
 /// Aura checks during mob life. Generally called by `/mob/living/Life()`. Results in `/obj/aura/proc/aura_check_life()`.
 #define AURA_TYPE_LIFE   "Life"
+/// [SIERRA-ADD] - Aura checks for fistfight. Generally called by `/mob/living/carbon/human/attack_hand`. Results in `/obj/aura/proc/aura_check_unarmed()`.
+#define AURA_TYPE_UNARMED   "Unarmed"
+// [/SIERRA-ADD]
 
 #define SPECIES_BLOOD_DEFAULT 560
 
@@ -421,6 +430,8 @@
 #define MOB_FLAG_HOLY_BAD FLAG_01
 /// This mob cannot be pinned to walls by sharp objects
 #define MOB_FLAG_UNPINNABLE FLAG_02
+/// Any `do_after()` calls with this mob as the user should check `do_user_interrupted` and `do_user_interrupt()`.
+#define MOB_FLAG_DO_USER_INTERRUPT FLAG_03
 
 // More refined version of SA_* ""intelligence"" seperators.
 // Now includes bitflags, so to target two classes you just do 'MOB_CLASS_ANIMAL|MOB_CLASS_HUMANOID'
@@ -446,6 +457,7 @@
 #define MARKING_TARGET_SKIN 0 // Draw a datum/sprite_accessory/marking to the mob's body, eg. tattoos
 #define MARKING_TARGET_HAIR 1 // Draw a datum/sprite_accessory/marking to the mob's hair, eg. color fades
 #define MARKING_TARGET_HEAD 2 // Draw a datum/sprite_accessory/marking to the mob's head after their hair, eg. ears, horns
+#define MARKING_TARGET_EYES 3 // Draw a datum/sprite_accessory/marking with the eyes, under glasses
 
 // used in /mob/living/carbon/human/can_inject, and by various callers of that proc
 #define CAN_INJECT 1
@@ -467,11 +479,13 @@
 #define DO_MOVE_CHECKS_TURFS FLAG_11
 #define DO_FAIL_FEEDBACK     FLAG_12
 #define DO_BAR_OVER_USER     FLAG_13 // Forces the progress bar to appear over the user instead of the target
+/// Timer can be halted by user setting `/mob/var/do_user_interrupted` or overriding their `/atom/proc/do_user_interrupt()` proc.
+#define DO_USER_INTERRUPT    FLAG_14
 
 #define DO_BOTH_CAN_MOVE     (DO_USER_CAN_MOVE | DO_TARGET_CAN_MOVE)
 #define DO_BOTH_CAN_TURN     (DO_USER_CAN_TURN | DO_TARGET_CAN_TURN)
 #define DO_BOTH_UNIQUE_ACT   (DO_USER_UNIQUE_ACT | DO_TARGET_UNIQUE_ACT)
-#define DO_DEFAULT           (DO_SHOW_PROGRESS | DO_USER_SAME_HAND | DO_BOTH_CAN_TURN | DO_FAIL_FEEDBACK)
+#define DO_DEFAULT           (DO_SHOW_PROGRESS | DO_USER_SAME_HAND | DO_BOTH_CAN_TURN | DO_FAIL_FEEDBACK | DO_USER_INTERRUPT)
 
 // Preset do_After flags
 #define DO_PUBLIC_UNIQUE     (DO_DEFAULT | DO_PUBLIC_PROGRESS | DO_BOTH_UNIQUE_ACT) // Common flags for actions that should be public and unique
@@ -500,4 +514,5 @@
 
 ///Flags assigned to carbon mobs trait_flags when they're actively having an allergy.
 #define MILD_ALLERGY FLAG_01
+
 #define SEVERE_ALLERGY FLAG_02

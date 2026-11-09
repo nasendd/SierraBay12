@@ -1,5 +1,5 @@
 // Screen objects hereon out.
-#define MECH_UI_STYLE(X) "<span style=\"font-family: 'Small Fonts'; -dm-text-outline: 1 black; font-size: 5px;\">" + X + "</span>"
+#define MECH_UI_STYLE(X) {"<span style="-dm-text-outline: 1 black; font-size: 5px;">"} + X + "</span>"
 
 /obj/screen/exosuit
 	name = "hardpoint"
@@ -67,7 +67,7 @@
 		maptext = ""
 		return
 
-	maptext =  SPAN_STYLE("font-family: 'Small Fonts'; -dm-text-outline: 1 black; font-size: 7px;", "[holding.get_hardpoint_maptext()]")
+	maptext =  SPAN_STYLE("-dm-text-outline: 1 black; font-size: 7px;", "[holding.get_hardpoint_maptext()]")
 
 	var/ui_damage = (!owner.body.diagnostics || !owner.body.diagnostics.is_functional() || ((owner.emp_damage>EMP_GUI_DISRUPT) && prob(owner.emp_damage)))
 
@@ -78,7 +78,7 @@
 
 	if(ui_damage)
 		value = -1
-		maptext = SPAN_STYLE("font-family: 'Small Fonts'; -dm-text-outline: 1 black; font-size: 7px;", "ERROR")
+		maptext = SPAN_STYLE("-dm-text-outline: 1 black; font-size: 7px;", "ERROR")
 	else
 		if((owner.emp_damage>EMP_GUI_DISRUPT) && prob(owner.emp_damage*2))
 			if(prob(10))
@@ -138,7 +138,7 @@
 		return
 
 	var/modifiers = params2list(params)
-	if(modifiers["ctrl"])
+	if(modifiers[MOUSE_CTRL])
 		if(owner.hardpoints_locked)
 			to_chat(usr, SPAN_WARNING("Hardpoint ejection system is locked."))
 			return
@@ -349,7 +349,7 @@
 /obj/screen/exosuit/heat/Initialize()
 	. = ..()
 	gauge_needle = new /obj/screen/exosuit/needle(owner)
-	vis_contents += gauge_needle
+	add_vis_contents(gauge_needle)
 
 /obj/screen/exosuit/heat/Destroy()
 	QDEL_NULL(gauge_needle)
@@ -358,11 +358,11 @@
 /obj/screen/exosuit/heat/Click(location, control, params)
 	if(..())
 		var/modifiers = params2list(params)
-		if(modifiers["shift"])
+		if(modifiers[MOUSE_SHIFT])
 			if(owner && owner.material)
 				usr.show_message(SPAN_NOTICE("Your suit's safe operating limit ceiling is [(celsius ? "[owner.material.melting_point - T0C] °C" : "[owner.material.melting_point] K" )]."), VISIBLE_MESSAGE)
 			return
-		if(modifiers["ctrl"])
+		if(modifiers[MOUSE_CTRL])
 			celsius = !celsius
 			usr.show_message(SPAN_NOTICE("You switch the chassis probe display to use [celsius ? "celsius" : "kelvin"]."), VISIBLE_MESSAGE)
 			return

@@ -247,7 +247,11 @@
 							level_link = SPAN_COLOR("#55cc55", "High")
 						else
 							level_link = SPAN_COLOR("black", "Never")
-					. += "<a href='byond://?src=\ref[src];set_job=[title];inc_level=-1'>[level_link]</a>"
+ 					// [SIERRA-EDIT]
+					. += {"<a onclick="setJobLevel('\ref[src]', '[title]', -1)" \
+							oncontextmenu="javascript:return setJobLevel('\ref[src]', '[title]', 1)">\
+							[level_link]</a>"}
+					// [/SIERRA-EDIT]
 				. += "</td></tr>"
 			. += "</td></tr></table>"
 			. += "</center></table><center>"
@@ -418,7 +422,7 @@
 		send_rsc(user, job.get_job_icon(), "job[ckey(rank)].png")
 		dat += "<img src=job[ckey(rank)].png width=96 height=96 style='float:left;'>"
 		if(job.department)
-			dat += "<b>Department:</b> [job.department]."
+			dat += "<b>Department:</b> [job.get_department_display_name()]."
 			if(job.head_position)
 				dat += "You are in charge of this department."
 

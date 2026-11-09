@@ -42,7 +42,7 @@
 #define DONATION_TIER_ONE_SUM    100
 #define DONATION_TIER_TWO_SUM    300
 #define DONATION_TIER_THREE_SUM  500
-#define DONATION_TIER_FOUR_SUM   1000
+#define DONATION_TIER_FOUR_SUM   700
 
 // Keep this in ascending order
 // (from the lower tier to the higher)
@@ -106,7 +106,6 @@
 #define LANGUAGE_SIMPTAJARAN "Simplified Siik'Maas"
 //PRIMLANGS - End
 
-
 //ANOMALIES
 #define MAX_DEEP 1
 #define MIDDLE_DEEP 2
@@ -117,7 +116,6 @@
 #define WATER_OVERLAY 10
 #define istitanwater(A) istype(A, /turf/simulated/floor/exoplanet/titan_water)
 //ANOMALIES
-
 
 //FOV
 #define FIELD_OF_VISION_BLOCKER_PLANE -199
@@ -130,3 +128,58 @@
 
 // XENOBIO TRANSFORMATIONS - END
 
+// PSIONICS - Start
+#define SPECIES_PSI	"Psionics"
+
+#define PSI_IMPLANT_AUTOMATIC "Security Level Derived"
+#define PSI_IMPLANT_SHOCK     "Issue Neural Shock"
+#define PSI_IMPLANT_WARN      "Issue Reprimand"
+#define PSI_IMPLANT_LOG       "Log Incident"
+#define PSI_IMPLANT_DISABLED  "Disabled"
+
+#define PSI_COERCION           "coercion"
+#define PSI_CONSCIOUSNESS      "consciousness"
+#define PSI_PSYCHOKINESIS      "psychokinesis"
+#define PSI_MANIFESTATION      "manifestation"
+#define PSI_METAKINESIS        "metakinesis"
+#define PSI_ENERGISTICS        "energistics"
+#define PSI_REDACTION          "redaction"
+#define PSI_SHAYMANISM         "shaymanism"
+
+#define PSI_RANK_BLUNT         0
+#define PSI_RANK_LATENT        1
+#define PSI_RANK_APPRENTICE    2
+#define PSI_RANK_OPERANT       3
+#define PSI_RANK_MASTER        4
+#define PSI_RANK_GRANDMASTER   5
+
+#define PSI_HUMAN_DISCIPLES   list("Coercion", "Redaction", "Consciousness", "Psychokinesis", "Manifestation", "Metakinesis", "Energistics")
+#define PSI_TAJARAN_DISCIPLES list("Coercion", "Metakinesis", "Shaymanism")
+// PSIONICS - End
+
+//NTSH
+#define MODULAR_CONFIG_REMCON_SETTING "RemoteConnectionPass"
+///NTSH
+
+//New aways testing mod, change to 1 in order to turn it on. Always turn it off afterwards.
+#define NEW_AWAYS_TESTING 0
+
+#if NEW_AWAYS_TESTING == 1
+	#define UNIT_TEST 1
+#endif
+//New aways testing mod
+
+// CARDIAC_OVERHAUL - Start
+// Cardiac rhythm states — electrical activity of the heart.
+#define RHYTHM_NSR       "Normal Sinus Rhythm"  // Normal heart function
+#define RHYTHM_TACHY     "Sinus Tachycardia"    // Fast but regular rhythm
+#define RHYTHM_BRADY     "Sinus Bradycardia"    // Slow but regular rhythm
+#define RHYTHM_VFIB      "Ventricular Fibrillation" // Chaotic electrical activity, no pumping
+#define RHYTHM_BLOCK     "Heart Block"           // Delayed/dropped beats
+#define RHYTHM_PEA       "Pulseless Electrical Activity" // Looks normal on ECG, but no mechanical pump
+#define RHYTHM_ASYSTOLE  "Asystole"             // No electrical activity at all (flatline)
+#define RHYTHM_STEMI     "Myocardial Infarction" // Myocardial infarction (heart attack)
+
+// Helper — does this rhythm produce a mechanical pulse (pump blood)?
+#define RHYTHM_HAS_PULSE(r) ((r) == RHYTHM_NSR || (r) == RHYTHM_TACHY || (r) == RHYTHM_BRADY || (r) == RHYTHM_BLOCK || (r) == RHYTHM_STEMI)
+// CARDIAC_OVERHAUL - End

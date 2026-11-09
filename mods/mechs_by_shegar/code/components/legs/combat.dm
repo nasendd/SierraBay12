@@ -9,6 +9,8 @@
 	move_delay = 3
 	turn_delay = 3
 	power_use = 20
+	matter = list(MATERIAL_STEEL = 45000, MATERIAL_PLASTEEL = 5000, MATERIAL_ALUMINIUM = 5000)
+
 	max_hp = 90
 	min_damage = 50
 	max_repair = 30

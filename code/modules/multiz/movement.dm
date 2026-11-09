@@ -378,6 +378,7 @@
 			return
 	owner.reset_view(null)
 	owner.z_eye = null
+	owner.client.reload_fov() //SIERRA-ADD
 	qdel(src)
 
 /atom/movable/z_observer/z_down/follow()
@@ -387,6 +388,7 @@
 		return
 	owner.reset_view(null)
 	owner.z_eye = null
+	owner.client.reload_fov() //SIERRA-ADD
 	qdel(src)
 
 /atom/movable/z_observer/Destroy()
@@ -394,7 +396,10 @@
 	owner = null
 	. = ..()
 
-/atom/movable/z_observer/can_fall()
+// [SIERRA-EDIT] - JPS_PATHFINDING - Match can_fall keyword arguments.
+// /atom/movable/z_observer/can_fall() // SIERRA-EDIT - ORIGINAL
+/atom/movable/z_observer/can_fall(anchor_bypass = FALSE, turf/location_override = loc)
+// [/SIERRA-EDIT]
 	return FALSE
 
 /atom/movable/z_observer/ex_act()

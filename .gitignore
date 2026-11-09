@@ -19,11 +19,16 @@ atupdate
 # ignore config, but not subdirs
 !config/*/
 config/*
+!config/hallucination/
+!config/hallucination/*
+!config/example/
+!config/example/*
 sql/test_db
 
 # VisualStudioCode
 .vscode/*
 !.vscode/settings.json
+!.vscode/show-test-results.sh
 *.code-workspace
 .history
 

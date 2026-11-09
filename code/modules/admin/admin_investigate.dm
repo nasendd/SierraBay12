@@ -23,15 +23,19 @@
 	if(!message)	return
 	var/F = investigate_subject2file(subject)
 	if(!F)	return
-	to_chat(F, "<small>[time_stamp()] \ref[src] ([x],[y],[z])</small> || [src] [message]<br>")
+	// show_browser() passes a file through as-is, so the page carries its own header
+	if(!fexists(F))
+		to_file(F, "<!doctype html><meta charset=utf-8>")
+	to_file(F, "<small>[time_stamp()] \ref[src] ([x],[y],[z])</small> || [src] [message]<br>")
 
 //ADMINVERBS
-/client/proc/investigate_show( subject in list("hrefs","notes","singulo","telesci") )
+// [SIERRA-EDIT] - HALLUCINATION_OVERHAUL - (Added hallucination investigation log category)
+/client/proc/investigate_show( subject in list("hrefs","notes","singulo","telesci","hallucinations","images") ) // [SIERRA-EDIT] - PENCODE_IMAGES - added "images"
 	set name = "Investigate"
 	set category = "Admin"
 	if(!holder)	return
 	switch(subject)
-		if("singulo", "telesci")			//general one-round-only stuff
+		if("singulo", "telesci", "hallucinations", "images")			//general one-round-only stuff // [SIERRA-EDIT] - PENCODE_IMAGES - added "images"
 			var/F = investigate_subject2file(subject)
 			if(!F)
 				to_chat(src, SPAN_WARNING("Error: admin_investigate: [INVESTIGATE_DIR][subject] is an invalid path or cannot be accessed."))
@@ -43,3 +47,4 @@
 				show_browser(src, GLOB.href_logfile, "window=investigate[subject];size=800x300")
 			else
 				to_chat(src, SPAN_WARNING("Error: admin_investigate: Href Logging [config.log_hrefs ? "failed to start" : "is disabled"]."))
+// [/SIERRA-EDIT] - HALLUCINATION_OVERHAUL

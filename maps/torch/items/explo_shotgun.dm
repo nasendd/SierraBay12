@@ -6,9 +6,10 @@
 	starts_loaded = 0
 	req_access = list(access_hop)
 	authorized_modes = list(UNAUTHORIZED)
+	manufacturer = null
 	firemodes = list(
-		list(mode_name="fire"),
-		)
+		list("mode_name" = "fire")
+	)
 	var/explosion_chance = 50
 	var/obj/item/pipe/reinforced
 

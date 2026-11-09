@@ -12,11 +12,11 @@ import os
 import re
 from pathlib import Path
 from ruamel import yaml
-from github import Github
+from github import Github, Auth
 import json
 
-CL_BODY = re.compile(r"(:cl:|🆑)(.+)?\r\n((.|\n|\r)+?)\r\n\/(:cl:|🆑)", re.MULTILINE)
-CL_SPLIT = re.compile(r"(^\w+):\s+(\w.+)", re.MULTILINE)
+CL_BODY = re.compile(r"(:cl:|🆑)\s*(.*)?\r\n((.|\n|\r)+?)\r\n\/(:cl:|🆑)", re.MULTILINE)
+CL_SPLIT = re.compile(r"(^\w+):\s+(\S.+)", re.MULTILINE)
 
 # Blessed is the GoOnStAtIoN birb ZeWaKa for thinking of this first
 repo = os.getenv("GITHUB_REPOSITORY")
@@ -26,9 +26,24 @@ event_path = os.getenv("GITHUB_EVENT_PATH")
 with open(event_path, 'r') as f:
     event_data = json.load(f)
 
-git = Github(token)
+auth = Auth.Token(token)
+git = Github(auth=auth)
 repo = git.get_repo(repo)
 pr = repo.get_pull(event_data['number'])
+
+# pull_request runs from forks get a read-only token, so they only validate.
+# Labelling is done by check_changelog_labels.yml, which has a write token.
+CHECK_ONLY = os.getenv("CL_MODE", "check") != "label"
+
+
+def update_labels(remove=(), add=()):
+    if CHECK_ONLY:
+        return
+    for label in remove:
+        pr.remove_from_labels(label)
+    for label in add:
+        pr.add_to_labels(label)
+
 
 pr_body = pr.body or ""
 pr_author = pr.user.login
@@ -56,10 +71,10 @@ except AttributeError:
     print("No CL found!")
 
     # remove invalid, remove valid
-    if has_invalid_label:
-        pr.remove_from_labels(CL_INVALID)
-    if has_valid_label:
-        pr.remove_from_labels(CL_VALID)
+    update_labels(
+        remove=[CL_INVALID] if has_invalid_label else [],
+        add=[CL_VALID] if has_valid_label else [],
+    )
     exit(0)
 
 if cl.group(2) is not None:
@@ -67,7 +82,7 @@ if cl.group(2) is not None:
 else:
     if pr_is_mirror:
         print("No author specified in mirror PR!")
-        exit(1)
+        exit(0 if not CHECK_ONLY else 1)
     write_cl['author'] = pr_author
 
 if not write_cl['author']:
@@ -93,21 +108,21 @@ if has_invalid_tag:
     print("CL has invalid tags!")
     print("Valid tags are:")
     print(*tags['tags'].keys(), sep=", ")
-    exit(1)
+    exit(0 if not CHECK_ONLY else 1)
 
 if write_cl['changes']:
     print("CL OK!")
     # remove invalid, add valid
-    if has_invalid_label:
-        pr.remove_from_labels(CL_INVALID)
-    if not has_valid_label:
-        pr.add_to_labels(CL_VALID)
+    update_labels(
+        remove=[CL_INVALID] if has_invalid_label else [],
+        add=[CL_VALID] if not has_valid_label else [],
+    )
     exit(0)
 else:
     print("No CL changes detected!")
     # add invalid, remove valid
-    if not has_invalid_label:
-        pr.add_to_labels(CL_INVALID)
-    if has_valid_label:
-        pr.remove_from_labels(CL_VALID)
-    exit(1)
+    update_labels(
+        remove=[CL_VALID] if has_valid_label else [],
+        add=[CL_INVALID] if not has_invalid_label else [],
+    )
+    exit(0 if not CHECK_ONLY else 1)

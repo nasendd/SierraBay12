@@ -20,21 +20,7 @@
 	layer = BLOB_SHIELD_LAYER
 
 	health_max = 30
-	health_resistances = list(
-		DAMAGE_BRUTE     = 0.23,
-		DAMAGE_BURN      = 1.24,
-		DAMAGE_FIRE      = 1.24,
-		DAMAGE_EXPLODE   = 0.23,
-		DAMAGE_STUN      = 0,
-		DAMAGE_EMP       = 0,
-		DAMAGE_RADIATION = 0,
-		DAMAGE_BIO       = 0,
-		DAMAGE_PAIN      = 0,
-		DAMAGE_TOXIN     = 0,
-		DAMAGE_GENETIC   = 0,
-		DAMAGE_OXY       = 0,
-		DAMAGE_BRAIN     = 0
-	)
+	health_resistances = /singleton/resistance/blob
 	damage_hitsound = 'sound/effects/attackblob.ogg'
 
 	var/regen_rate = 5
@@ -111,7 +97,7 @@
 	var/sound_played
 
 	for(var/mob/living/L in T)
-		if (L.stat == DEAD)
+		if (L.is_dead())
 			continue
 		if (!sound_played)
 			playsound(loc, 'sound/effects/attackblob.ogg', 50, 1)
@@ -162,7 +148,7 @@
 	var/attackDir = pick(dirs)
 	var/turf/T = get_step(src, attackDir)
 	for(var/mob/living/victim in T)
-		if(victim.stat == DEAD)
+		if(victim.is_dead())
 			continue
 		attack_living(victim)
 

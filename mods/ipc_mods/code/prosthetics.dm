@@ -3,9 +3,11 @@
 	var/siemens_coefficient		//чем больше, тем хуже
 	var/speed_modifier = 0
 	var/coolingefficiency = 0.5 // это база // меньше лучше
-	var/expensive = FALSE
+	var/expensive = 0 ///// 0 - бюджет протезы, 1 - нормальные, 2 - дорогие
 	var/addmax_damage
 	var/addmin_broken_damage
+	var/have_synth_skin = FALSE
+	can_eat = FALSE
 
 	armor = list(
 		melee = ARMOR_MELEE_MINOR,
@@ -18,7 +20,9 @@
 
 /obj/item/organ/external
 	var/coolingefficiency
-	var/expensive = FALSE
+	var/expensive = 0
+	var/have_synth_skin = FALSE
+	var/synth_skin_health
 
 /mob/living/carbon/human/get_armors_by_zone(obj/item/organ/external/def_zone, damage_type, damage_flags)
 	if(!def_zone)
@@ -61,15 +65,18 @@
 
 	dislocated = -1
 	remove_splint()
-	update_icon(1)
 	unmutate()
 
 	slowdown = 0
 	if(company)
 		var/datum/robolimb/R = all_robolimbs[company]
-		if(!istype(R) || (species && (species.name in R.species_cannot_use)) || \
-			(species && !(species.get_bodytype(owner) in R.allowed_bodytypes)) || \
-			(length(R.applies_to_part) && !(organ_tag in R.applies_to_part)))
+		var/use_basic = !istype(R)
+		if (!use_basic && length(R.applies_to_part) && !(organ_tag in R.applies_to_part))
+			use_basic = TRUE
+		if (!use_basic && owner && species)
+			if ((species.name in R.species_cannot_use) || !(species.get_bodytype(owner) in R.allowed_bodytypes))
+				use_basic = TRUE
+		if (use_basic)
 			R = basic_robolimb
 		else
 			model = company
@@ -84,6 +91,11 @@
 		max_damage = max_damage +  R.addmax_damage
 		min_broken_damage = min_broken_damage +  R.addmin_broken_damage
 		set_extension(src, /datum/extension/armor, armor)
+		have_synth_skin = R.have_synth_skin
+		if(have_synth_skin)
+			synth_skin_health = max_damage
+
+	update_icon(1)
 
 	for(var/obj/item/organ/external/T in children)
 		T.robotize(company, 1)
@@ -127,9 +139,9 @@
 		bio = ARMOR_BIO_SHIELDED,
 		rad = ARMOR_RAD_SMALL
 	)
-	speed_modifier = - 1
+	speed_modifier = - 0.3
 	coolingefficiency = 0.3
-	expensive = TRUE
+	expensive = 2
 
 /datum/robolimb/bishop/rook
 	company = "Bishop Rook"
@@ -146,8 +158,9 @@
 		bio = ARMOR_BIO_SHIELDED,
 		rad = ARMOR_RAD_SMALL
 	)
-	speed_modifier = - 0.7
+	speed_modifier = - 0.2
 	coolingefficiency = 0.4
+	expensive = 2
 
 /datum/robolimb/bishop/alt
 	company = "Bishop Alt."
@@ -177,7 +190,6 @@
 		bio = ARMOR_BIO_SHIELDED,
 		rad = ARMOR_RAD_RESISTANT
 	)
-	speed_modifier = 0.5
 	coolingefficiency = 0.8
 
 /datum/robolimb/hephaestus/alt
@@ -201,15 +213,15 @@
 		bio = ARMOR_BIO_SHIELDED,
 		rad = ARMOR_RAD_RESISTANT
 	)
-	expensive = TRUE
-	speed_modifier = 1.2
+	expensive = 1
+	speed_modifier = 0.5
 	coolingefficiency = 1
 
 /datum/robolimb/hephaestus/alt/monitor
 	company = "Hephaestus Monitor."
 	icon = 'icons/mob/human_races/cyberlimbs/hephaestus/hephaestus_monitor.dmi'
 	allowed_bodytypes = list(SPECIES_IPC)
-	can_eat = null
+	can_eat = FALSE
 	unavailable_at_fab = 1
 	has_screen = TRUE
 
@@ -217,7 +229,7 @@
 	company = "Zeng-Hu"
 	desc = "This limb has a rubbery fleshtone covering with visible seams."
 	icon = 'icons/mob/human_races/cyberlimbs/zenghu/zenghu_main.dmi'
-	can_eat = 1
+	can_eat = TRUE
 	unavailable_at_fab = 1
 	allowed_bodytypes = list(SPECIES_HUMAN,SPECIES_IPC)
 	armor = list(
@@ -231,7 +243,15 @@
 	)
 	coolingefficiency = 0.4
 	siemens_coefficient = 0.8
+	have_synth_skin = TRUE
+	expensive = 1
 
+/datum/robolimb/zenghu/premium
+	company = "Zeng-Hu Premium"
+	desc = "This limb has a high-quality naturalistic fleshtone covering with visible seams."
+	icon = 'mods/ipc_mods/icons/zenghu_cyberlimbs.dmi'
+	expensive = 2
+	skintone = 1
 
 /datum/robolimb/zenghu/spirit
 	company = "Zeng-Hu Spirit"
@@ -249,6 +269,8 @@
 	)
 	speed_modifier = - 0.3
 	coolingefficiency = 0.4
+	have_synth_skin = FALSE
+	expensive = 1
 
 /datum/robolimb/xion
 	company = "Xion"
@@ -293,7 +315,7 @@
 	company = "Xion Monitor."
 	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_monitor.dmi'
 	allowed_bodytypes = list(SPECIES_IPC)
-	can_eat = null
+	can_eat = FALSE
 	unavailable_at_fab = 1
 	has_screen = TRUE
 
@@ -318,7 +340,7 @@
 	company = "Ward-Takahashi"
 	desc = "This limb features sleek black and white polymers."
 	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_main.dmi'
-	can_eat = 1
+	can_eat = TRUE
 	unavailable_at_fab = 1
 	armor = list(
 		melee = ARMOR_MELEE_MINOR,
@@ -358,7 +380,7 @@
 	company = "Ward-Takahashi Monitor."
 	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_monitor.dmi'
 	allowed_bodytypes = list(SPECIES_IPC)
-	can_eat = null
+	can_eat = FALSE
 	unavailable_at_fab = 1
 	has_screen = TRUE
 
@@ -429,16 +451,17 @@
 	unavailable_at_fab = 1
 	has_eyes = FALSE
 	allowed_bodytypes = list(SPECIES_IPC)
-	has_screen = TRUE
+	has_screen = 2
 
 /datum/robolimb/veymed
 	company = "Vey-Med"
 	desc = "This high quality limb is nearly indistinguishable from an organic one."
 	icon = 'icons/mob/human_races/cyberlimbs/veymed/veymed_main.dmi'
-	can_eat = 1
+	can_eat = TRUE
 	skintone = 1
 	unavailable_at_fab = 1
-	expensive = TRUE
+	expensive = 2
+	have_synth_skin = TRUE
 	species_cannot_use = list(SPECIES_IPC)
 
 /datum/robolimb/shellguard

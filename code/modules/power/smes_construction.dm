@@ -100,7 +100,7 @@
 
 
 /obj/machinery/power/smes/buildable/Destroy()
-	for(var/datum/nano_module/rcon/R in world)
+	for(var/datum/nano_module/program/rcon/R in world)
 		R.FindDevices()
 	return ..()
 
@@ -144,6 +144,8 @@
 		capacity *= 1.2
 		input_level_max *= 2
 		output_level_max *= 2
+	input_level = clamp(input_level, 0, input_level_max)
+	output_level = clamp(output_level, 0, output_level_max)
 	charge = clamp(charge, 0, capacity)
 
 // Proc: total_system_failure()

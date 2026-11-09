@@ -1,18 +1,19 @@
 /datum/job/chief_steward
 	title = "Chief Steward"
-	department = "Обслуживания"
+	department = "Service"
 	department_flag = SRV
 	head_position = 1
 	total_positions = 1
 	spawn_positions = 1
 	minimum_character_age = list(SPECIES_HUMAN = 28)
 	ideal_character_age = 35
-	economic_power = 6
+	alt_titles = list("Chief")
+	economic_power = 8
 	minimal_player_age = 7
 	supervisors = "Главе Персонала"
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/service/chief_steward
 	allowed_branches = list(/datum/mil_branch/employee)
-	allowed_ranks = list(/datum/mil_rank/civ/nt)
+	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/acting, /datum/mil_rank/civ/probation_employee)
 	min_skill = list(
 		SKILL_BUREAUCRACY = SKILL_TRAINED,
 		SKILL_COOKING = SKILL_TRAINED,
@@ -33,7 +34,8 @@
 		access_hydroponics,
 		access_kitchen,
 		access_commissary,
-		access_RC_announce
+		access_RC_announce,
+		access_employment_records
 	)
 
 /datum/job/chief_steward/get_description_blurb()
@@ -46,7 +48,7 @@
 
 /datum/job/chaplain
 	title = "Chaplain"
-	department = "Обслуживания"
+	department = "Service"
 	department_flag = SRV
 
 	total_positions = 1
@@ -75,7 +77,7 @@
 
 /datum/job/janitor
 	title = "Janitor"
-	department = "Обслуживания"
+	department = "Service"
 	department_flag = SRV
 
 	total_positions = 2
@@ -93,7 +95,9 @@
 	allowed_ranks = list(
 		/datum/mil_rank/civ/nt,
 		/datum/mil_rank/civ/contractor,
-		/datum/mil_rank/civ/civ
+		/datum/mil_rank/civ/civ,
+		/datum/mil_rank/civ/probation_employee,
+		/datum/mil_rank/civ/probation_contractor
 	)
 	min_skill = list(SKILL_HAULING = SKILL_BASIC)
 	access = list(access_maint_tunnels, access_emergency_storage, access_janitor)
@@ -105,7 +109,7 @@
 
 /datum/job/cook
 	title = "Cook"
-	department = "Обслуживания"
+	department = "Service"
 	department_flag = SRV
 
 	total_positions = 1
@@ -122,7 +126,9 @@
 	allowed_ranks = list(
 		/datum/mil_rank/civ/nt,
 		/datum/mil_rank/civ/contractor,
-		/datum/mil_rank/civ/civ
+		/datum/mil_rank/civ/civ,
+		/datum/mil_rank/civ/probation_employee,
+		/datum/mil_rank/civ/probation_contractor
 	)
 	min_skill = list(
 		SKILL_COOKING = SKILL_TRAINED,
@@ -138,7 +144,7 @@
 
 /datum/job/steward
 	title = "Steward"
-	department = "Обслуживания"
+	department = "Service"
 	department_flag = SRV
 
 	total_positions = 2
@@ -152,7 +158,7 @@
 	supervisors = "Главному Стюарду и Главе Персонала"
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/service/cook
 	allowed_branches = list(/datum/mil_branch/employee, /datum/mil_branch/civilian, /datum/mil_branch/contractor)
-	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor, /datum/mil_rank/civ/civ)
+	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor, /datum/mil_rank/civ/civ, /datum/mil_rank/civ/probation_employee, /datum/mil_rank/civ/probation_contractor)
 	min_skill = list(
 		SKILL_COOKING = SKILL_BASIC,
 		SKILL_BOTANY = SKILL_BASIC,
@@ -169,7 +175,7 @@
 	title = "Bartender"
 	total_positions = 1
 	spawn_positions = 1
-	department = "Обслуживания"
+	department = "Service"
 	department_flag = SRV
 	ideal_character_age = 30
 	alt_titles = list("Barista")
@@ -183,7 +189,9 @@
 	allowed_ranks = list(
 		/datum/mil_rank/civ/nt,
 		/datum/mil_rank/civ/contractor,
-		/datum/mil_rank/civ/civ
+		/datum/mil_rank/civ/civ,
+		/datum/mil_rank/civ/probation_employee,
+		/datum/mil_rank/civ/probation_contractor
 	)
 	access = list(access_hydroponics, access_bar, access_commissary)
 	min_skill = list(
@@ -198,7 +206,7 @@
 
 /datum/job/actor
 	title = "Actor"
-	department = "Обслуживания"
+	department = "Service"
 	department_flag = SRV
 
 	total_positions = 2

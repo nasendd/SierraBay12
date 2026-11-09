@@ -66,6 +66,19 @@
 	else if(!playing && sound_token)
 		QDEL_NULL(sound_token)
 
+/obj/machinery/atmospherics/pipe/Process()
+	if(!parent) //This should cut back on the overhead calling build_network thousands of times per cycle
+		..()
+	else if(leaking)
+		parent.mingle_with_turf(loc, volume)
+		var/air = parent.air && parent.air.return_pressure()
+		if(!sound_token && air)
+			update_sound(TRUE)
+		else if(sound_token && !air)
+			update_sound(FALSE)
+	else
+		. = PROCESS_KILL
+
 /obj/machinery/atmospherics/pipe/proc/pipeline_expansion()
 	return null
 
@@ -207,19 +220,6 @@
 		set_invisibility(i ? INVISIBILITY_ABSTRACT : 0)
 	update_icon()
 
-/obj/machinery/atmospherics/pipe/simple/Process()
-	if(!parent) //This should cut back on the overhead calling build_network thousands of times per cycle
-		..()
-	else if(leaking)
-		parent.mingle_with_turf(loc, volume)
-		var/air = parent.air && parent.air.return_pressure()
-		if(!sound_token && air)
-			update_sound(TRUE)
-		else if(sound_token && !air)
-			update_sound(FALSE)
-	else
-		. = PROCESS_KILL
-
 /obj/machinery/atmospherics/pipe/simple/check_pressure(pressure)
 	// Don't ask me, it happened somehow.
 	if (!istype(loc, /turf))
@@ -240,8 +240,7 @@
 	else return 1
 
 /obj/machinery/atmospherics/pipe/proc/burst()
-	ASSERT(parent)
-	parent.temporarily_store_air()
+	parent?.temporarily_store_air()
 	visible_message(SPAN_DANGER("\The [src] bursts!"))
 	playsound(loc, 'sound/effects/bang.ogg', 25, TRUE)
 	var/datum/effect/smoke_spread/smoke = new
@@ -471,12 +470,6 @@
 
 /obj/machinery/atmospherics/pipe/manifold/pipeline_expansion()
 	return list(node1, node2, node3)
-
-/obj/machinery/atmospherics/pipe/manifold/Process()
-	if(!parent)
-		..()
-	else
-		. = PROCESS_KILL
 
 /obj/machinery/atmospherics/pipe/manifold/Destroy()
 	if(node1)
@@ -736,12 +729,6 @@
 
 /obj/machinery/atmospherics/pipe/manifold4w/pipeline_expansion()
 	return list(node1, node2, node3, node4)
-
-/obj/machinery/atmospherics/pipe/manifold4w/Process()
-	if(!parent)
-		..()
-	else
-		. = PROCESS_KILL
 
 /obj/machinery/atmospherics/pipe/manifold4w/Destroy()
 	if(node1)

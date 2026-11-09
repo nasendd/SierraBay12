@@ -4,10 +4,12 @@
 		/datum/gear/union_card,
 		/datum/gear/suit/labcoat_corp,
 		/datum/gear/suit/medcoat,
+		/datum/gear/uniform/corporate,
 		/datum/gear/uniform/corp_exec,
 		/datum/gear/uniform/corp_overalls,
 		/datum/gear/uniform/corp_flight,
 		/datum/gear/uniform/corp_exec_jacket,
+		/datum/gear/augment/head_vision
 	)
 
 //For all exploration crew
@@ -66,7 +68,7 @@
 #define NANOTRASEN_ROLES list(\
 	/datum/job/captain, /datum/job/hop, /datum/job/rd, /datum/job/cmo, /datum/job/chief_engineer, /datum/job/hos, \
 	/datum/job/iaa, /datum/job/iso, \
-	/datum/job/senior_engineer, /datum/job/engineer, /datum/job/infsys, /datum/job/roboticist, /datum/job/engineer_trainee, \
+	/datum/job/senior_engineer, /datum/job/engineer, /datum/job/infsys, /datum/job/roboticist, \
 	/datum/job/officer, /datum/job/warden, /datum/job/detective, /datum/job/security_assistant, \
 	/datum/job/senior_doctor, /datum/job/doctor, /datum/job/doctor_trainee,/datum/job/chemist, \
 	/datum/job/psychiatrist, \
@@ -110,7 +112,7 @@
 //For members of the engineering department
 #define ENGINEERING_ROLES list(\
 	/datum/job/chief_engineer, /datum/job/senior_engineer, /datum/job/engineer, /datum/job/infsys,\
-	 /datum/job/roboticist, /datum/job/engineer_trainee, /datum/job/explorer_engineer \
+	 /datum/job/roboticist, /datum/job/explorer_engineer \
 )
 
 //For members of Engineering, Cargo, and Research
@@ -119,7 +121,7 @@
 	/datum/job/cargo_tech, /datum/job/cargo_assistant,/datum/job/mining,\
 	/datum/job/scientist_assistant,    /datum/job/rd,\
 	/datum/job/senior_scientist, /datum/job/scientist, /datum/job/chief_engineer, /datum/job/infsys,\
-	/datum/job/engineer_trainee, /datum/job/explorer_engineer \
+	/datum/job/explorer_engineer \
 )
 
 //For members of the security department
@@ -128,6 +130,7 @@
 	/datum/job/warden, \
 	/datum/job/detective, \
 	/datum/job/officer, \
+	/datum/job/iso, \
 	/datum/job/security_assistant \
 )
 
@@ -144,32 +147,36 @@
 	/datum/job/janitor, \
 	/datum/job/cook, \
 	/datum/job/bartender, \
-	/datum/job/steward \
+	/datum/job/steward, \
+	/datum/job/actor, \
+	/datum/job/chaplain \
 )
 
 //For members of the research department and jobs that are scientific
 #define RESEARCH_ROLES list(\
 	/datum/job/rd, /datum/job/iaa, /datum/job/scientist,\
 	/datum/job/scientist_assistant, /datum/job/assistant,\
-	/datum/job/senior_scientist, /datum/job/roboticist \
+	/datum/job/senior_scientist \
 )
 
 //For jobs that spawn with weapons in their lockers
 #define ARMED_ROLES list(\
 	/datum/job/captain, /datum/job/hop, /datum/job/hos,\
-	/datum/job/officer, /datum/job/warden, /datum/job/detective, /datum/job/security_assistant \
+	/datum/job/rd, /datum/job/cmo, /datum/job/chief_engineer,\
+	/datum/job/officer, /datum/job/iso, /datum/job/warden, /datum/job/detective, /datum/job/security_assistant \
 )
 
 //For jobs that spawn with armor in their lockers
 #define ARMORED_ROLES list(\
 	/datum/job/captain, /datum/job/hop, /datum/job/rd, /datum/job/cmo,\
 	/datum/job/chief_engineer, /datum/job/hos, /datum/job/qm,\
-	/datum/job/warden, /datum/job/detective, /datum/job/officer, \
+	/datum/job/warden, /datum/job/detective, /datum/job/officer, /datum/job/iso, \
+	/datum/job/doctor \
 )
 
 #define CONTRACT_ROLES list(\
 	/datum/job/explorer, /datum/job/explorer_pilot, /datum/job/explorer_medic, /datum/job/explorer_engineer, \
-	/datum/job/engineer, /datum/job/engineer_trainee, \
+	/datum/job/engineer, \
 	/datum/job/officer, /datum/job/detective, \
 	/datum/job/senior_doctor, /datum/job/doctor, /datum/job/doctor_trainee,/datum/job/chemist, /datum/job/psychiatrist, \
 	/datum/job/cargo_tech,  /datum/job/cargo_assistant, /datum/job/mining, \

@@ -53,3 +53,90 @@
 /obj/item/clothing/head/soft/on_update_icon()
 	. = ..()
 	item_state = initial(item_state) + (flipped ? "_flipped" : "")
+
+/obj/item/clothing/head/beret/kms
+	name = "\improper KMS beret"
+	desc = "A white beret denoting KMS employee."
+	icon = 'mods/loadout_items/icons/obj_head.dmi'
+	item_icons = list(
+		slot_head_str = 'mods/loadout_items/icons/onmob_head.dmi'
+	)
+	icon_state = "kmsberet"
+	item_state = "kmsberet"
+
+/obj/item/clothing/head/bighat
+	name = "brown wide hat"
+	desc = "A brown hat with a wide brim and low crown. Yeehaw!"
+	icon = 'mods/loadout_items/icons/obj_head.dmi'
+	item_icons = list(
+		slot_head_str = 'mods/loadout_items/icons/onmob_head.dmi'
+	)
+
+	icon_state = "cowboy_wide"
+	item_state = "cowboy_wide"
+
+/obj/item/clothing/head/bighat/kgbhat
+	name = "black-red hat"
+	desc = "A black hat with a wide brim and low crown with red additions"
+	icon_state = "kgbhat"
+	item_state = "kgbhat"
+
+/obj/item/clothing/head/bighat/gunfighter
+	name = "white stetson hat"
+	desc = "A white hat with a slightly wide brim and high crown"
+	icon_state = "gunfighter"
+	item_state = "gunfighter"
+
+/obj/item/clothing/head/bighat/lawdog
+	name = "black stetson hat"
+	desc = "A black hat with a slightly wide brim and high crown"
+	icon_state = "lawdog"
+	item_state = "lawdog"
+
+/obj/item/clothing/head/bighat/black
+	name = "black wide hat"
+	desc = "A black hat with a wide brim and low crown."
+	icon_state = "blackhat"
+	item_state = "blackhat"
+
+/obj/item/clothing/head/beret/barc
+	name = "P317 beret"
+	desc = "It’s a beret with crudely sewn over old ones Periphery 317 colors. The owner is employed by BARC PMC."
+	icon = 'mods/loadout_items/icons/obj_head.dmi'
+	item_icons = list(
+		slot_head_str = 'mods/loadout_items/icons/onmob_head.dmi'
+	)
+	sprite_sheets = list(
+		SPECIES_UNATHI = 'mods/loadout_items/icons/unathi/onmob_head_unathi.dmi',
+		SPECIES_RESOMI = "mods/resomi/icons/clothing/onmob_head_resomi.dmi"
+		)
+	icon_state = "barcberet"
+	item_state = "barcberet"
+
+/obj/item/clothing/head/soft/baseball/colorable
+	name = "baseball cap"
+	desc = "It’s just a baseball cap."
+	icon = 'mods/loadout_items/icons/obj_head.dmi'
+	item_icons = list(
+		slot_head_str = 'mods/loadout_items/icons/onmob_head.dmi'
+	)
+	sprite_sheets = list(
+		SPECIES_UNATHI = 'mods/loadout_items/icons/unathi/onmob_head_unathi.dmi',
+		SPECIES_RESOMI = "mods/resomi/icons/clothing/onmob_head_resomi.dmi"
+		)
+	icon_state = "cprescap"
+	item_state = "baseballcap"
+
+/obj/item/clothing/head/soft/baseball/barc
+	name = "P317 cap"
+	desc = "It’s a Baseball cap in colors of Periphery 317 - Enclave under the BARC PMC."
+	icon = 'mods/loadout_items/icons/obj_head.dmi'
+	item_icons = list(
+		slot_head_str = 'mods/loadout_items/icons/onmob_head.dmi'
+	)
+	sprite_sheets = list(
+		SPECIES_UNATHI = 'mods/loadout_items/icons/unathi/onmob_head_unathi.dmi',
+		SPECIES_RESOMI = "mods/resomi/icons/clothing/onmob_head_resomi.dmi"
+		)
+	icon_state = "barccap"
+	item_state = "barccap"

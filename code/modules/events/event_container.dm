@@ -8,7 +8,7 @@
 #define ASSIGNMENT_SCIENTIST "Scientist"
 #define ASSIGNMENT_SECURITY "Security"
 
-var/global/list/severity_to_string = list(EVENT_LEVEL_MUNDANE = "Mundane", EVENT_LEVEL_MODERATE = "Moderate", EVENT_LEVEL_MAJOR = "Major", EVENT_LEVEL_EXO = "Exoplanet")
+var/global/list/severity_to_string = alist(EVENT_LEVEL_MUNDANE = "Mundane", EVENT_LEVEL_MODERATE = "Moderate", EVENT_LEVEL_MAJOR = "Major", EVENT_LEVEL_EXO = "Exoplanet")
 
 /datum/event_container
 	var/severity = -1
@@ -157,6 +157,9 @@ var/global/list/severity_to_string = list(EVENT_LEVEL_MUNDANE = "Mundane", EVENT
 	available_events = list(
 		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Nothing",								/datum/event/nothing,					1230),
 		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Appendicitis", 						/datum/event/spontaneous_appendicitis, 	0,		list(ASSIGNMENT_MEDICAL = 10), 1),
+		// [SIERRA-ADD] - CARDIAC_OVERHAUL - Spontaneous heart attack event
+		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Heart Attack", 						/datum/event/spontaneous_heart_attack, 	0,		list(ASSIGNMENT_MEDICAL = 10), 1),
+		// [/SIERRA-ADD]
 		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Communication Blackout",				/datum/event/communications_blackout,	100,	list(ASSIGNMENT_AI = 100, ASSIGNMENT_ENGINEER = 20)),
 		new /datum/event_meta/no_overmap(EVENT_LEVEL_MODERATE, "Electrical Storm",			/datum/event/electrical_storm, 			10,		list(ASSIGNMENT_ENGINEER = 15, ASSIGNMENT_JANITOR = 10)),
 		new /datum/event_meta/no_overmap(EVENT_LEVEL_MODERATE, "Gravity Failure",			/datum/event/gravity,	 				75,		list(ASSIGNMENT_ENGINEER = 25)),

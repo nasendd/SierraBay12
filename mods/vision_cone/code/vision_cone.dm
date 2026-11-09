@@ -9,7 +9,7 @@
 	name = "game world fov hidden plane master"
 	plane = GAME_PLANE_FOV_HIDDEN
 	group = RENDER_GROUP_SCENE
-	renderer_flags = RENDERER_MAIN | RENDERER_SHARED
+	renderer_flags = RENDERER_FLAG_AUTO
 
 /atom/movable/renderer/fov_hidden/Initialize()
 	. = ..()
@@ -20,7 +20,7 @@
 	plane = FIELD_OF_VISION_BLOCKER_PLANE
 	render_target_name = FIELD_OF_VISION_BLOCKER_RENDER_TARGET
 	mouse_opacity = MOUSE_OPACITY_UNCLICKABLE
-	renderer_flags = RENDERER_MAIN | RENDERER_SHARED
+	renderer_flags = RENDERER_FLAG_AUTO
 	appearance_flags = PLANE_MASTER
 
 
@@ -28,14 +28,14 @@
 	name = "nearsight blur"
 	plane = DEFAULT_PLANE
 	group = RENDER_GROUP_SCENE
-	renderer_flags = RENDERER_MAIN | RENDERER_SHARED
+	renderer_flags = RENDERER_FLAG_AUTO
 
 
 /atom/movable/renderer/above_fov
 	name = "above fov"
 	plane = GAME_PLANE_ABOVE_FOV
 	group = RENDER_GROUP_SCENE
-	renderer_flags = RENDERER_MAIN | RENDERER_SHARED
+	renderer_flags = RENDERER_FLAG_AUTO
 
 /client
 	var/obj/screen/fullscreen/fov_blocker/fov_mask
@@ -43,6 +43,7 @@
 	var/usefov = FALSE
 	var/hasmask = FALSE
 	var/fovangle
+	var/viewoffset = FALSE
 
 /mob/living/SelfMove(direction)
 	. = ..()
@@ -55,7 +56,8 @@
 			facing_dir = null
 		else if(buckled)
 			if(buckled.obj_flags & OBJ_FLAG_ROTATABLE)
-				buckled.set_dir(facing_dir)
+				if(buckled.dir != facing_dir)
+					buckled.set_dir(facing_dir)
 				return ..(facing_dir)
 			else
 				facing_dir = null
@@ -81,16 +83,21 @@
 	. = ..()
 	check_fov()
 
-/mob/living/proc/update_fov_dir()
+/mob/proc/update_fov_dir()
 	if(client && client.usefov)
-		client.fov_mask.dir = src.dir
-		client.fov_shadow.dir = src.dir
+		if(client.fov_mask && client.fov_shadow)
+			client.fov_mask.dir = src.dir
+			client.fov_shadow.dir = src.dir
+		else
+			client.remove_cone()
 
-/mob/living/proc/check_fov()
+
+/mob/proc/check_fov()
 	var/mob/eyepath
 	if(client)
-		if(resting || lying)
-			client.hide_cone()
+		if(client.viewoffset)
+			client.hide_mask()
+			return
 		//Trying to make FOV works for Mechs
 		else if(client.eye != client.mob)
 			eyepath = client.eye
@@ -109,7 +116,7 @@
 		else
 			client.hide_cone()
 
-/mob/living/proc/toggle_fov(usefov, fovangle)
+/mob/proc/toggle_fov(usefov, fovangle)
 	if(client)
 		client.usefov = usefov
 		client.fovangle = fovangle
@@ -141,10 +148,16 @@
 	fovangle = 0
 
 /client/proc/hide_mask()
-	fov_shadow = mob.clear_fullscreen("FOV_shadow")
-	fov_mask = mob.clear_fullscreen("FOV_mask")
+	// Instant. The default fade leaves a blurry cone over a scope or binoculars.
+	fov_shadow = mob.clear_fullscreen("FOV_shadow", FALSE)
+	fov_mask = mob.clear_fullscreen("FOV_mask", FALSE)
 	hasmask = FALSE
 
+/client/proc/reload_fov()
+	remove_cone()
+	if(istype(mob, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = mob
+		H.update_inv_head()
 
 /mob/living/proc/in_fov(atom/observed_atom, ignore_self = FALSE)
 	if(ignore_self && observed_atom == src)
@@ -155,6 +168,8 @@
 	var/turf/my_turf = get_turf(src) //Because being inside contents of something will cause our x,y to not be updated
 	// If turf doesn't exist, then we wouldn't get a fov check called by `play_fov_effect` or presumably other new stuff that might check this.
 	//  ^ If that case has changed and you need that check, add it.
+	if(!my_turf || !observed_atom)
+		return
 	var/rel_x = observed_atom.x - my_turf.x
 	var/rel_y = observed_atom.y - my_turf.y
 	if(client?.fovangle)

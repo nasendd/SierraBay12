@@ -1,25 +1,28 @@
 /datum/design/item/mech/weapon/ion
 	name = "mounted ion rifle"
 	id = "mech_ion"
+	materials = list(MATERIAL_STEEL = 12000, MATERIAL_ALUMINIUM = 2000, MATERIAL_GLASS = 2000)
 	req_tech = list(TECH_COMBAT = 4, TECH_MAGNET = 4)
 	build_path = /obj/item/mech_equipment/mounted_system/taser/ion
 
 /datum/design/item/mech/weapon/laser
 	name = "mounted laser gun"
 	id = "mech_laser"
+	materials = list(MATERIAL_STEEL = 14000, MATERIAL_GLASS = 6000)
 	req_tech = list(TECH_COMBAT = 4, TECH_MAGNET = 4)
 	build_path = /obj/item/mech_equipment/mounted_system/taser/laser
 
 /datum/design/item/mech/weapon/machete
 	name = "Mechete"
 	id = "mech_machete"
+	materials = list(MATERIAL_STEEL = 20000)
 	req_tech = list(TECH_COMBAT = 2)
 	build_path = /obj/item/mech_equipment/mounted_system/melee/mechete
 
 /datum/design/item/mech/weapon/flamethrower
 	name = "mounted flamethrower"
 	id = "mech_flamer"
-	materials = list(MATERIAL_STEEL = 20000, MATERIAL_PLASTIC = 10000)
+	materials = list(MATERIAL_STEEL = 20000, MATERIAL_PLASTIC = 10000, MATERIAL_ALUMINIUM = 2000)
 	req_tech = list(TECH_COMBAT = 1, TECH_MATERIAL = 2)
 	build_path = /obj/item/mech_equipment/mounted_system/flamethrower
 
@@ -32,6 +35,7 @@
 /datum/design/item/mech/taser
 	name = "mounted electrolaser"
 	id = "mech_taser"
+	materials = list(MATERIAL_STEEL = 12000, MATERIAL_GLASS = 4000)
 	req_tech = list(TECH_COMBAT = 1)
 	build_path = /obj/item/mech_equipment/mounted_system/taser
 
@@ -69,7 +73,7 @@
 	name = "mounted GRAD system"
 	id = "mech_GRAD"
 	req_tech = list(TECH_COMBAT = 7, TECH_MAGNET = 7, TECH_MATERIAL = 7)
-	materials = list(MATERIAL_STEEL = 60000, MATERIAL_URANIUM = 25000, MATERIAL_ALUMINIUM = 40000, MATERIAL_GOLD = 2500, MATERIAL_SILVER = 2500, )
+	materials = list(MATERIAL_STEEL = 60000,  MATERIAL_ALUMINIUM = 40000, MATERIAL_PLASTIC = 10000,)
 	build_path = /obj/item/mech_equipment/mounted_system/taser/ballistic/launcher
 
 
@@ -77,7 +81,7 @@
 	name = "GRAD pepper rockets"
 	id = "mech_GRAD_peper"
 	req_tech = list(TECH_COMBAT = 7, TECH_MAGNET = 7, TECH_MATERIAL = 7)
-	materials = list(MATERIAL_STEEL = 20000, MATERIAL_PHORON = 10000)
+	materials = list(MATERIAL_STEEL = 20000, MATERIAL_PHORON = 5000)
 	build_path = /obj/item/ammo_magazine/rockets_casing/pepper
 
 /datum/design/item/mech/weapon/flashbang_ammo_crate
@@ -91,5 +95,5 @@
 	name = "GRAD fire rockets"
 	id = "mech_GRAD_fire"
 	req_tech = list(TECH_COMBAT = 7, TECH_MAGNET = 7, TECH_MATERIAL = 7)
-	materials = list(MATERIAL_STEEL = 20000, MATERIAL_PHORON = 10000)
+	materials = list(MATERIAL_STEEL = 20000, MATERIAL_PHORON = 10000, MATERIAL_URANIUM = 25000, MATERIAL_GOLD = 2500, MATERIAL_SILVER = 2500,)
 	build_path = /obj/item/ammo_magazine/rockets_casing/fire

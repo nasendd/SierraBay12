@@ -194,7 +194,6 @@
 	fab_status_flags = 1;
 	pixel_x = 5
 	},
-/obj/item/storage/box/microlathe_designs,
 /obj/structure/table/marble,
 /turf/simulated/floor/wood,
 /area/playable_yacht/relax_zone)
@@ -276,7 +275,7 @@
 /area/playable_yacht/relax_zone)
 "bb" = (
 /obj/structure/table/marble,
-/obj/item/material/chopping_board,
+/obj/item/reagent_containers/cooking_container/board,
 /obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{
 	dir = 4
 	},
@@ -379,7 +378,7 @@
 /turf/simulated/floor/wood/walnut,
 /area/playable_yacht/bridge)
 "bv" = (
-/obj/machinery/computer/ship/sensors,
+/obj/machinery/computer/modular/preset/sensors,
 /turf/simulated/floor/wood/walnut,
 /area/playable_yacht/bridge)
 "bw" = (
@@ -657,14 +656,14 @@
 	dir = 1;
 	icon_state = "tube_map"
 	},
-/obj/machinery/microwave{
+/obj/machinery/appliance/cooker/microwave{
 	pixel_y = 8;
 	dir = 4
 	},
 /turf/simulated/floor/tiled/white,
 /area/playable_yacht/kitchen)
 "ck" = (
-/obj/machinery/cooker/oven,
+/obj/machinery/appliance/cooker/oven,
 /obj/structure/extinguisher_cabinet{
 	pixel_y = 28
 	},
@@ -675,7 +674,7 @@
 	dir = 1;
 	icon_state = "tube_map"
 	},
-/obj/machinery/cooker/fryer{
+/obj/machinery/appliance/cooker/fryer{
 	dir = 4
 	},
 /turf/simulated/floor/tiled/white,
@@ -702,7 +701,7 @@
 /turf/simulated/floor/tiled/monotile,
 /area/playable_yacht/right_engine)
 "cp" = (
-/obj/machinery/cooker/grill,
+/obj/machinery/appliance/cooker/grill,
 /turf/simulated/floor/tiled/white,
 /area/playable_yacht/kitchen)
 "cq" = (
@@ -774,7 +773,7 @@
 /area/playable_yacht/kitchen)
 "cS" = (
 /obj/structure/table/marble,
-/obj/machinery/cooker/candy,
+/obj/machinery/appliance/mixer/candy,
 /obj/item/reagent_containers/food/condiment/enzyme{
 	pixel_x = -11;
 	pixel_y = 19
@@ -869,6 +868,7 @@
 	dir = 4;
 	icon_state = "tube_map"
 	},
+/obj/item/crowbar/red,
 /turf/simulated/floor/wood/walnut,
 /area/playable_yacht/living)
 "db" = (
@@ -1051,7 +1051,7 @@
 /area/playable_yacht/kitchen)
 "dK" = (
 /obj/structure/table/marble,
-/obj/machinery/cooker/cereal,
+/obj/machinery/appliance/mixer/cereal,
 /turf/simulated/floor/tiled/white,
 /area/playable_yacht/kitchen)
 "dN" = (
@@ -1114,7 +1114,7 @@
 /turf/simulated/floor/tiled/monotile,
 /area/playable_yacht/right_engine)
 "dW" = (
-/obj/machinery/computer/ship/navigation/telescreen{
+/obj/item/modular_computer/telescreen/preset/navigation{
 	dir = 3;
 	pixel_y = 32
 	},
@@ -1467,6 +1467,11 @@
 	d2 = 8;
 	icon_state = "2-8"
 	},
+/obj/structure/cable{
+	d1 = 2;
+	d2 = 4;
+	icon_state = "2-4"
+	},
 /turf/simulated/floor/wood/walnut,
 /area/playable_yacht/main_corridor)
 "iP" = (
@@ -1796,7 +1801,6 @@
 	dir = 8
 	},
 /obj/machinery/fabricator/hacked,
-/obj/item/storage/box/autolathe_designs,
 /obj/item/stack/material/glass/ten,
 /obj/item/stack/material/steel/ten,
 /turf/simulated/floor/tiled/monotile,
@@ -1987,7 +1991,7 @@
 /turf/simulated/floor/tiled/monotile,
 /area/playable_yacht/right_engine)
 "Jh" = (
-/obj/machinery/computer/ship/engines,
+/obj/machinery/computer/modular/preset/helm,
 /obj/machinery/alarm{
 	dir = 4;
 	pixel_x = -24;

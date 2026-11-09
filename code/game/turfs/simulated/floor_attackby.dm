@@ -44,7 +44,7 @@
 		return TRUE
 
 	if(isCoil(C) || (flooring && istype(C, /obj/item/stack/material/rods)))
-		return ..(C, user)
+		return ..()
 
 	if(!(isScrewdriver(C) && flooring && (flooring.flags & TURF_REMOVE_SCREWDRIVER)) && try_graffiti(user, C))
 		return TRUE
@@ -162,7 +162,7 @@
 				var/singleton/flooring/F = singletons[flooring_type]
 				if(!F.build_type)
 					continue
-				if(S.type == F.build_type || S.build_type == F.build_type)
+				if(F.is_build_stack(S))
 					use_flooring = F
 					break
 			if(!use_flooring)

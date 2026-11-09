@@ -6,6 +6,8 @@
 	icon_state = "heavy_body"
 	power_use = 50
 	has_hardpoints = list(HARDPOINT_BACK)
+	matter = list(MATERIAL_STEEL = 210000, MATERIAL_URANIUM = 10000, MATERIAL_PLASTEEL = 40000, MATERIAL_ALUMINIUM = 40000)
+
 	max_hp = 500
 	mech_health = 500
 	max_repair = 150
@@ -13,18 +15,19 @@
 	repair_damage = 30
 	hide_pilot = TRUE
 	req_material = MATERIAL_PLASTEEL
-	back_modificator_damage = 4
+	back_modificator_damage = 3
 	front_modificator_damage = 0.5
 	max_heat = 300
 	heat_cooling = 4
 	emp_heat_generation = 100
 	weight = 800
 
-/obj/item/mech_component/chassis/heavy/prebuild()
+
+/obj/item/mech_component/chassis/heavy/Initialize()
 	pilot_positions = list(
 		list(
 			"[NORTH]" = list("x" = 8,  "y" = 8),
-			"[SOUTH]" = list("x" = 9,  "y" = 2),
+			"[SOUTH]" = list("x" = 8,  "y" = 8),
 			"[EAST]"  = list("x" = 4,  "y" = 8),
 			"[WEST]"  = list("x" = 12, "y" = 8)
 		)

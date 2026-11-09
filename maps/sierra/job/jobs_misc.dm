@@ -2,7 +2,7 @@
 	title = "Crewman"
 	total_positions = 12
 	spawn_positions = 12
-	department = "Гражданский"
+	department = "Civilian"
 	department_flag = CIV
 	supervisors = "Главе Персонала"
 	selection_color = "#515151"
@@ -60,6 +60,7 @@
 	create_record = FALSE
 	announced = FALSE
 	late_joinable = FALSE
+	give_psionic_implant_on_join = FALSE
 	min_goals = 2
 	max_goals = 7
 	access = list(access_maint_tunnels)

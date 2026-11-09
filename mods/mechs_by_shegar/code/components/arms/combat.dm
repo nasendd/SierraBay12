@@ -9,8 +9,9 @@
 	max_repair = 30
 	melee_damage = 30
 	repair_damage = 10
-	back_modificator_damage = 1.3
 	front_modificator_damage = 1
+	matter = list(MATERIAL_STEEL = 45000, MATERIAL_PLASTEEL = 5000, MATERIAL_ALUMINIUM = 5000)
+
 	max_heat = 100
 	heat_cooling = 4
 	emp_heat_generation = 50

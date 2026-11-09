@@ -1,3 +1,28 @@
+/datum/antagonist/traitor/create_objectives(datum/mind/traitor)
+	var/datum/objective/survive/traitor/survive_objective = new
+	survive_objective.owner = traitor
+	traitor.objectives += survive_objective
+
+/datum/antagonist/traitor/add_antagonist_mind(datum/mind/player, ignore_role, nonstandard_role_type, nonstandard_role_msg, bypass = FALSE)
+	if (..())
+		register_antagonist(MODE_TRAITOR, player)
+		player.current.verbs += /mob/living/proc/get_objective
+		player.generated_objectives = 0
+		// there is 1 second spawn in parent proc and this text should be displayed right after it
+		addtimer(new Callback(src, .proc/give_objectives_hint, player), 1.1 SECOND)
+		return 1
+	else
+		return 0
+
+/datum/antagonist/traitor/remove_antagonist(datum/mind/player, show_message, implanted)
+	unregister_antagonist(MODE_TRAITOR, player)
+	return ..()
+
+/datum/antagonist/proc/give_objectives_hint(datum/mind/player)
+	to_chat(player.current, SPAN_NOTICE("Unsure what goal to pursue? You can acquire an objective with the \
+			<b>Get Objective</b> verb, located in the IC tab. These objectives are optional and don't give you \
+			the right to go on a murder spree, you still need to think of an ambition to perform the suggested goals."))
+
 //
 //        DOOR CHARGE
 //
@@ -7,7 +32,7 @@
 
 /obj/item/door_charge
 	name = "door charge"
-	desc = "This is a booby trap, planted on doors. When door opens, it will explode!."
+	desc = "This is a booby trap, planted inside opened airlock mechanism. Next time door opens, it will explode!."
 	gender = PLURAL
 	icon = 'mods/antagonists/icons/obj/door_charge.dmi'
 	icon_state = "door_charge"
@@ -41,7 +66,7 @@
 
 /obj/item/door_charge/proc/explode(obj/machinery/door/airlock/airlock)
 	if(!airlock.density)
-		explosion(get_turf(airlock), -1, 1, 2, 3)
+		explosion(get_turf(airlock), 3, EX_ACT_HEAVY)
 		airlock.ex_act(1)
 		qdel(src)
 
@@ -272,3 +297,8 @@
 	if (isobserver(user) || (user.mind && user.mind.special_role != null) || user.skill_check(SKILL_DEVICES, SKILL_MASTER) || user.skill_check(SKILL_MEDICAL, SKILL_MASTER))
 		to_chat(user, "The scanner contacts do not look as they should. ")
 		return
+
+// Bugs
+
+/obj/item/device/spy_bug
+	on_turf_icon = 'mods/antagonists/icons/obj/bug_on_turf.dmi'

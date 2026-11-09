@@ -72,7 +72,7 @@
 	A.adjustOxyLoss(-4)
 	A.updatehealth()
 	// If the AI is dead, revive it.
-	if (A.health >= -100 && A.stat == DEAD)
+	if (A.health >= -100 && A.is_real_dead())
 		A.set_stat(CONSCIOUS)
 		A.lying = 0
 		A.switch_from_dead_to_living_mob_list()
@@ -89,7 +89,7 @@
 	name = "AI Maintenance Utility"
 
 /datum/nano_module/program/computer_aidiag/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
-	var/list/data = host.initial_data()
+	var/list/data = host.initial_data(program)
 
 	data += "skill_fail"
 	if(!user.skill_check(SKILL_COMPUTER, SKILL_TRAINED))
@@ -110,7 +110,7 @@
 		data["ai_integrity"] = A.hardware_integrity()
 		data["ai_capacitor"] = A.backup_capacitor()
 		data["ai_isdamaged"] = (A.hardware_integrity() < 100) || (A.backup_capacitor() < 100)
-		data["ai_isdead"] = (A.stat == DEAD)
+		data["ai_isdead"] = (A.is_dead())
 
 		var/list/all_laws[0]
 		for(var/datum/ai_law/L in A.laws.all_laws())

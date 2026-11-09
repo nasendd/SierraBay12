@@ -7,11 +7,12 @@
 	icon_state = "pod_body"
 	has_hardpoints = list(HARDPOINT_BACK)
 	power_use = 5
+	matter = list(MATERIAL_STEEL = 54000, MATERIAL_ALUMINIUM = 10000, MATERIAL_PLASTIC = 10000)
+
 	max_hp = 210
 	max_repair = 50
 	min_damage = 110
 	repair_damage = 30
-	back_modificator_damage = 1.3
 	front_modificator_damage = 1
 	max_heat = 200
 	heat_cooling = 5

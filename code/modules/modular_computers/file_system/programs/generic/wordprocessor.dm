@@ -135,7 +135,7 @@
 	name = "Word Processor"
 
 /datum/nano_module/program/computer_wordprocessor/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
-	var/list/data = host.initial_data()
+	var/list/data = host.initial_data(program)
 	var/datum/computer_file/program/wordprocessor/PRG
 	PRG = program
 
@@ -167,10 +167,10 @@
 						)))
 				data["usbfiles"] = usbfiles
 	else if(PRG.open_file)
-		data["filedata"] = digitalPencode2html(sanitize(PRG.loaded_data))
+		data["filedata"] = digitalPencode2html(sanitize(PRG.loaded_data, MAX_TEXTFILE_LENGTH, FALSE))
 		data["filename"] = PRG.is_edited ? "[PRG.open_file]*" : PRG.open_file
 	else
-		data["filedata"] = digitalPencode2html(sanitize(PRG.loaded_data))
+		data["filedata"] = digitalPencode2html(sanitize(PRG.loaded_data, MAX_TEXTFILE_LENGTH, FALSE))
 		data["filename"] = "UNNAMED"
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)

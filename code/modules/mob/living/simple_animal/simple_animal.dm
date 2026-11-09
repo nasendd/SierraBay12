@@ -153,17 +153,30 @@
 	var/return_damage_min
 	var/return_damage_max
 
+	// Taming system - set tame_datum to /datum/taming to make this animal tameable
+	var/datum/taming/tame_datum = null
+	/// Diet type - DIET_CARNIVORE, DIET_HERBIVORE, DIET_OMNIVORE, or null (unknown)
+	var/diet_type = null
+	/// Foods that give double taming progress (by type path)
+	var/list/preferred_foods = list()
+	/// Foods that cause a taming penalty (by type path)
+	var/list/forbidden_foods = list()
+	/// Taming difficulty multiplier - higher = harder to tame
+	var/tame_difficulty = 1.0
+
 /mob/living/simple_animal/Initialize()
 	. = ..()
 	if(LAZYLEN(natural_armor))
 		set_extension(src, armor_type, natural_armor)
 	if(!icon_living)
 		icon_living = initial(icon_state)
+	if(tame_datum)
+		tame_datum = new tame_datum(src)
 
 /mob/living/simple_animal/Destroy()
 	if(istype(natural_weapon))
 		QDEL_NULL(natural_weapon)
-
+	QDEL_NULL(tame_datum)
 	. = ..()
 
 /mob/living/simple_animal/Stat()
@@ -235,7 +248,7 @@
 /mob/living/simple_animal/proc/harvest(mob/user, skill_level)
 	var/actual_meat_amount = round(max(1,(meat_amount / 2) + skill_level / 2))
 	user.visible_message(SPAN_DANGER("\The [user] chops up \the [src]!"))
-	if(meat_type && actual_meat_amount > 0 && (stat == DEAD))
+	if(meat_type && actual_meat_amount > 0 && (is_dead()))
 		for(var/i=0;i<actual_meat_amount;i++)
 			var/obj/item/meat = new meat_type(get_turf(src))
 			meat.SetName("[src.name] [meat.name]")

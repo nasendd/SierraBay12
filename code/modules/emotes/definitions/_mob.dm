@@ -2,6 +2,8 @@
 /mob/var/list/usable_emotes = list()
 /mob/var/next_audible_emote_time = 0
 /mob/var/audible_emote_cooldown = 0.5 SECONDS
+/mob/var/next_emote_time = 0
+/mob/var/emote_cooldown = 2 SECONDS
 
 /mob/proc/update_emotes(skip_sort)
 	usable_emotes.Cut()
@@ -275,6 +277,27 @@
 	/singleton/emote/audible/synth/deny,
 	/singleton/emote/audible/synth/security,
 	/singleton/emote/audible/synth/security/halt
+)
+
+/mob/living/silicon/pai/default_emotes = list(
+	/singleton/emote/audible/synth,
+	/singleton/emote/audible/synth/ping,
+	/singleton/emote/audible/synth/buzz,
+	/singleton/emote/audible/synth/confirm,
+	/singleton/emote/audible/synth/deny,
+	/singleton/emote/audible/clap,
+	/singleton/emote/visible/bow,
+	/singleton/emote/visible/salute,
+	/singleton/emote/visible/rsalute,
+	/singleton/emote/visible/flap,
+	/singleton/emote/visible/aflap,
+	/singleton/emote/visible/twitch,
+	/singleton/emote/visible/twitch_v,
+	/singleton/emote/visible/nod,
+	/singleton/emote/visible/shake,
+	/singleton/emote/visible/glare,
+	/singleton/emote/visible/look,
+	/singleton/emote/visible/stare
 )
 
 /mob/living/carbon/slime/default_emotes = list(

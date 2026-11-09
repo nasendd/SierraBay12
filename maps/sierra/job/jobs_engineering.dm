@@ -1,6 +1,6 @@
 /datum/job/senior_engineer
 	title = "Senior Engineer"
-	department = "Инженерный"
+	department = "Engineering"
 	department_flag = ENG
 	supervisors = "Главному Инженеру"
 	selection_color = "#5b4d20"
@@ -14,7 +14,7 @@
 
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/engineering/senior_engineer
 	allowed_branches = list(/datum/mil_branch/employee)
-	allowed_ranks = list(/datum/mil_rank/civ/nt)
+	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/acting, /datum/mil_rank/civ/probation_employee)
 
 	skill_points = 24
 	min_skill = list(   SKILL_COMPUTER     = SKILL_BASIC,
@@ -32,7 +32,7 @@
 
 	access = list(	access_engine, access_engine_equip, access_maint_tunnels, access_external_airlocks, access_emergency_storage,
 			        access_eva, access_tech_storage, access_atmospherics, access_janitor, access_construction,
-			        access_tcomsat, access_seneng, access_hangar, access_network)
+			        access_tcomsat, access_seneng, access_hangar, access_network, access_robotics)
 
 
 	software_on_spawn = list(/datum/computer_file/program/power_monitor,
@@ -53,19 +53,20 @@
 
 /datum/job/engineer
 	title = "Engineer"
-	department = "Инженерный"
+	department = "Engineering"
 	department_flag = ENG
 	supervisors = "Главному и Старшему инженеру"
 	selection_color = "#5b4d20"
 
-	total_positions = 4
-	spawn_positions = 4
+	total_positions = 6
+	spawn_positions = 6
 	minimal_player_age = 7
 	minimum_character_age = list(SPECIES_HUMAN = 22)
 	ideal_character_age = 24
 	economic_power = 6
 
 	alt_titles = list(
+		"Engineer Trainee" = /singleton/hierarchy/outfit/job/sierra/crew/engineering/engineer/trainee,
 		"Maintenance Technician" = /singleton/hierarchy/outfit/job/sierra/crew/engineering/engineer/maints,
 		"Structural Integrity Specialist" = /singleton/hierarchy/outfit/job/sierra/crew/engineering/engineer/maints,
 		"Electrician",
@@ -74,7 +75,7 @@
 
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/engineering/engineer
 	allowed_branches = list(/datum/mil_branch/employee, /datum/mil_branch/contractor)
-	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor)
+	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor, /datum/mil_rank/civ/probation_employee, /datum/mil_rank/civ/probation_contractor)
 
 	skill_points = 20
 	min_skill = list(   SKILL_COMPUTER     = SKILL_BASIC,
@@ -111,7 +112,7 @@
 
 /datum/job/engineer_trainee
 	title = "Engineer Trainee"
-	department = "Инженерный"
+	department = "Engineering"
 	department_flag = ENG
 	supervisors = "Главному инженеру и остальным инженерам"
 	selection_color = "#5b4d20"
@@ -124,7 +125,7 @@
 
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/engineering/engineer/trainee
 	allowed_branches = list(/datum/mil_branch/employee, /datum/mil_branch/contractor)
-	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor)
+	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor, /datum/mil_rank/civ/probation_employee, /datum/mil_rank/civ/probation_contractor)
 
 	no_skill_buffs = TRUE
 	skill_points = 16
@@ -160,7 +161,7 @@
 
 /datum/job/infsys
 	title = "Information Technician"
-	department = "Инженерный"
+	department = "Engineering"
 	department_flag = ENG
 	supervisors = "Главному и Старшему инженерам"
 	selection_color = "#5b4d20"
@@ -174,7 +175,7 @@
 
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/engineering/engineer/tcomms
 	allowed_branches = list(/datum/mil_branch/employee, /datum/mil_branch/contractor)
-	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor)
+	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor, /datum/mil_rank/civ/probation_employee, /datum/mil_rank/civ/probation_contractor)
 
 	skill_points = 12
 	min_skill = list(   SKILL_COMPUTER     = SKILL_TRAINED,
@@ -184,10 +185,70 @@
 	max_skill = list(   SKILL_ELECTRICAL   = SKILL_MAX,
 	                    SKILL_COMPUTER	   = SKILL_MAX)
 
-	access = list(	access_maint_tunnels, access_network, access_network_admin, access_external_airlocks,
+	access = list(	access_maint_tunnels, access_network, access_network_admin, access_engine,
 			       	access_tech_storage, access_emergency_storage, access_tcomsat)
 
 
 /datum/job/infsys/get_description_blurb()
 	return "Вы когда-нибудь хотели стать человеком, который сутками сидит на попе смирно и начинает проявлять признаки бурной деятельности, когда всё идёт коту под хвост?\
 	Поздравляю, Вы приняты на должность информационного техника. Сидите на попе смирно, серфите NTNet, истерите, когда связь внезапно обрывается, становитесь главным Hackerman-ом этой смены."
+
+/datum/job/roboticist
+	title = "Roboticist"
+	department = "Engineering"
+	department_flag = ENG|ROB
+
+	total_positions = 2
+	spawn_positions = 2
+	supervisors = "Главному и Старшему инженерам"
+	selection_color = "#5b4d20"
+	economic_power = 7
+	minimum_character_age = list(SPECIES_HUMAN = 25)
+	ideal_character_age = 27
+	alt_titles = list("Mechatronic Technician")
+	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/engineering/roboticist
+	allowed_branches = list(
+			/datum/mil_branch/employee,
+			/datum/mil_branch/contractor
+		)
+	allowed_ranks = list(
+			/datum/mil_rank/civ/nt,
+			/datum/mil_rank/civ/contractor,
+			/datum/mil_rank/civ/probation_employee,
+			/datum/mil_rank/civ/probation_contractor
+		)
+	min_skill = list(
+			SKILL_COMPUTER		=	SKILL_TRAINED,
+			SKILL_DEVICES		=	SKILL_EXPERIENCED,
+			SKILL_ANATOMY		=	SKILL_TRAINED,
+			SKILL_CONSTRUCTION	=	SKILL_BASIC,
+			SKILL_MECH			=	HAS_PERK,
+			SKILL_ELECTRICAL	=	SKILL_TRAINED
+		)
+
+	max_skill = list(
+			SKILL_CONSTRUCTION	=	SKILL_MAX,
+			SKILL_ELECTRICAL	=	SKILL_MAX,
+			SKILL_ATMOS			=	SKILL_EXPERIENCED,
+			SKILL_ENGINES		=	SKILL_EXPERIENCED,
+			SKILL_DEVICES		=	SKILL_MAX,
+			SKILL_MEDICAL		=	SKILL_EXPERIENCED,
+			SKILL_ANATOMY		=	SKILL_EXPERIENCED
+		)
+
+	skill_points = 22
+
+	access = list(
+			access_maint_tunnels,
+			access_robotics,
+			access_engine,
+			access_tech_storage,
+			access_construction,
+			access_medical_records,
+			access_medical,
+			access_rnd_network
+		)
+
+/datum/job/roboticist/get_description_blurb()
+	return "Корабельный роботехник, в первую очередь, занимается производством и обслуживанием киборгов и роботов корабля.\
+	Он также может быть призван собирать различные экзокостюмы, ремонтировать протезированные конечности у членов экипажа и пересаживать чей-то мозг в корпус киборга или полностью синтетический юнит. Вы подчиняетесь инженерному отделу."

@@ -3,6 +3,8 @@
 	. = args.Copy(2)
 	for(var/armor in armors)
 		var/datum/extension/armor/armor_datum = armor
+		if(QDELETED(armor_datum))
+			continue
 		. = armor_datum.apply_damage_modifications(arglist(.))
 
 /mob/living/proc/get_blocked_ratio(def_zone, damage_type, damage_flags, armor_pen, damage)
@@ -10,6 +12,8 @@
 	. = 0
 	for(var/armor in armors)
 		var/datum/extension/armor/armor_datum = armor
+		if(QDELETED(armor_datum))
+			continue
 		. = 1 - (1 - .) * (1 - armor_datum.get_blocked(damage_type, damage_flags, armor_pen, damage)) // multiply the amount we let through
 	. = min(1, .)
 
@@ -19,7 +23,9 @@
 	if(natural_armor)
 		. += natural_armor
 	if(psi)
-		. += get_extension(psi, /datum/extension/armor)
+		var/datum/extension/armor/psi_armor = get_extension(psi, /datum/extension/armor)
+		if(!QDELETED(psi_armor))
+			. += psi_armor
 
 /mob/living/bullet_act(obj/item/projectile/P, def_zone)
 	if (status_flags & GODMODE)
@@ -94,6 +100,8 @@
 				result = aura.aura_check_bullet(arglist(newargs))
 			if(AURA_TYPE_THROWN)
 				result = aura.aura_check_thrown(arglist(newargs))
+			if(AURA_TYPE_UNARMED)
+				result = aura.aura_check_unarmed(arglist(newargs))
 			if(AURA_TYPE_LIFE)
 				result = aura.aura_check_life()
 		if(result & AURA_FALSE)
@@ -183,6 +191,9 @@
 
 		if(O.can_embed() && (throw_damage > 5*O.w_class)) //Handles embedding for non-humans and simple_animals.
 			embed(O)
+
+	if (AM.IsFlameSource())
+		IgniteMob()
 
 	process_momentum(AM, TT)
 
@@ -348,6 +359,28 @@
 					CA.action.Grant(src)
 
 	return
+
+/mob/living/verb/activate_action_button(button_select as text|num)
+	set name = "Activate Action Button"
+	set category = "Object"
+	if(!hud_used || !client || !client.screen) return
+	var/obj/screen/movable/action_button/chosen
+	if(isnum(button_select))
+		var/list/buttons=list()
+		for(var/obj/screen/movable/action_button/button in client.screen)
+			buttons.Add(button)
+		if(button_select <= length(buttons))
+			chosen = buttons[button_select]
+	else
+		for(var/obj/screen/movable/action_button/button in client.screen)
+			if(button.name == button_select)
+				chosen = button
+	if(!chosen || usr.next_move >= world.time) // Original code containing the latter check bore the comment "Is this needed ?"
+		return
+	if(istype(chosen,/obj/screen/movable/action_button/hide_toggle))
+		chosen.Click()
+	else
+		chosen.owner?.Trigger()
 
 /mob/living/update_action_buttons()
 	if(!hud_used) return

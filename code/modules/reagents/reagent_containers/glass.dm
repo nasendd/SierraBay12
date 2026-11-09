@@ -73,12 +73,22 @@
 	if (standard_feed_mob(user, M))
 		return TRUE
 
-/obj/item/reagent_containers/glass/standard_feed_mob(mob/user, mob/target)
+/obj/item/reagent_containers/glass/standard_feed_mob(mob/user, mob/target, do_skill)
 	if(!is_open_container())
 		to_chat(user, SPAN_NOTICE("You need to open \the [src] first."))
 		return TRUE
-	if(user.a_intent == I_HURT)
-		return FALSE
+	return ..()
+
+/obj/item/reagent_containers/glass/standard_dispenser_refill(mob/user, obj/structure/reagent_dispensers/target)
+	if(!is_open_container())
+		to_chat(user, SPAN_NOTICE("You need to open \the [src] first."))
+		return TRUE
+	return ..()
+
+/obj/item/reagent_containers/glass/standard_pour_into(mob/user, atom/target)
+	if(!is_open_container())
+		to_chat(user, SPAN_NOTICE("You need to open \the [src] first."))
+		return TRUE
 	return ..()
 
 /obj/item/reagent_containers/glass/self_feed_message(mob/user)
@@ -133,6 +143,9 @@
 		return TRUE
 	splashtarget(target, user)
 	return TRUE
+
+/obj/item/reagent_containers/glass/feed_sound(mob/user)
+	playsound(user.loc, 'sound/items/drink.ogg', rand(10, 50), 1)
 
 
 /obj/item/reagent_containers/glass/beaker

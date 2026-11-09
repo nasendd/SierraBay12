@@ -9,13 +9,14 @@
 	power_use = 5
 	pilot_coverage = 100
 	climb_time = 15
+	matter = list(MATERIAL_STEEL = 100000, MATERIAL_ALUMINIUM = 20000, MATERIAL_PLASTIC = 10000)
+
 	max_hp = 80
 	min_damage = 50
 	max_repair = 40
 	repair_damage = 20
 	hide_pilot = TRUE
 	req_material = MATERIAL_ALUMINIUM
-	back_modificator_damage = 1.3
 	front_modificator_damage = 1
 	max_heat = 100
 	heat_cooling = 12

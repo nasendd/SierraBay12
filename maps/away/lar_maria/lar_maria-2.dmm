@@ -1226,7 +1226,7 @@
 /turf/simulated/floor/wood,
 /area/lar_maria/dorms)
 "dc" = (
-/mob/living/simple_animal/hostile/lar_maria/guard/ranged,
+/obj/landmark/lar_maria_npc/guard/ranged,
 /turf/simulated/floor/wood,
 /area/lar_maria/dorms)
 "dd" = (
@@ -1319,7 +1319,7 @@
 /turf/simulated/floor/plating,
 /area/lar_maria/atmos)
 "ds" = (
-/mob/living/simple_animal/hostile/lar_maria/virologist,
+/obj/landmark/lar_maria_npc/virologist,
 /turf/simulated/floor/wood,
 /area/lar_maria/dorms)
 "dt" = (
@@ -1657,7 +1657,7 @@
 /turf/simulated/wall,
 /area/lar_maria/office)
 "ev" = (
-/mob/living/simple_animal/hostile/lar_maria/virologist,
+/obj/landmark/lar_maria_npc/virologist,
 /turf/simulated/floor/tiled/white,
 /area/lar_maria/office)
 "ew" = (
@@ -1731,7 +1731,7 @@
 	dir = 1
 	},
 /obj/random/trash,
-/mob/living/simple_animal/hostile/lar_maria/virologist,
+/obj/landmark/lar_maria_npc/virologist,
 /turf/simulated/floor/tiled/white,
 /area/lar_maria/head_m)
 "eJ" = (
@@ -2138,7 +2138,7 @@
 /turf/simulated/floor/wood,
 /area/lar_maria/dorms)
 "fV" = (
-/mob/living/simple_animal/hostile/lar_maria/guard,
+/obj/landmark/lar_maria_npc/guard,
 /turf/simulated/floor/wood,
 /area/lar_maria/dorms)
 "fW" = (
@@ -2146,7 +2146,7 @@
 /turf/simulated/floor/wood,
 /area/lar_maria/dorms)
 "fX" = (
-/mob/living/simple_animal/hostile/lar_maria/virologist/female,
+/obj/landmark/lar_maria_npc/virologist/female,
 /turf/simulated/floor/wood,
 /area/lar_maria/dorms)
 "fY" = (
@@ -2562,7 +2562,7 @@
 /turf/simulated/floor/tiled/white,
 /area/lar_maria/mess_hall)
 "hm" = (
-/obj/machinery/cooker/grill,
+/obj/machinery/appliance/cooker/grill,
 /turf/simulated/floor/tiled/white,
 /area/lar_maria/mess_hall)
 "hn" = (
@@ -2582,7 +2582,7 @@
 /obj/machinery/light{
 	dir = 1
 	},
-/mob/living/simple_animal/hostile/lar_maria/virologist/female,
+/obj/landmark/lar_maria_npc/virologist/female,
 /turf/simulated/floor/tiled/white,
 /area/lar_maria/head_f)
 "hr" = (
@@ -2769,7 +2769,7 @@
 /turf/simulated/floor/tiled/white,
 /area/lar_maria/mess_hall)
 "hJ" = (
-/obj/machinery/cooker/fryer,
+/obj/machinery/appliance/cooker/fryer,
 /turf/simulated/floor/tiled/white,
 /area/lar_maria/mess_hall)
 "hK" = (
@@ -2896,7 +2896,7 @@
 /turf/simulated/floor/tiled/white,
 /area/lar_maria/mess_hall)
 "if" = (
-/obj/machinery/cooker/oven,
+/obj/machinery/appliance/cooker/oven,
 /turf/simulated/floor/tiled/white,
 /area/lar_maria/mess_hall)
 "ig" = (
@@ -3091,7 +3091,7 @@
 /area/lar_maria/mess_hall)
 "iE" = (
 /obj/structure/table/marble,
-/obj/machinery/cooker/cereal,
+/obj/machinery/appliance/mixer/cereal,
 /turf/simulated/floor/tiled/white,
 /area/lar_maria/mess_hall)
 "iF" = (
@@ -3241,7 +3241,7 @@
 /area/lar_maria/mess_hall)
 "iY" = (
 /obj/structure/table/marble,
-/obj/machinery/microwave,
+/obj/machinery/appliance/cooker/microwave,
 /obj/machinery/light,
 /turf/simulated/floor/tiled/white,
 /area/lar_maria/mess_hall)

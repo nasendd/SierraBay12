@@ -15,6 +15,12 @@
 	slot = slot_belt
 	allowed_roles = ARMED_ROLES
 
+/datum/gear/tactical/forensic_belt
+	display_name = "forensic belt"
+	path = /obj/item/storage/belt/forensic
+	slot = slot_belt
+	allowed_roles = list(/datum/job/detective)
+
 /datum/gear/tactical/holster/New()
 	allowed_roles = ARMED_ROLES
 	allowed_roles += /datum/job/iaa
@@ -121,6 +127,7 @@
 	atags["SAARE tag"] = /obj/item/clothing/accessory/armor_tag/saare
 	atags["SCP tag"] = /obj/item/clothing/accessory/armor_tag/scp
 	atags["ZPCI tag"] = /obj/item/clothing/accessory/armor_tag/zpci
+	atags["BARC tag"] = /obj/item/clothing/accessory/armor_tag/barc
 	gear_tweaks += new/datum/gear_tweak/path(atags)
 
 /datum/gear/tactical/press_tag

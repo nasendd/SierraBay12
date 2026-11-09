@@ -2,8 +2,8 @@
 	.=..()
 	var/mob/living/carbon/human/target = mymob
 	if(target.client && target.client.usefov)
-		target.client.fov_mask = new /obj/screen/fullscreen/fov_blocker( target )
-		target.client.fov_shadow = new /obj/screen/fullscreen/fov_shadow( target )
+		target.client.fov_mask = new /obj/screen/fullscreen/fov_blocker
+		target.client.fov_shadow = new /obj/screen/fullscreen/fov_shadow
 		target.check_fov()
 
 /atom/movable/do_attack_animation(atom/A, fov_effect = TRUE)
@@ -29,6 +29,7 @@
 	def_zone = target_zone
 
 	addtimer(new Callback(src, PROC_REF(finalize_launch), curloc, targloc, x_offset, y_offset, angle_offset),0)
+	starting = curloc
 	play_fov_effect(starting, 6, "gunfire", dir = NORTH, angle = angle_offset)
 	return 0
 
@@ -68,16 +69,27 @@
 	if(!H.client)//no client, no screen to update
 		return 1
 
-	H.set_fullscreen(H.eye_blind && !H.equipment_prescription, "blind", /obj/screen/fullscreen/blind)
-	H.set_fullscreen(H.stat == UNCONSCIOUS, "blackout", /obj/screen/fullscreen/blackout)
+	if(!H.isSynthetic())
+		H.set_fullscreen(H.eye_blurry, "blurry", /obj/screen/fullscreen/blurry)
+		H.set_fullscreen(H.eye_blind && !H.equipment_prescription, "blind", /obj/screen/fullscreen/blind)
+		H.set_fullscreen(H.stat == UNCONSCIOUS, "blackout", /obj/screen/fullscreen/blackout)
+
+	else
+		if(H.stat == !UNCONSCIOUS)
+			H.set_fullscreen(H.eye_blind && !H.equipment_prescription, "glitch_monitor", /obj/screen/fullscreen/glitch_bw/alpha)
+		H.set_fullscreen(H.stat == UNCONSCIOUS, "no_power", /obj/screen/fullscreen/no_power)
+		H.set_fullscreen(H.eye_blurry, "blurry", /obj/screen/fullscreen/glitch_bw)
 
 	if(config.welder_vision)
 		H.set_fullscreen(H.equipment_tint_total, "welder", /obj/screen/fullscreen/impaired, H.equipment_tint_total)
 	var/how_nearsighted = get_how_nearsighted(H)
 	H.set_fullscreen(how_nearsighted, "nearsighted", /obj/screen/fullscreen/oxy, how_nearsighted)
-	H.set_fullscreen(H.eye_blurry, "blurry", /obj/screen/fullscreen/blurry)
 	H.set_fullscreen(H.druggy, "high", /obj/screen/fullscreen/high)
 
+	// Keep the pre-Bloom Light behavior: apply nearsighted blur only to the
+	// dedicated vision-cone renderers, not to every plane master in renderer_plane_map.
+	// Blurring all plane masters makes remote views such as cameras, sensors and
+	// overmap monitors unreadable.
 	for(var/atom/movable/renderer/nearsight_blur/blur in H.renderers)
 		if(how_nearsighted)
 			blur.filters = list(filter(type="blur", size=2))
@@ -121,3 +133,14 @@
 	set_dir(ndir)
 	SetMoveCooldown(movement_delay())
 	return 1
+
+/mob/reload_fullscreen()
+	.=..()
+	if(client)
+		client.reload_fov()
+
+/mob/living/carbon/human/reset_view(atom/A)
+	..()
+	if(machine_visual && machine_visual != A)
+		machine_visual.remove_visual(src)
+	src.check_fov()

@@ -1,8 +1,22 @@
-/client/MouseEntered(atom/hoverOn)
-	. = ..()
+/client
+	var/list/mouse_move_handlers = list()
 
-	if (GAME_STATE <= RUNLEVEL_SETUP || !screentip.show)
+/client/MouseEntered(atom/hoverOn, location, control, params)
+	if(usr && hoverOn)
+		var/datum/click_handler/click_handler = usr.GetClickHandler()
+		click_handler.OnMouseEntered(hoverOn, location, control, params)
+	else
+		. = ..()
+
+	if (GAME_STATE <= RUNLEVEL_SETUP || !screentip || !screentip.show)
 		return
 
 	screen |= screentip
 	screentip.set_text(hoverOn.name)
+
+	if(LAZYLEN(mouse_move_handlers))
+		for(var/atom/handler in mouse_move_handlers)
+			handler.update_current_mouse_position(hoverOn)
+
+/atom/proc/update_current_mouse_position()
+	return

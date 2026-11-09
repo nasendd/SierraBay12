@@ -9,6 +9,7 @@
 	screen_shake = 1
 	space_recoil = 1
 	combustion = 1
+	manufacturer = MANUFACTURER_FALLBACK
 
 	var/caliber = CALIBER_PISTOL		//determines which casings will fit
 	var/handle_casings = EJECT_CASINGS	//determines how spent casings should be handled
@@ -39,6 +40,9 @@
 	var/can_reload = TRUE
 	var/is_jammed = 0           //Whether this gun is jammed
 	var/jam_chance = 0          //Chance it jams on fire
+	var/barrel_thread = FALSE // Whether the gun can mount a suppressor
+	var/obj/item/silencer/silencer //the silencer attached to the gun
+	var/silencer_offset = 0 //just in case you need to offset the sprite for the silencer
 	//TODO generalize ammo icon states for guns
 	//var/magazine_states = 0
 	//var/list/icon_keys = list()		//keys
@@ -46,6 +50,9 @@
 
 /obj/item/gun/projectile/Initialize()
 	. = ..()
+	if (silencer)
+		verbs += /obj/item/gun/projectile/proc/silencer
+
 	if (starts_loaded)
 		if(ispath(ammo_type) && (load_method & (SINGLE_CASING|SPEEDLOADER)))
 			for(var/i in 1 to max_shells)
@@ -53,6 +60,11 @@
 		if(ispath(magazine_type) && (load_method & MAGAZINE))
 			ammo_magazine = new magazine_type(src)
 	update_icon()
+
+/obj/item/gun/projectile/on_update_icon()
+	. = ..()
+	if (silencer)
+		AddOverlays(image(icon, "[initial(icon_state)]-silencer", pixel_x = silencer_offset))
 
 /obj/item/gun/projectile/consume_next_projectile()
 	if(!is_jammed && prob(jam_chance))
@@ -81,6 +93,15 @@
 	if (chambered)
 		return chambered.BB
 	return null
+
+/obj/item/gun/projectile/use_before(atom/target, mob/living/user, click_parameters)
+	//Masters can reload one-handed guns one-handed.
+	if (istype(target, /obj/item/ammo_magazine) && (target.loc == user || target.loc.loc == user)) //Get around bags, webbing, etc
+		if (user.skill_check(SKILL_WEAPONS, SKILL_MASTER))
+			if (one_hand_penalty < 3)
+				load_ammo(target, user)
+				return TRUE
+	return ..()
 
 /obj/item/gun/projectile/handle_post_fire()
 	..()
@@ -174,34 +195,36 @@
 							if(!can_special_reload)
 								to_chat(user, SPAN_WARNING("You can't tactically reload this gun!"))
 								return
+							//Experienced gets a 1 second delay, master gets a 0.5 second delay
+							if(!do_after(user, user.get_skill_value(SKILL_WEAPONS) == SKILL_MASTER ? PROF_TAC_RELOAD : EXP_TAC_RELOAD, src, DO_DEFAULT | DO_BOTH_UNIQUE_ACT))
+								return
 							if(!user.unEquip(AM, src))
 								return
-							//Experienced gets a 1 second delay, master gets a 0.5 second delay
-							if(do_after(user, user.get_skill_value(SKILL_WEAPONS) == SKILL_MASTER ? PROF_TAC_RELOAD : EXP_TAC_RELOAD, src, DO_DEFAULT | DO_BOTH_UNIQUE_ACT))
-								if(jam_chance && (!(ammo_magazine.type == magazine_type)))
-									jam_chance -= 20
-								ammo_magazine.update_icon()
-								user.put_in_hands(ammo_magazine)
-								user.visible_message(
-									SPAN_WARNING("\The [user] reloads \the [src] with \the [AM]!"),
-									SPAN_WARNING("You tactically reload \the [src] with \the [AM]!")
-								)
+							if(jam_chance && (!(ammo_magazine.type == magazine_type)))
+								jam_chance -= 20
+							ammo_magazine.update_icon()
+							user.put_in_hands(ammo_magazine)
+							user.visible_message(
+								SPAN_WARNING("\The [user] reloads \the [src] with \the [AM]!"),
+								SPAN_WARNING("You tactically reload \the [src] with \the [AM]!")
+							)
 						else //Speed reloading
 							if(!can_special_reload)
 								to_chat(user, SPAN_WARNING("You can't speed reload with this gun!"))
 								return
+							//Experienced gets a 0.5 second delay, master gets a 0.25 second delay
+							if(!do_after(user, user.get_skill_value(SKILL_WEAPONS) == SKILL_MASTER ? PROF_SPD_RELOAD : EXP_SPD_RELOAD, src, DO_DEFAULT | DO_BOTH_UNIQUE_ACT))
+								return
 							if(!user.unEquip(AM, src))
 								return
-							//Experienced gets a 0.5 second delay, master gets a 0.25 second delay
-							if(do_after(user, user.get_skill_value(SKILL_WEAPONS) == SKILL_MASTER ? PROF_SPD_RELOAD : EXP_SPD_RELOAD, src, DO_DEFAULT | DO_BOTH_UNIQUE_ACT))
-								if(jam_chance && istype(ammo_magazine, magazine_type))
-									jam_chance -= 10
-								ammo_magazine.update_icon()
-								ammo_magazine.dropInto(user.loc)
-								user.visible_message(
-									SPAN_WARNING("\The [user] reloads \the [src] with \the [AM]!"),
-									SPAN_WARNING("You speed reload \the [src] with \the [AM]!")
-								)
+							if(jam_chance && istype(ammo_magazine, magazine_type))
+								jam_chance -= 10
+							ammo_magazine.update_icon()
+							ammo_magazine.dropInto(user.loc)
+							user.visible_message(
+								SPAN_WARNING("\The [user] reloads \the [src] with \the [AM]!"),
+								SPAN_WARNING("You speed reload \the [src] with \the [AM]!")
+							)
 					ammo_magazine = AM
 					playsound(loc, mag_insert_sound, 75, 1)
 					update_icon()
@@ -302,6 +325,35 @@
 	if (load_ammo(tool, user))
 		return TRUE
 
+	// Silencer - Attach silencer
+	if (istype(tool, /obj/item/silencer) && barrel_thread)
+		if (silenced)
+			if (silencer)
+				USE_FEEDBACK_FAILURE("\The [src] already has \a [silencer] attached.")
+			else
+				USE_FEEDBACK_FAILURE("\The [src] is already silenced.")
+			return TRUE
+		if (!user.unEquip(tool, src))
+			FEEDBACK_FAILURE(user, tool)
+			return TRUE
+		var/obj/item/silencer/new_silencer = tool
+		if (new_silencer.caliber == src.caliber)
+			silenced = TRUE
+			silencer = tool
+			w_class += 1
+			update_icon()
+			user.visible_message(
+				SPAN_NOTICE("\The [user] screws \a [tool] onto \a [src]."),
+				SPAN_NOTICE("You screw \a [tool] onto \a [src]."),
+				range = 2
+			)
+			fire_sound = new_silencer.silenced_sound
+			verbs += /obj/item/gun/projectile/proc/silencer
+			return TRUE
+		else
+			USE_FEEDBACK_FAILURE("\The [src] and \the [tool] are not in the same caliber.")
+			return TRUE
+
 	return ..()
 
 
@@ -331,8 +383,8 @@
 		ammo_magazine = null
 	update_icon() //make sure to do this after unsetting ammo_magazine
 
-/obj/item/gun/projectile/examine(mob/user)
-	. = ..()
+/obj/item/gun/projectile/examine(mob/user, distance)
+	. = ..(user, distance)
 	if(is_jammed && user.skill_check(SKILL_WEAPONS, SKILL_BASIC))
 		to_chat(user, SPAN_WARNING("It looks jammed."))
 	if(ammo_magazine)
@@ -372,14 +424,32 @@
 			chamberlist += chamber
 		return chamberlist
 
-/* Unneeded -- so far.
-//in case the weapon has firemodes and can't unload using attack_hand()
-/obj/item/gun/projectile/verb/unload_gun()
-	set name = "Unload Ammo"
+/obj/item/gun/projectile/proc/silencer()
 	set category = "Object"
+	set name = "Remove Silencer"
+	set popup_menu = TRUE
 	set src in usr
 
-	if(usr.stat || usr.restrained()) return
+	removeSilencer(usr)
 
-	unload_ammo(usr)
-*/
+
+/obj/item/gun/projectile/proc/removeSilencer(mob/user)
+	if (!user.use_sanity_check(src))
+		return
+	if (!silencer)
+		to_chat(user, SPAN_WARNING("There is no silencer attached to \the [src]!"))
+		return
+	if (!user.IsHolding(src))
+		to_chat(user, SPAN_WARNING("You need to hold \the [src] in your hand to remove its silencer!"))
+		return
+	if (!user.HasFreeHand())
+		to_chat(user, SPAN_WARNING("You need a free hand to remove \the [src]'s silencer!"))
+		return
+	to_chat(user, SPAN_NOTICE("You unscrew \the [silencer] from \the [src]."))
+	user.put_in_hands(silencer)
+	silencer = null
+	w_class -= 1
+	silenced = FALSE
+	fire_sound = initial(fire_sound)
+	verbs -= /obj/item/gun/projectile/proc/silencer
+	update_icon()

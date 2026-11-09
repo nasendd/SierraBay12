@@ -146,10 +146,10 @@
 //sets the click point of the projectile using mouse input params
 /obj/item/projectile/proc/set_clickpoint(params)
 	var/list/mouse_control = params2list(params)
-	if(mouse_control["icon-x"])
-		p_x = text2num(mouse_control["icon-x"])
-	if(mouse_control["icon-y"])
-		p_y = text2num(mouse_control["icon-y"])
+	if(mouse_control[MOUSE_ICON_X])
+		p_x = text2num(mouse_control[MOUSE_ICON_X])
+	if(mouse_control[MOUSE_ICON_Y])
+		p_y = text2num(mouse_control[MOUSE_ICON_Y])
 
 	//randomize clickpoint a bit based on dispersion
 	if(dispersion)
@@ -180,6 +180,8 @@
 /obj/item/projectile/proc/launch_from_mob(atom/target, mob/user, target_zone, x_offset = 0, y_offset = 0, angle_offset = 0)
 	if(user == target) //Shooting yourself
 		user.bullet_act(src, target_zone)
+		on_impact(user)
+		QDEL_NULL_LIST(segments)
 		qdel(src)
 		return 0
 
@@ -197,6 +199,8 @@
 /obj/item/projectile/proc/launch_from_gun(atom/target, mob/user, obj/item/gun/launcher, target_zone, x_offset=0, y_offset=0)
 	if(user == target) //Shooting yourself
 		user.bullet_act(src, target_zone)
+		on_impact(user)
+		QDEL_NULL_LIST(segments)
 		qdel(src)
 		return 0
 
@@ -247,7 +251,15 @@
 		else if(target_mob.last_move == get_dir(target_mob,firer))
 			movement_mod *= 0.25
 	miss_modifier -= movement_mod
-	var/hit_zone = get_zone_with_miss_chance(def_zone, target_mob, miss_modifier, ranged_attack=(distance > 1 || original != target_mob)) //if the projectile hits a target we weren't originally aiming at then retain the chance to miss
+	//[SIERRA-EDIT] - Mechs-by-Shegar -
+	// var/hit_zone = get_zone_with_miss_chance(def_zone, target_mob, miss_modifier, ranged_attack=(distance > 1 || original != target_mob)) //if the projectile hits a target we weren't originally aiming at then retain the chance to miss
+	var/hit_zone
+	if(ismech(target_mob))
+		hit_zone = def_zone
+	else
+		var/target_zone = def_zone ? def_zone : BP_CHEST
+		hit_zone = get_zone_with_miss_chance(target_zone, target_mob, miss_modifier, ranged_attack=(distance > 1 || original != target_mob)) //if the projectile hits a target we weren't originally aiming at then retain the chance to miss
+	//[SIERRA-ADD]
 
 	var/result = PROJECTILE_FORCE_MISS
 	if(hit_zone)
@@ -329,8 +341,10 @@
 		if (check_penetrate(atom))
 			passthrough = TRUE
 		--penetrating
-	if (passthrough && isturf(atom))
-		forceMove(atom)
+	if (passthrough)
+		var/turf/T = get_turf(atom)
+		if(T)
+			forceMove(T)
 		permutated += atom
 		bumped = FALSE
 		return FALSE
@@ -514,6 +528,7 @@
 		return null
 
 	var/obj/item/projectile/test/trace = new /obj/item/projectile/test(get_turf(firer)) //Making the test....
+	trace.firer = firer //[SIERRA-ADD]
 
 	//Set the flags and pass flags to that of the real projectile...
 	if(!isnull(item_flags))

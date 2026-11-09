@@ -8,7 +8,7 @@
 	var/payer = null
 	var/sum_money = 0 //сумма, списанная с аккаунта
 
-/datum/nano_module/supply
+/datum/nano_module/program/supply
 	var/card_inserted
 	var/card_use = FALSE
 	var/datum/money_account/custom_account
@@ -16,7 +16,7 @@
 	var/datum/extension/interactive/ntos/os
 	var/obj/item/stock_parts/computer/card_slot/card_slot
 
-/datum/nano_module/supply/print_order(datum/supply_order/O, mob/user)
+/datum/nano_module/program/supply/print_order(datum/supply_order/O, mob/user)
 	if(!O)
 		return
 
@@ -29,16 +29,21 @@
 	t += "RANK: [O.orderedrank]<br>"
 	t += "REASON: [O.reason]<br>"
 	t += "SUPPLY CRATE TYPE: [O.object.name]<br>"
+	if(O.ordered_item_name)
+		t += "SELECTED PART: [O.ordered_item_name]<br>"
 	t += "ACCESS RESTRICTION: [get_access_desc(O.object.access)]<br>"
 	t += "CONTENTS:<br>"
-	t += O.object.manifest
+	if(O.ordered_item_name)
+		t += "<ul><li>[O.ordered_item_name]</li></ul>"
+	else
+		t += O.object.manifest
 	t += "<hr>"
 	print_text(t, user)
 
 
-/datum/nano_module/supply/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, state = GLOB.default_state)
-	var/list/data = host.initial_data()
-	var/is_admin = emagged || check_access(user, admin_access)
+/datum/nano_module/program/supply/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, state = GLOB.default_state)
+	var/list/data = host.initial_data(program)
+	var/is_admin = emagged || check_access(user, admin_access) || istype(user, /mob/living/silicon/ai)
 	var/singleton/security_state/security_state = GET_SINGLETON(GLOB.using_map.security_state)
 	if(!LAZYLEN(category_names) || !LAZYLEN(category_contents) || current_security_level != security_state.current_security_level || emagged_memory != emagged )
 		generate_categories()
@@ -54,7 +59,8 @@
 	data["currency"] = GLOB.using_map.local_currency_name
 	data["currency_short"] = GLOB.using_map.local_currency_name_short
 	os = get_extension(nano_host(), /datum/extension/interactive/ntos)
-	card_slot = os.get_component(PART_CARD)
+	if(os)
+		card_slot = os.get_component(PART_CARD)
 	card_inserted = FALSE
 	if(card_slot)
 		if(card_slot.stored_card)
@@ -123,7 +129,7 @@
 		ui.set_initial_data(data)
 		ui.open()
 
-/datum/nano_module/supply/Topic(href, href_list)
+/datum/nano_module/program/supply/Topic(href, href_list)
 	var/mob/user = usr
 	if(..())
 		return 1
@@ -150,9 +156,11 @@
 
 	if(href_list["show_contents"])
 		generate_order_contents(href_list["show_contents"])
+		return 1
 
 	if(href_list["hide_contents"])
 		clear_order_contents()
+		return 1
 
 	if(href_list["order"])
 		clear_order_contents()
@@ -162,6 +170,19 @@
 
 		if(P.hidden && !emagged)
 			return 1
+
+		var/ordered_item
+		var/ordered_item_name
+		var/singleton/hierarchy/supply_pack/prosthesis/prosthetic_pack = P
+		if(istype(prosthetic_pack) && prosthetic_pack.select_part)
+			if(!href_list["order_part"])
+				generate_order_contents(href_list["order"])
+				to_chat(user, SPAN_NOTICE("Select which prosthetic part to order."))
+				return 1
+			ordered_item_name = href_list["order_part"]
+			ordered_item = prosthetic_pack.part_options[ordered_item_name]
+			if(!ispath(ordered_item, /obj/item))
+				return 1
 
 		var/reason = sanitize(input(user,"Reason:","Why do you require this item?","") as null|text,,0)
 		if(!reason)
@@ -189,7 +210,9 @@
 		O.orderedby = idname
 		O.reason = reason
 		O.orderedrank = idrank
-		O.comment = "#[O.ordernum]"
+		O.comment = ordered_item_name ? "[ordered_item_name] #[O.ordernum]" : "#[O.ordernum]"
+		O.ordered_item = ordered_item
+		O.ordered_item_name = ordered_item_name
 		O.accountnubmer = department_accounts["Снабжения"]
 		O.sum_money = P.cost * CARGO_POINT_TO_THALLER
 		O.payer = "None Provided"
@@ -343,7 +366,7 @@
 		return 1
 
 
-/datum/nano_module/supply/generate_categories()
+/datum/nano_module/program/supply/generate_categories()
 	category_names.Cut()
 	category_contents.Cut()
 	var/singleton/hierarchy/supply_pack/root = GET_SINGLETON(/singleton/hierarchy/supply_pack)
@@ -355,20 +378,35 @@
 		for(var/singleton/hierarchy/supply_pack/spc in sp.get_descendents())
 			if((spc.hidden || spc.contraband || !spc.sec_available()) && !emagged)
 				continue
+			var/select_part = FALSE
+			var/list/parts
+			if(istype(spc, /singleton/hierarchy/supply_pack/prosthesis))
+				var/singleton/hierarchy/supply_pack/prosthesis/prosthetic_pack = spc
+				select_part = prosthetic_pack.select_part
+				if(select_part)
+					parts = list()
+					var/pack_ref = "\ref[spc]"
+					for(var/part_name in prosthetic_pack.part_options)
+						parts += list(list(
+							"name" = part_name,
+							"pack_ref" = pack_ref
+						))
 			category.Add(list(list(
 				"name" = spc.name,
 				"cost" = spc.cost * CARGO_POINT_TO_THALLER,
-				"ref" = "\ref[spc]"
+				"ref" = "\ref[spc]",
+				"select_part" = select_part,
+				"parts" = parts
 			)))
 		category_contents[sp.name] = category
 
 
 
-/datum/nano_module/supply/order_to_nanoui(datum/supply_order/SO, list_id)
+/datum/nano_module/program/supply/order_to_nanoui(datum/supply_order/SO, list_id)
 	return list(list(
 		"id" = SO.ordernum,
 		"time" = SO.timestamp,
-		"object" = SO.object.name,
+		"object" = SO.ordered_item_name ? "[SO.object.name] - [SO.ordered_item_name]" : SO.object.name,
 		"orderer" = SO.orderedby,
 		"cost" = SO.object.cost * CARGO_POINT_TO_THALLER,
 		"payer" = SO.payer,

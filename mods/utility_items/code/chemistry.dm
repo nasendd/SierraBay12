@@ -21,7 +21,32 @@
 	..()
 	new /obj/item/stack/material/silver(get_turf(holder.my_atom), created_volume)
 
+/singleton/reaction/concrete
+	name = "concrete"
+	result = null
+	required_reagents = list(/datum/reagent/silicon = 20, /datum/reagent/iron = 5, /datum/reagent/aluminium = 5, /datum/reagent/water = 20)
+	result_amount = 5
+	mix_message = "The solution solidifies into a grey mass."
 
+/obj/item/stack/material/concrete
+	name = "concrete brick"
+	default_type = MATERIAL_CONCRETE
+
+/singleton/reaction/concrete/on_reaction(datum/reagents/holder, created_volume, reaction_flags)
+	..()
+	new /obj/item/stack/material/concrete(get_turf(holder.my_atom), created_volume)
+
+/singleton/reaction/uranchemy
+	name = "Uranium"
+	result = null
+	required_reagents = list(/datum/reagent/frostoil = 5, /datum/reagent/uranium = 20)
+	catalysts = list(/datum/reagent/crystal=5)
+	result_amount = 1
+	mix_message = "The solution solidifies into a greeny mass."
+
+/singleton/reaction/uranchemy/on_reaction(datum/reagents/holder, created_volume, reaction_flags)
+	..()
+	new /obj/item/stack/material/uranium(get_turf(holder.my_atom), created_volume)
 
 /singleton/reaction/kompot
 	name = "Kompot"
@@ -29,6 +54,20 @@
 	required_reagents = list(/datum/reagent/water = 2, /datum/reagent/drink/juice/berry = 1, /datum/reagent/drink/juice/apple = 1, /datum/reagent/drink/juice/pear = 1)
 	result_amount = 5
 	mix_message = "The mixture turns a soft orange, bubbling faintly"
+
+/singleton/reaction/github
+	name = "GitHub"
+	result = /datum/reagent/ethanol/github
+	required_reagents = list(/datum/reagent/drink/juice/watermelon = 1, /datum/reagent/fuel = 1, /datum/reagent/iron = 1)
+	result_amount = 10
+	mix_message = "Microchips are starting to blur in the water..."
+
+/singleton/reaction/discord
+	name = "Discord"
+	result = /datum/reagent/ethanol/discord
+	required_reagents = list(/datum/reagent/drink/juice/grape = 1, /datum/reagent/fuel = 1, /datum/reagent/iron = 1)
+	result_amount = 10
+	mix_message = "Voice yelling and memes are starting to blur in the water..."
 
 //REAGENTS//
 
@@ -41,6 +80,25 @@
 	glass_name = "Kompot"
 	glass_desc = "Traditional Terran drink. Grandma would be proud."
 
+/datum/reagent/ethanol/github
+	name = "GitHub"
+	description = "The famous cocktail. Coined by programmers for programmers. Made not from programmers. Where's my merge, Elar?"
+	taste_description = "sweet microchips, steel and Elar's merge"
+	color = "#3d3d3d"
+	metabolite_potency = 2
+
+	glass_name = "github cocktail"
+	glass_desc = "The famous cocktail. Coined by programmers for programmers. Made not from programmers. Where's my merge, Elar?"
+
+/datum/reagent/ethanol/discord
+	name = "Discord"
+	description = "You did it, Verhniy! Where's the Discord Nitro cocktail, though?"
+	taste_description = "Well Played Good Games and CO-OP"
+	color = "#36393f"
+	metabolite_potency = 1.5
+
+	glass_name = "Discord cocktail"
+	glass_desc = "You did it, Verhniy! Where's the Discord Nitro cocktail, though?"
 
 // SLIME REACTIONS //
 
@@ -157,15 +215,21 @@
 	value = 2
 	should_admin_log = TRUE
 
-/datum/reagent/yeostoxin/affect_blood(mob/living/carbon/human/H, removed)
-	if(!istype(H))
+/datum/reagent/yeostoxin/affect_blood(mob/living/carbon/human/affected, removed)
+	if (!istype(affected))
+		return
+	if(affected.species.name == SPECIES_YEOSA)
+		return
+	affected.adjustToxLoss(40 * removed)
+
+/datum/reagent/yeostoxin/affect_metabolites(mob/living/carbon/human/H, dose)
+	if (!istype(H))
 		return
 	if(H.species.name == SPECIES_YEOSA)
 		return
-	H.adjustToxLoss(40 * removed)
-	if(H.chem_doses[type] < 1 || prob(30))
+	if (prob(30)) // [SIERRA-EDIT] if (dose < 1 || prob(30))
 		return
-	H.chem_doses[type] = 0
+	remove_self(dose)
 	var/list/meatchunks = list()
 	for(var/limb_tag in list(BP_R_ARM, BP_L_ARM, BP_R_LEG,BP_L_LEG))
 		var/obj/item/organ/external/E = H.get_organ(limb_tag)

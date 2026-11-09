@@ -16,7 +16,7 @@
 
 	evac_prep_delay    = 0 MINUTES
 	evac_launch_delay  = 5 MINUTES
-	evac_transit_delay = 2 MINUTES
+	evac_transit_delay = 1 MINUTES
 
 	transfer_prep_additional_delay     = 20 MINUTES
 	autotransfer_prep_additional_delay = 10 MINUTES
@@ -79,6 +79,8 @@
 
 
 	. = ..(user, _emergency_evac, forced, skip_announce, autotransfer)
+	if(. && _emergency_evac)
+		emergency_called = TRUE
 	emergency_prep_additional_delay = initial(emergency_prep_additional_delay)	// Reseting time shortcut
 	if(.)
 		evac_no_return = evac_ready_time + round(evac_launch_delay/2)

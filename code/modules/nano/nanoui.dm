@@ -95,6 +95,8 @@ nanoui is used to open and update nano browser uis
 		height = nheight
 	if (nref)
 		ref = nref
+	else
+		ref = nsrc_object
 
 	add_common_assets()
 	var/datum/asset/assets = get_asset_datum(/datum/asset/nanoui)
@@ -216,6 +218,9 @@ nanoui is used to open and update nano browser uis
 			"mapZLevels" = GLOB.using_map.map_levels,
 			"user" = list("name" = user.name),
 			"currency" = GLOB.using_map.local_currency_name,
+			// [SIERRA-ADD]
+			"uiScale" = user.client?.prefs?.ui_scale || "100%",
+			// [/SIERRA-ADD]
 		)
 	return config_data
 
@@ -381,8 +386,7 @@ nanoui is used to open and update nano browser uis
 		template_data_json = strip_improper(json_encode(templates))
 
 	var/list/send_data = get_send_data(initial_data)
-	var/initial_data_json = replacetext(replacetext(json_encode(send_data), "&#34;", "&amp;#34;"), "'", "&#39;")
-	initial_data_json = strip_improper(initial_data_json);
+	var/initial_data_json = html_encode(strip_improper(json_encode(send_data)))
 
 	var/url_parameters_json = json_encode(list("src" = "\ref[src]"))
 
@@ -441,7 +445,10 @@ nanoui is used to open and update nano browser uis
 
 	var/window_size = ""
 	if (width && height)
-		window_size = "size=[width]x[height];"
+		// [SIERRA-ADD]
+		var/multiplier = (text2num(user.client?.prefs?.window_size) || 100) / 100
+		window_size = "size=[round(width * multiplier)]x[round(height * multiplier)];"
+		// [/SIERRA-ADD]
 	if(update_status(0))
 		return // Will be closed by update_status().
 

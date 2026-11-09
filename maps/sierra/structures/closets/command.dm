@@ -36,10 +36,12 @@
 		/obj/item/clothing/under/captainformal,
 		/obj/item/clothing/under/captain_parade,
 		/obj/item/clothing/under/captain_parade/female,
+		/obj/item/clothing/under/rank/captain/bluefleet,
 		/obj/item/clothing/shoes/laceup,
 		/obj/item/clothing/shoes/dressheels,
 		new /datum/atom_creator/weighted(list(/obj/item/storage/backpack/command, /obj/item/storage/backpack/messenger/com, /obj/item/storage/backpack/satchel/com))
 	)
+
 /obj/structure/closet/secure_closet/hop/sierra
 	name = "head of personnel's locker"
 	req_access = list(access_hop)

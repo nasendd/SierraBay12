@@ -84,7 +84,10 @@
 	if(!portable_drive)
 		to_chat(user, "There is no portable device connected to \the [src].")
 		return
-
+//[SIERRA-ADD]
+	if(portable_drive.find_file_by_name("DISK_NAME"))
+		portable_drive.name = portable_drive.get_disk_name()
+//[/SIERRA-ADD]
 	uninstall_component(user, portable_drive)
 
 /obj/item/modular_computer/attack_ghost(mob/observer/ghost/user)
@@ -233,6 +236,9 @@
 	. = ..()
 	if(scanner)
 		scanner.do_on_afterattack(user, target, proximity)
+
+/obj/item/modular_computer/use_in_world(mob/user)
+	attack_self(user)
 
 /obj/item/modular_computer/CtrlAltClick(mob/user)
 	if(!CanPhysicallyInteract(user))

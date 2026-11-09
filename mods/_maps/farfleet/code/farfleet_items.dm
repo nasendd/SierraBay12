@@ -55,364 +55,100 @@
 	new /obj/item/ammo_magazine/pistol(src)
 	new /obj/item/ammo_magazine/pistol(src)
 
-
-/* WEAPONARY - BALLISTICS
- * ========
- */
-
-/obj/item/gun/projectile/automatic/assault_rifle/heltek
-	name = "LA-700"
-	desc = "HelTek LA-700 is a standart equipment of ICCG Space-assault Forces. Looks very similiar to STS-35."
-	icon = 'mods/_maps/farfleet/icons/obj/iccg_rifle.dmi'
-	icon_state = "iccg_rifle"
-	item_state = "arifle"
-	item_icons = list(
-		slot_r_hand_str = 'mods/_maps/farfleet/icons/mob/righthand.dmi',
-		slot_l_hand_str = 'mods/_maps/farfleet/icons/mob/lefthand.dmi',
-		)
-
-/obj/item/gun/projectile/automatic/assault_rifle/heltek/on_update_icon()
-	..()
-	if(ammo_magazine)
-		icon_state = "iccg_rifle"
-		wielded_item_state = "arifle-wielded"
-	else
-		icon_state = "iccg_rifle-empty"
-		wielded_item_state = "arifle-wielded-empty"
-
-/obj/item/gun/projectile/automatic/mr735
-	name = "MR-735"
-	desc = "A cheap rifle for close quarters combat, with an auto-firing mode available. HelTek MR-735 is a standard rifle for ICCG Space-assault Forces, designed without a stock for easier storage and combat in closed spaces. Perfect weapon for some ship's crew."
-	icon = 'mods/_maps/farfleet/icons/obj/mr735.dmi'
-	icon_state = "nostockrifle"
-	item_state = "nostockrifle"
-	item_icons = list(
-		slot_r_hand_str = 'mods/_maps/farfleet/icons/mob/righthand.dmi',
-		slot_l_hand_str = 'mods/_maps/farfleet/icons/mob/lefthand.dmi',
-		)
-	wielded_item_state = "nostockrifle_wielded"
-	force = 10
-	caliber = CALIBER_RIFLE
-	origin_tech = list(TECH_COMBAT = 6, TECH_MATERIAL = 1, TECH_ESOTERIC = 5)
-	slot_flags = SLOT_BACK
-	load_method = MAGAZINE
-	magazine_type = /obj/item/ammo_magazine/rifle
-	allowed_magazines = /obj/item/ammo_magazine/rifle
-	bulk = GUN_BULK_RIFLE
-	mag_insert_sound = 'sound/weapons/guns/interaction/ltrifle_magin.ogg'
-	mag_remove_sound = 'sound/weapons/guns/interaction/ltrifle_magout.ogg'
-
-	//Assault rifle, burst fire degrades quicker than SMG, worse one-handing penalty, slightly increased move delay
-	firemodes = list(
-		list(mode_name="semi auto",      burst=1,    fire_delay=null, one_hand_penalty=8,  burst_accuracy=null,                dispersion=null),
-		list(mode_name="2-round bursts", burst=2,    fire_delay=null, one_hand_penalty=9,  burst_accuracy=list(0,-1,-1),       dispersion=list(0.0, 0.6, 1.0)),
-		list(mode_name="full auto",      burst=1,    fire_delay=1.7,    burst_delay=1.3,     one_hand_penalty=7,  burst_accuracy=list(0,-1,-1), dispersion=list(1.3, 1.5, 1.7, 1.9, 2.2), autofire_enabled=1)
-		)
-
-/obj/item/gun/projectile/automatic/mr735/on_update_icon()
-	..()
-	if(ammo_magazine)
-		icon_state = "nostockrifle"
-		wielded_item_state = "nostockrifle-wielded"
-	else
-		icon_state = "nostockrifle-empty"
-		wielded_item_state = "nostockrifle-wielded-empty"
-
-
-/obj/item/gun/projectile/automatic/mbr
-	name = "MBR"
-	desc = "A shabby bullpup carbine. Despite its size, it looks a little uncomfortable, but it is robust. HelTek MBR is a standart equipment of ICCG Space-assault Forces, designed in a bullpup layout. Possesses autofire and is perfect for the ship's crew."
-	icon = 'mods/_maps/farfleet/icons/obj/mbr_bullpup.dmi'
-	icon_state = "mbr_bullpup"
-	item_state = "mbr_bullpup"
-	item_icons = list(
-		slot_r_hand_str = 'mods/_maps/farfleet/icons/mob/righthand.dmi',
-		slot_l_hand_str = 'mods/_maps/farfleet/icons/mob/lefthand.dmi',
-		)
-	wielded_item_state = "mbr_bullpup-wielded"
-	force = 10
-	caliber = CALIBER_RIFLE
-	origin_tech = list(TECH_COMBAT = 6, TECH_MATERIAL = 1, TECH_ESOTERIC = 5)
-	slot_flags = SLOT_BACK
-	load_method = MAGAZINE
-	magazine_type = /obj/item/ammo_magazine/rifle
-	allowed_magazines = /obj/item/ammo_magazine/rifle
-	bulk = GUN_BULK_RIFLE + 1
-	mag_insert_sound = 'sound/weapons/guns/interaction/ltrifle_magin.ogg'
-	mag_remove_sound = 'sound/weapons/guns/interaction/ltrifle_magout.ogg'
-
-	firemodes = list(
-		list(mode_name="semi auto",      burst=1,    fire_delay=null, one_hand_penalty=8,  burst_accuracy=null,                dispersion=null),
-		list(mode_name="2-round bursts", burst=2,    fire_delay=null, one_hand_penalty=9,  burst_accuracy=list(0,-1,-1),       dispersion=list(0.0, 0.6, 1.0)),
-		list(mode_name="full auto",      burst=1,    fire_delay=1.7,    burst_delay=1.3,     one_hand_penalty=7,  burst_accuracy=list(0,-1,-1), dispersion=list(1.3, 1.5, 1.7, 1.9, 2.2), autofire_enabled=1)
-		)
-
-/obj/item/gun/projectile/automatic/mbr/on_update_icon()
-	..()
-	if(ammo_magazine)
-		icon_state = "mbr_bullpup"
-	else
-		icon_state = "mbr_bullpup-empty"
-
-
-/* WEAPONARY - ENERGY
- * ========
- */
-
-/obj/item/gun/energy/laser/bonfire
-	name = "Bonfire Carbine"
-	desc = "Strange construction: laser carbine with underslung grenade launcher and very capable internal battery. HelTek Bonfire-75 is a weapon designed for suppressive fire in close quarters, where usage of ballistic weaponry will be uneffective or simply hazardous."
-	icon = 'mods/_maps/farfleet/icons/obj/bonfire.dmi'
-	icon_state = "bonfire"
-	item_state = "bonfire"
-	item_icons = list(
-		slot_r_hand_str = 'mods/_maps/farfleet/icons/mob/righthand.dmi',
-		slot_l_hand_str = 'mods/_maps/farfleet/icons/mob/lefthand.dmi',
-		)
-	slot_flags = SLOT_BELT|SLOT_BACK
-	w_class = ITEM_SIZE_LARGE
-	force = 10
-	one_hand_penalty = 2
-	fire_delay = 6
-	burst_delay = 2
-	max_shots = 30
-	bulk = GUN_BULK_RIFLE
-	origin_tech = list(TECH_COMBAT = 5, TECH_MAGNET = 4)
-	matter = list(MATERIAL_STEEL = 2000)
-	projectile_type = /obj/item/projectile/beam/smalllaser
-	wielded_item_state = "bonfire-wielded"
-
-	firemodes = list(
-		list(mode_name="semi auto",       burst=1, fire_delay=null, one_hand_penalty=0, burst_accuracy=null, dispersion=null),
-		list(mode_name="3-ray bursts", burst=3, fire_delay=null, one_hand_penalty=1, burst_accuracy=list(0,0,-1,-1),       dispersion=list(0.0, 0.0, 0.5, 0.6)),
-		list(mode_name="fire grenades",  burst=null, fire_delay=null,  use_launcher=1,    one_hand_penalty=10, burst_accuracy=null, dispersion=null)
-		)
-
-	var/use_launcher = 0
-	var/obj/item/gun/launcher/grenade/underslung/launcher
-
-/obj/item/gun/energy/laser/bonfire/Initialize()
-	. = ..()
-	launcher = new(src)
-
-/obj/item/gun/energy/laser/bonfire/use_tool(obj/item/tool, mob/user, list/click_params)
-	if(istype(tool, /obj/item/grenade))
-		launcher.load(tool, user)
-		return TRUE
-	return ..()
-
-/obj/item/gun/energy/laser/bonfire/attack_hand(mob/user)
-	if(user.get_inactive_hand() == src && use_launcher)
-		launcher.unload(user)
-	else
-		..()
-
-/obj/item/gun/energy/laser/bonfire/Fire(atom/target, mob/living/user, params, pointblank=0, reflex=0)
-	if(use_launcher)
-		launcher.Fire(target, user, params, pointblank, reflex)
-		if(!launcher.chambered)
-			switch_firemodes() //switch back automatically
-	else
-		..()
-
-/obj/item/gun/energy/ionrifle/small/stupor
-	name = "Stupor ion pistol"
-	desc = "The HelTek Stupor-45 is a compact anti-drone weapon. Due to their small output of EMP, you need be marksman to disable human-sized synthetic. But it's still better, than nothing."
-	icon = 'mods/_maps/farfleet/icons/obj/stupor.dmi'
-	icon_state = "stupor"
-	item_state = "stupor"
-	item_icons = list(
-		slot_r_hand_str = 'mods/_maps/farfleet/icons/mob/righthand.dmi',
-		slot_l_hand_str = 'mods/_maps/farfleet/icons/mob/lefthand.dmi',
-		)
-	fire_delay = 40
-	one_hand_penalty = 0
-	charge_cost = 40
-	max_shots = 5
-
-// CSS Anti-psionics stuff
-
-/obj/item/ammo_casing/pistol/nullglass
-	desc = "A 10mm bullet casing with a nullglass coating."
-	projectile_type = /obj/item/projectile/bullet/nullglass
-
-/obj/item/ammo_casing/pistol/nullglass/disrupts_psionics()
-	return src
-
-/obj/item/ammo_magazine/pistol/nullglass
-	ammo_type = /obj/item/ammo_casing/pistol/nullglass
-
-/* VOIDSUITS AND RIGS
- * ========
- */
-
-/obj/item/clothing/head/helmet/space/void/pioneer
-	name = "pioneer corps voidsuit helmet"
-	desc = "A somewhat old-fashioned helmet in bright colors. On the forehead you can see the inscription PC ICCG. This one has radiation shielding."
-	icon = 'mods/_maps/farfleet/icons/obj/obj_head.dmi'
-	icon_state = "pioneer"
-	item_state = "pioneer"
-	item_icons = list(slot_head_str = 'mods/_maps/farfleet/icons/mob/onmob_head.dmi')
-	armor = list(
-		melee = ARMOR_MELEE_RESISTANT,
-		bullet = ARMOR_BALLISTIC_MINOR,
-		laser = ARMOR_LASER_MINOR,
-		bomb = ARMOR_BOMB_PADDED,
-		bio = ARMOR_BIO_SHIELDED,
-		rad = ARMOR_RAD_RESISTANT
-		)
-	max_pressure_protection = ENG_VOIDSUIT_MAX_PRESSURE
-	siemens_coefficient = 0.3
-
-/obj/item/clothing/suit/space/void/pioneer
-	name = "pioneer corps voidsuit"
-	desc = "A somewhat old-fashioned voidsuit in bright colors. On the shoulder you can see the inscription PC ICCG. This one has radiation shielding."
-	icon = 'mods/_maps/farfleet/icons/obj/obj_suit.dmi'
-	icon_state = "pioneer"
-	item_state = "pioneer"
-	item_icons = list(slot_wear_suit_str = 'mods/_maps/farfleet/icons/mob/onmob_suit.dmi')
-	max_pressure_protection = ENG_VOIDSUIT_MAX_PRESSURE
-	siemens_coefficient = 0.3
-	armor = list(
-		melee = ARMOR_MELEE_RESISTANT,
-		bullet = ARMOR_BALLISTIC_MINOR,
-		laser = ARMOR_LASER_MINOR,
-		bomb = ARMOR_BOMB_PADDED,
-		bio = ARMOR_BIO_SHIELDED,
-		rad = ARMOR_RAD_RESISTANT
-		)
-	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/storage/briefcase/inflatable,/obj/item/rcd,/obj/item/rpd, /obj/item/gun)
-
-/obj/item/clothing/suit/space/void/pioneer/prepared
-	helmet = /obj/item/clothing/head/helmet/space/void/pioneer
-	boots = /obj/item/clothing/shoes/magboots
-	item_flags = ITEM_FLAG_THICKMATERIAL | ITEM_FLAG_INVALID_FOR_CHAMELEON
-
-/obj/item/rig/pioneer
-	name = "pioneer corps suit control module"
-	desc = "A ridiculously bulky military hardsuit with PC-13AA inscription and a small ICCG crest on its control module. This suit's armor plates mostly replaced with anomaly and radiation shielding."
-	icon = 'mods/_maps/farfleet/icons/obj/rig_modules.dmi'
-	suit_type = "heavy"
-	icon_state = "gcc_rig"
-	online_slowdown = 2 ///chunky
-	offline_slowdown = 4
-	armor = list(
-		melee = ARMOR_MELEE_MAJOR,
-		bullet = ARMOR_BALLISTIC_RESISTANT,
-		laser = ARMOR_LASER_MAJOR,
-		energy = ARMOR_ENERGY_STRONG,
-		bomb = ARMOR_BOMB_PADDED,
-		bio = ARMOR_BIO_SHIELDED,
-		rad = ARMOR_RAD_SHIELDED
-		)
-	initial_modules = list(
-		/obj/item/rig_module/vision/meson,
-		/obj/item/rig_module/chem_dispenser,
-		/obj/item/rig_module/ai_container,
-		/obj/item/rig_module/device/anomaly_scanner,
-		/obj/item/rig_module/power_sink,
-		/obj/item/rig_module/cooling_unit,
-		/obj/item/rig_module/maneuvering_jets
-		)
-
-	chest_type = /obj/item/clothing/suit/space/rig/pioneer
-	helm_type =  /obj/item/clothing/head/helmet/space/rig/pioneer
-	boot_type =  /obj/item/clothing/shoes/magboots/rig/pioneer
-	glove_type = /obj/item/clothing/gloves/rig/pioneer
-
-/obj/item/clothing/head/helmet/space/rig/pioneer
-	light_overlay = "helmet_light_dual_alt"
-
-/obj/item/clothing/suit/space/rig/pioneer
-	breach_threshold = 40
-	species_restricted = list(SPECIES_HUMAN, SPECIES_IPC)
-	allowed = list(
-		/obj/item/gun,
-		/obj/item/ammo_magazine,
-		/obj/item/ammo_casing,
-		/obj/item/handcuffs,
-		/obj/item/device/flashlight,
-		/obj/item/tank,
-		/obj/item/device/suit_cooling_unit,
-		/obj/item/melee/baton
-	)
-
-/obj/item/clothing/gloves/rig/pioneer
-	icon = 'mods/_maps/farfleet/icons/obj/obj_hands.dmi'
-	item_icons = list(slot_gloves_str = 'mods/_maps/farfleet/icons/mob/onmob_hands.dmi')
-	siemens_coefficient = 0
-
-/obj/item/clothing/shoes/magboots/rig/pioneer
-	icon = 'mods/_maps/farfleet/icons/obj/obj_feet.dmi'
-	item_icons = list(slot_shoes_str = 'mods/_maps/farfleet/icons/mob/onmob_feet.dmi')
-
-/obj/item/clothing/head/helmet/space/rig/pioneer
-	icon = 'mods/_maps/farfleet/icons/obj/obj_head.dmi'
-	item_icons = list(slot_head_str = 'mods/_maps/farfleet/icons/mob/onmob_head.dmi')
-
-/obj/item/clothing/suit/space/rig/pioneer
-	icon = 'mods/_maps/farfleet/icons/obj/obj_suit.dmi'
-	item_icons = list(slot_wear_suit_str = 'mods/_maps/farfleet/icons/mob/onmob_suit.dmi')
-
-/obj/item/rig/pioneer/sergeant
-	name = "pioneer corps sergeant suit control module"
-	desc = "A ridiculously bulky military hardsuit with PC-13AS inscription and a small ICCG crest on its control module. This suit's armor plates mostly replaced with anomaly and radiation shielding."
-	suit_type = "heavy"
-
-	initial_modules = list(
-		/obj/item/rig_module/vision/meson,
-		/obj/item/rig_module/chem_dispenser,
-		/obj/item/rig_module/ai_container,
-		/obj/item/rig_module/mounted/ballistic/minigun,
-		/obj/item/rig_module/device/anomaly_scanner,
-		/obj/item/rig_module/power_sink,
-		/obj/item/rig_module/cooling_unit,
-		/obj/item/rig_module/maneuvering_jets
-		)
-
-/obj/item/rig/pioneer/on_update_icon(update_mob_icon)
-
-	ClearOverlays()
-	if(!mob_icon || update_mob_icon)
-		var/species_icon = 'mods/_maps/farfleet/icons/mob/onmob_rig_back.dmi'
-		if(wearer && sprite_sheets && sprite_sheets[wearer.species.get_bodytype(wearer)])
-			species_icon =  sprite_sheets[wearer.species.get_bodytype(wearer)]
-		mob_icon = image("icon" = species_icon, "icon_state" = "[icon_state]")
-
-	if(equipment_overlay_icon && LAZYLEN(installed_modules))
-		for(var/obj/item/rig_module/module in installed_modules)
-			if(module.suit_overlay)
-				var/overlay = image("icon" = equipment_overlay_icon, "icon_state" = "[module.suit_overlay]", "dir" = SOUTH)
-				chest.AddOverlays(overlay)
-
-	if(wearer)
-		wearer.update_inv_shoes()
-		wearer.update_inv_gloves()
-		wearer.update_inv_head()
-		wearer.update_inv_wear_mask()
-		wearer.update_inv_wear_suit()
-		wearer.update_inv_w_uniform()
-		wearer.update_inv_back()
-	return
-
-
 /* MISC
  * ========
  */
 
-/obj/item/paper/farfleet/turrets
-	name = "About Turrets"
-	info = {"<h1>По поводу турелей.</h1>
-			<p>Вася, я не знаю, как ты настраивал эти чёртовы турели, но у них слетает проверка доступа каждый раз как весь экипаж уходит в криосон. Да, я знаю, что они не должны сбоить из-за того, что все спят, но вот они так делают. Наше счастье, что они просто начинают оглушающим лучом бить,а не летальным режимом.</p>
-			<h1>ПЕРЕЗАГРУЗИ КОНТРОЛЛЕР ТУРЕЛЕЙ, КАК ПОЙДЁШЬ В АНГАР.</h1>
-		"}
+/obj/item/paper/farfleet/shield
+	name = "About Shield Generator"
+	language = "Pan-Slavic"
+	info = {"<h1>По поводу генератора щита</h1>
+	<p>Я не знаю кто нам срезал комнату отдыха, но тут теперь Генератор щита.<br /><br />Раз ты это читаешь, значит ты не знаешь как его настроить, или после Криокамеры тебе начисто отбило память.</p>
+	<ol><li>Выставь мощность 1500 Киловатт.</li>
+	<li>Выставь Радиус Щитов на 36 Единиц.</li>
+	<li>Включи Генератор Щита.</li>
+	<li>Настрой требуемые функции в нём.&nbsp;</li>
+	</ol><p>Поздравляю!<br />Теперь Генератор Щита настроен и он набирает заряд, как только тебе дадут приказ о Проецировании Щитов, ты его Активируешь, там будет вторая кнопочка, но более правее.</p>
+	<p><em>Якоб З.Д</em> "}
 
-/obj/item/paper/farfleet/engines
-	name = "Engines Usage"
-	info = {"
-		<div style="text-align: center;">
-			<p>Я не буду сейчас долго расписывать как работает атмосфера на Гарибальди, которую гайцы ТОЧНО не утащили у клятых марсиан, но принцип работы примерно следующий:</p>
-			<p>Основные маршевые двигатели - ионные. Да, не слишком быстро, но надёжно если после затухания реакции в токамаке сможете нормально его настроить. А газовые двигатели - УСКОРИТЕЛИ. Но летать на них постоянно не советую, углекислота не бесконечная.</p>
-		</div>
-		<p><i>Ченков В.П.</i></p>
-	"}
+/obj/item/paper/farfleet/reactor
+	name = "About Reactor"
+	language = "Pan-Slavic"
+	info = {" <p><strong>По поводу нашего реактора</strong></p>
+	<p><br />Если БЛЯТЬ ВАЛЕРА опять решил покурить в реакторе, то там наверняка Кислород, который нужно продуть дабы не было лишних проблем со смесью. <br />Номинальная:</p>
+	<ol>
+	<li>Ты же не забыл продуть Реактор? Если продул камеру Реактора, то закрывай её.</li>
+	<li>Выставь в Газовой Помпе пропуск давления на 10 Кило паскалей и включить.</li>
+	<li>Выставь в Газовом Миксере на одном любом порте максимальный пропуск и включить.</li>
+	<li>Поставь на Любом из портов канистру с водородом и прикрутить.</li>
+	<li>Возьми с ящика Диски Дейтерия и сделать 4 Дейтериевых Стержня в специальной машине.</li>
+	<li>Вставь в каждый инжектор по Дейтериевому Стержню.</li>
+	<li>В консоли управления Инжекторами, выставь у всех по 4% использования и включи.</li>
+	<li>Включи Тритиевый Генератор на второй или третей мощности.</li>
+	<li>Включи реактор и выставить 50 Тесел.</li>
+	<li>Включи гиротрон на силе выстрела в 50 Единиц с отсечкой в 2 секунды.</li>
+	<li>Дай ему время нагреться до 5-6 тысяч Кельвинов.</li>
+	<li>Выруби гиротрон.</li>
+	<li>Выруби Тритиевый Генератор.</li>
+	</ol>
+	<p>Теперь вы можете номинально барражировать, пока в следующий раз не придёт снова БЛЯТЬ ВАЛЕРА и не решит покурить в Реакторе.</p>
+	<p><strong>ЕСЛИ РЕАКТОР НАЧНЕТ ТУХНУТЬ, </strong></p>
+	<p><strong>ПРОВЕРЬ ПОСТУПАЕТ ЛИ В РЕАКТОР СМЕСЬ</strong></p>
+	<p><em>Якоб З.Д</em></p> "}
+
+/obj/item/paper/farfleet/engine
+	name = "About Warming Engine"
+	language = "Pan-Slavic"
+	info = {" <h1><strong> По поводу прогрева наших Ускорителей</strong></h1>
+	<p>Топливные двигатели, они у нас&nbsp;используются&nbsp;<strong>ТОЛЬКО</strong> как <strong>УСКОРИТЕЛИ</strong> и не более, углекислота не вечная, так что использовать нужно с умом.<br />В Газовом Миксере всё уже настроено, тебе остается сделать пару манипуляций чтобы всё заработало, самое главное, <strong>не прожги</strong> наш Атмосферный Отсек, за всё время он ни разу не прогорал....<br /><br /><strong>Именно топливные</strong>&nbsp;трубы Выдерживают 40 Мегапаскалей, у нас хоть и установлен Предохранительный Клапан, но он может не успеть сбросить требуемое количество Газа.<br /><br />Как прогреть:</p>
+	<ol>
+	<li>Поставь на Голубой порт Канистру с Кислородом и прикрути.</li>
+	<li>Поставь на Фиолетовый порт Канистру с Водородом и прикрути.</li>
+	<li>Выставь в Углекислотной линии на Газовой Помпе подачу смеси на 1 мегапаскаль и включи. <br />(1 мегапаскаль = 1000 Кило Паскалей)</li>
+	<li>Включи миксер Смеси Кислорода и Водорода.</li>
+	<li>Закрой смотровое окно в камере Сгорания и <strong>НЕ ОТКРЫВАЙ</strong>.</li>
+	<li>Выставь подачу Горючей Смеси на 250 Кило Паскалей и включи</li>
+	</ol>
+	<p><em>Поздравляю, ты прогрел Топливные Ускорители!<br />Если ты начинаешь слышать как что-то Шипит, или подозрительно трескается и лопается, нажми кнопку продуваки камеры сгорания&nbsp;<strong>-</strong></em><strong>&nbsp;БЕГИ ИЗ АТМОСФЕРНОГО ОТСЕКА.<br /><br /></strong>Всё зависит от тебя Юный Бортовой Техник, не проеби наше судно, и не забудь потом вырубить подачу горючей смаси, иначе ты просто потратишь всю углекислоту в пустую, а она <strong>НЕ</strong> вечная.</p>
+	<p><em>Якоб З.Д</em></p> "}
+
+/obj/item/paper/farfleet/money
+	name = "About money"
+	language = "Pan-Slavic"
+	info = {" <h1>По поводу Талеров</h1>
+	<p>Вам выданы целых <strong>Десять Тысяч Талеров</strong> (10 000 Талеров)</p>
+	<p>Растрата данных дорогостоящих ценностей остаются за капитаном, или его заместителем, в случае отсутствия энного.</p>
+	<p>Денежные средства выделены на поддержание целостности выданного вам под пользование судна для оплаты ремонтных работ в случае повреждения и отсутствия возможности произвести ремонт в полевых условиях.<br />Данные средства не являются собственностью или жалованием Экипажа.</p>
+	<p><br /><strong>Данные Денежные Средства - Часть Конфедерации.</strong></p>
+	<p>Растрата, или потеря дорогостоящих Денежных Средств, будет приравнена к потере дорогостоящего обмундирования, данная сумма будет вычтена из жалования экипажа, так же будет выписан выговор, в каждое личное дело провинившегося.</p>
+	<p><em>Андропов М.Д</em></p> "}
+
+/obj/item/paper/farfleet/shuttle
+	name = "About Shuttle Baydarka"
+	language = "Pan-Slavic"
+	info = {" <h1>По поводу Шаттла Байдарка</h1>
+	<p>Каждый ёбанный Сонный Цикл, ВАЛЕРА продувает канистры с воздушной смесью, водородом и углекислотой.</p>
+	<p><br /><strong>В СИСТЕМЕ И КАНИСТРАХ БЛЯТЬ ВАКУУМ, КАК? - НЕ ЕБУ.</strong></p>
+	<p>Так что если ты это читаешь, значит тебе придётся всё подготовить дабы байдарка могла сделать номинальный вылет.</p>
+	<p>Сначало сходи в атмосферный отсек и включи подачу углекислоты на заправочную станцию.</p>
+	<p>На заправочной станции имеется 3 порта.<br />Фиолетовый это Водород.<br />Коричневый Это Углекислота.<br />Голубой Это воздушная смесь.</p>
+	<p>Теперь по пунктам:</p>
+	<ol>
+	<li>Отсоедени все канистры с байдарки, и транспортирую те на заправочную станцию.</li>
+	<li>Активируй подачу газа на всех портах.</li>
+	<li>Установи канистры в требуемые порты и заправь на требуемое тебе давления.</li>
+	</ol>
+	<p>Поздравляю, ты заправил канистры и теперь можешь их вернуть на место, если увидишь валеру, передай ему лично что он еблан.</p>
+	<p><em>Якоб З.Д</em></p> "}
+
+//Ammo Box
+
+/obj/item/storage/box/ammo/jaguar
+	name = "box of Jaguar Stik"
+	desc = "It has a picture of a gun and several warning symbols on the front."
+	startswith = list(/obj/item/ammo_magazine/machine_pistol = 7)
+
+/obj/item/storage/box/ammo/heavy
+	name = "box of LA-700 Magazine"
+	desc = "It has a picture of a gun and several warning symbols on the front."
+	startswith = list(/obj/item/ammo_magazine/rifle = 7)

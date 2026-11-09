@@ -55,8 +55,48 @@
 /mob/living/proc/handle_random_events()
 	return
 
+/mob/living/process_weather(obj/abstract/weather_system/weather, singleton/state/weather/weather_state)
+	// Handle physical effects of weather. Ambience is handled in handle_environment with a
+	// client check as mobs with no clients don't need to handle ambient messages and sounds.
+	weather_state?.handle_exposure(src, get_weather_exposure(weather), weather)
+
+/mob/living/proc/handle_weather_ambience(obj/abstract/weather_system/weather)
+	// Refresh weather ambience.
+	// Show messages and play ambience.
+	if(!istype(weather) || !client)
+		return
+
+	// Send strings if we're outside.
+	if(is_outside() && !weather.show_weather(src))
+		weather.show_wind(src)
+
+	if(get_preference_value(/datum/client_preference/play_ambiance) == GLOB.PREF_NO)
+		return
+
+	// Work out if we need to change or cancel the current ambience sound.
+	var/send_sound
+	var/mob_ref = weakref(src)
+	var/singleton/state/weather/weather_state = weather.weather_system.current_state
+	if(istype(weather_state))
+		var/ambient_sounds = !is_outside() ? weather_state.ambient_indoors_sounds : weather_state.ambient_sounds
+		var/ambient_sound = length(ambient_sounds) && pick(ambient_sounds)
+		if(global.current_mob_ambience[mob_ref] == ambient_sound)
+			return
+		send_sound = ambient_sound
+		global.current_mob_ambience[mob_ref] = send_sound
+	else if(mob_ref in global.current_mob_ambience)
+		global.current_mob_ambience -= mob_ref
+	else
+		return
+
+	// Push sound to client. Pipe dream TODO: crossfade between the new and old weather ambience.
+	sound_to(src, sound(null, repeat = 0, wait = 0, volume = 0, channel = GLOB.weather_channel))
+	if(send_sound)
+		sound_to(src, sound(send_sound, repeat = TRUE, wait = 0, volume = 30, channel = GLOB.weather_channel))
+
 /mob/living/proc/handle_environment(datum/gas_mixture/environment)
-	return
+	SHOULD_CALL_PARENT(TRUE)
+	handle_weather_ambience(get_affecting_weather())
 
 /mob/living/proc/update_pulling()
 	if(pulling)
@@ -193,12 +233,21 @@
 /mob/living/proc/update_sight()
 	if(stat == DEAD || eyeobj)
 		update_dead_sight()
-	else
-		update_living_sight()
+	if (seedarkness)
+		set_sight(0)
+		set_see_in_dark(0)
+		if(stat == DEAD || eyeobj)
+			update_dead_sight()
+		else
+			update_living_sight()
 
-	var/list/vision = get_accumulated_vision_handlers()
-	set_sight(sight | vision[1])
-	set_see_invisible(max(vision[2], see_invisible))
+		var/list/vision = get_accumulated_vision_handlers()
+		set_sight(sight | vision[1])
+		set_see_invisible(max(vision[2], see_invisible))
+
+	else
+		set_see_in_dark(8)
+		set_see_invisible(SEE_INVISIBLE_NOLIGHTING)
 
 /mob/living/proc/update_living_sight()
 	var/set_sight_flags = sight & ~(SEE_TURFS|SEE_MOBS|SEE_OBJS)

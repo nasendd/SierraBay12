@@ -15,6 +15,8 @@
 
 	var/timer_id
 
+	zone_membership_candidate = TRUE
+
 // This is not great.
 /turf/simulated/proc/wet_floor(wet_val = 1, overwrite = FALSE)
 	if(wet_val < wet && !overwrite)
@@ -165,7 +167,7 @@
 /turf/simulated/use_tool(obj/item/thing, mob/living/user, list/click_params)
 	if(isCoil(thing) && can_build_cable(user))
 		var/obj/item/stack/cable_coil/coil = thing
-		coil.PlaceCableOnTurf(src, user)
+		coil.PlaceCableOnTurf(src, user, click_params)
 		return TRUE
 	return ..()
 

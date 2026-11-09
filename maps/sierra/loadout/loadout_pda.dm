@@ -34,7 +34,7 @@
 	if(item.tesla_link && !istype(H, /mob/living/carbon/human/dummy))	//PDA in loadout shouldn't work
 		var/datum/extension/interactive/ntos/os = get_extension(item, /datum/extension/interactive/ntos)
 		if(os && os.active_program && os.active_program.NM && istype(os.active_program, /datum/computer_file/program/email_client))
-			var/datum/nano_module/email_client/NME = os.active_program.NM
+			var/datum/nano_module/program/email_client/NME = os.active_program.NM
 			NME.log_in()
 
 	if(H.equip_to_slot_if_possible(item, slot, equip_flags = TRYEQUIP_REDRAW))
@@ -79,7 +79,7 @@
 	if(item.tesla_link && !istype(H, /mob/living/carbon/human/dummy))	//PDA in loadout shouldn't work
 		var/datum/extension/interactive/ntos/os = get_extension(item, /datum/extension/interactive/ntos)
 		if(os && os.active_program && os.active_program.NM && istype(os.active_program, /datum/computer_file/program/email_client))
-			var/datum/nano_module/email_client/NME = os.active_program.NM
+			var/datum/nano_module/program/email_client/NME = os.active_program.NM
 			NME.log_in()
 	if(H.equip_to_slot_if_possible(item, slot, equip_flags = TRYEQUIP_REDRAW))
 		. = item
@@ -100,3 +100,15 @@
 /datum/gear/utility/modular_scanner/medical
 	display_name = "Scanner module, medical"
 	path = /obj/item/stock_parts/computer/scanner/medical
+
+/datum/gear/utility/modular_scanner/flora
+	display_name = "Scanner module, flora"
+	path = /obj/item/stock_parts/computer/scanner/flora
+
+/datum/gear/utility/modular_scanner/robotic
+	display_name = "Scanner module, robotic"
+	path = /obj/item/stock_parts/computer/scanner/robotic
+
+/datum/gear/utility/modular_scanner/research
+	display_name = "Scanner module, research"
+	path = /obj/item/stock_parts/computer/scanner/research

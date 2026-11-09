@@ -127,11 +127,12 @@
 	mob.adjustToxLoss(15*multiplier)
 
 /datum/disease2/effect/organs/deactivate(mob/living/carbon/human/mob, multiplier)
-	for (var/obj/item/organ/external/E in mob.organs)
-		E.status &= ~ORGAN_DEAD
-		for (var/obj/item/organ/external/C in E.children)
-			C.status &= ~ORGAN_DEAD
-	mob.update_body(1)
+	if(mob)
+		for (var/obj/item/organ/external/E in mob.organs)
+			E.status &= ~ORGAN_DEAD
+			for (var/obj/item/organ/external/C in E.children)
+				C.status &= ~ORGAN_DEAD
+		mob.update_body(1)
 
 /datum/disease2/effect/immortal
 	name = "Longevity Syndrome"
@@ -245,11 +246,13 @@
 	chance_max = 100
 	badness = VIRUS_COMMON
 /datum/disease2/effect/hiv/activate(mob/living/carbon/human/mob)
-	mob.immunity -= 30
-	mob.immunity_norm -= 15
+	if(mob)
+		mob.immunity -= 30
+		mob.immunity_norm -= 15
 
 /datum/disease2/effect/hiv/deactivate(mob/living/carbon/human/mob)
-	mob.immunity_norm = 100
+	if(mob)
+		mob.immunity_norm = 100
 
 
 /datum/disease2/effect/toxins
@@ -307,7 +310,7 @@
 		data = c_data
 	else
 		data = pick(/datum/reagent/bicaridine, /datum/reagent/kelotane, /datum/reagent/dylovene, /datum/reagent/inaprovaline, /datum/reagent/drugs/psilocybin, /datum/reagent/sugar,
-					/datum/reagent/tramadol, /datum/reagent/dexalin, /datum/reagent/drugs/cryptobiolin, /datum/reagent/impedrezene, /datum/reagent/hyperzine, /datum/reagent/ethylredoxrazine,
+					/datum/reagent/opiate/tramadol, /datum/reagent/dexalin, /datum/reagent/drugs/cryptobiolin, /datum/reagent/impedrezene, /datum/reagent/hyperzine, /datum/reagent/ethylredoxrazine,
 					/datum/reagent/drugs/mindbreaker, /datum/reagent/nutriment/glucose)
 	var/datum/reagent/R = data
 	name = "[initial(name)] ([initial(R.name)])"

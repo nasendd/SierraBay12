@@ -107,6 +107,7 @@
 			totalPlayers = 0
 			totalPlayersReady = 0
 			for(var/mob/new_player/player in GLOB.player_list)
+				var/stealthed = player.is_stealthed()
 				var/highjob
 				if (player.client)
 					var/show_ready = player.client.get_preference_value(/datum/client_preference/show_ready) == GLOB.PREF_SHOW
@@ -117,7 +118,7 @@
 							highjob = "as [slot.job_high]"
 					else if (prefs.job_high)
 						highjob = " as [prefs.job_high]"
-					if (!player.is_stealthed())
+					if (!stealthed)
 						var/can_see_hidden = check_rights(R_INVESTIGATE, 0)
 						var/datum/game_mode/mode = SSticker.pick_mode(SSticker.master_mode)
 						var/list/readied_antag_roles = list()
@@ -128,8 +129,9 @@
 
 						var/antag_role_text = "[length(readied_antag_roles) ? "Readied for ([english_list(readied_antag_roles)])" : ""]"
 						stat("[player.key]", (player.ready && (show_ready || can_see_hidden)?("(Playing[highjob]) [(can_see_hidden && !show_ready) ? "(Hidden)" : ""] [antag_role_text]"):(null)))
-				totalPlayers++
-				if(player.ready)totalPlayersReady++
+						totalPlayers++
+				if (player.ready && !stealthed)
+					totalPlayersReady++
 		else
 			stat("Next Continue Vote:", "[SSroundend.vote_cache] minutes")
 
@@ -165,9 +167,19 @@
 		new_player_panel()
 
 	if(href_list["observe"])
-		if(GAME_STATE < RUNLEVEL_LOBBY)
-			to_chat(src, SPAN_WARNING("Please wait for server initialization to complete..."))
-			return
+		// [SIERRA-EDIT]
+		if(player_is_antag(mind, only_offstation_roles = 1))
+			to_chat(src, SPAN_WARNING("You are currently being prepared for a special role. Please wait for the round to begin!"))
+			return TOPIC_HANDLED
+		if(!config.observer_spawn_allowed && !client.holder)
+			to_chat(src, SPAN_WARNING("There is an administrative lock on joining as an observer!"))
+			return TOPIC_HANDLED
+		// [/SIERRA-EDIT]
+
+		if (GAME_STATE < RUNLEVEL_LOBBY)
+			if (!client.holder)
+				to_chat(src, SPAN_WARNING("Please wait for server initialization to complete..."))
+				return
 
 		if(!config.respawn_delay || client.holder || alert(src,"Are you sure you wish to observe? You will have to wait [config.respawn_delay] minute\s before being able to respawn!","Player Setup","Yes","No") == "Yes")
 			if(!client)	return 1
@@ -191,6 +203,7 @@
 
 			if(isnull(client.holder) && should_announce)
 				announce_ghost_joinleave(src)
+			log_and_message_admins("has joined the round as an observer.", client)
 
 			var/mob/living/carbon/human/dummy/mannequin = new()
 			client.prefs.dress_preview_mob(mannequin)
@@ -207,6 +220,12 @@
 			return 1
 
 	if(href_list["late_join"])
+		// [SIERRA-EDIT]
+		if(player_is_antag(mind, only_offstation_roles = 1))
+			to_chat(src, SPAN_WARNING("You are currently being prepared for a special role. Please wait for the round to begin!"))
+			return TOPIC_HANDLED
+		// [/SIERRA-EDIT]
+
 		if(GAME_STATE != RUNLEVEL_GAME)
 			to_chat(usr, SPAN_WARNING("The round has either not started yet or already ended."))
 			return
@@ -225,6 +244,12 @@
 		LateChoices()
 
 	if(href_list["SelectedJob"])
+		// [SIERRA-EDIT]
+		if(player_is_antag(mind, only_offstation_roles = 1))
+			to_chat(src, SPAN_WARNING("You are currently being prepared for a special role. Please wait for the round to begin!"))
+			return TOPIC_HANDLED
+		// [/SIERRA-EDIT]
+
 		var/datum/job/job = SSjobs.get_by_title(href_list["SelectedJob"])
 
 		if(!SSjobs.check_general_join_blockers(src, job))

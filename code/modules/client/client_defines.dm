@@ -42,6 +42,14 @@
 	/// Prevents people from being spammed about multikeying every time their mob changes
 	var/warned_about_multikeying = TRUE
 
+	// [SIERRA-ADD]
+	/// If player has multiple connections warn to the server
+	var/have_connection_warn = FALSE
+
+	/// If player has bans warn
+	var/have_bans_warn = FALSE
+	// [/SIERRA-ADD]
+
 	/// If the database is available, how old the account is in days
 	var/player_age = "Requires database"
 
@@ -53,3 +61,41 @@
 
 	/// The current fullscreen state for /client/toggle_fullscreen()
 	var/fullscreen = FALSE
+
+	/// When the client has atom outlines enabled and hovers something applicable, that thing's outline
+	var/image/atom_outline
+
+	/// A resolvable to the current atom outline target, if any
+	var/weakref/outline_atom
+
+	/// True while an atom outline update is in-flight
+	var/outline_updating
+
+	/// Mirror of the truthiness of the atom_outlines preference
+	var/outline_enabled
+
+// [SIERRA-ADD] - Input state
+/client
+	/// Custom movement keys for this client
+	var/list/movement_keys = list()
+	/// Are we locking our movement input?
+	var/movement_locked = FALSE
+
+	/// A buffer of currently held keys.
+	var/list/keys_held = list()
+	/// A buffer for combinations such of modifiers + keys (ex: CtrlD, AltE, ShiftT). Format: `"key"` -> `"combo"` (ex: `"D"` -> `"CtrlD"`)
+	var/list/key_combos_held = list()
+	/*
+	** These next two vars are to apply movement for keypresses and releases made while move delayed.
+	** Because discarding that input makes the game less responsive.
+	*/
+	/// On next move, add this dir to the move that would otherwise be done
+	var/next_move_dir_add
+	/// On next move, subtract this dir from the move that would otherwise be done
+	var/next_move_dir_sub
+	/// Movement dir of the most recently pressed movement key. Used in cardinal-only movement mode.
+	var/last_move_dir_pressed
+	/// Coalesce overlapping updates without blocking the input subsystem.
+	var/updating_macros = FALSE
+	var/macros_update_queued = FALSE
+// [/SIERRA-ADD]

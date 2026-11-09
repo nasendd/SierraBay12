@@ -9,8 +9,8 @@
 	max_repair = 60
 	repair_damage = 30
 	hide_pilot = TRUE
-	back_modificator_damage = 1.3
 	front_modificator_damage = 1
+	matter = list(MATERIAL_STEEL = 135000, MATERIAL_PLASTEEL = 10000, MATERIAL_ALUMINIUM = 40000)
 	max_heat = 200
 	heat_cooling = 8
 	emp_heat_generation = 100

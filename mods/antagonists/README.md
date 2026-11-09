@@ -29,7 +29,10 @@ ID мода: ANTAGONISTS
 
 ### Изменения *кор кода*
 
-- Отсутствуют
+- `code/datums/mind/memory.dm`:
+  - `/datum/mind/ShowMemory`
+- `code/game/gamemodes/objective.dm`:
+  - `/datum/objective/get_display_text`
 <!--
   Если вы редактировали какие-либо процедуры или переменные в кор коде,
   они должны быть указаны здесь.
@@ -46,8 +49,21 @@ ID мода: ANTAGONISTS
     - `var/suffixes`
     - `var/shuttles_to_initialise`
     - `var/apc_test_exempt_areas`
-  - `/datum/shuttle/autodock/multi/antag/rescue/var/destination_tags`
+  - `/datum/shuttle/autodock/multi/antag/ert/var/destination_tags`
   - `/area/map_template/rescue_base/start/var/base_turf`
+
+- `code/game/antagonist/antagonist_objectives.dm`:
+  - `/datum/antagonist/proc/create_objectives()`
+
+- `code/game/antagonist/antagonist_add.dm`:
+  - `/datum/antagonist/proc/add_antagonist_mind()`
+  - `/datum/antagonist/proc/remove_antagonist()`
+
+- `code/game/antagonist/station/traitor.dm`:
+  - `/datum/antagonist/traitor/create_objectives()`
+
+- `code/game/gamemodes/game_mode.dm`:
+  - `/datum/game_mode/create_antagonists()`
 <!--
   Если ты добавлял новый модульный оверрайд, его нужно указать здесь.
   Здесь указываются оверрайды в твоём моде и папке `_master_files`
@@ -70,6 +86,8 @@ ID мода: ANTAGONISTS
 
 - `icons/obj/augment.dmi`
 - `mods/ntnet/code/NTNet-items.dm`
+- `mods/rocket_launchers/code/rockets.dm`
+- `mods/rocket_launchers/code/launcher.dm`
 
 <!--
   Будь то немодульный файл или модульный файл, который не содержится в папке,

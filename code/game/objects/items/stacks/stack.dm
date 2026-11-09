@@ -72,7 +72,7 @@
 		recipe_list = srl.recipes
 	var/t1 = list()
 	t1 += "<HTML><HEAD><title>Constructions from [src]</title></HEAD><body><TT>Amount Left: [src.get_amount()]<br>"
-	for(var/i=1;i<=length(recipe_list),i++)
+	for(var/i=1; i<=length(recipe_list); i++)
 		var/E = recipe_list[i]
 		if (isnull(E))
 			continue
@@ -168,7 +168,7 @@
 
 		var/datum/stack_recipe/R = recipes_list[text2num(href_list["make"])]
 		var/multiplier = text2num(href_list["multiplier"])
-		if (!multiplier || (multiplier <= 0)) //href exploit protection
+		if (!multiplier || (multiplier < 1)) //href exploit protection
 			return
 
 		src.produce_recipe(R, multiplier, usr)

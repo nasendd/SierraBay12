@@ -14,7 +14,7 @@
 				var/template_key = "template-[cache_key]"
 				if(!GLOB.mech_icon_cache[template_key])
 					GLOB.mech_icon_cache[template_key] = icon(cache_icon, "[cache_key]_mask")
-				var/icon/decal_icon = icon('icons/mecha/mech_decals.dmi',decal)
+				var/icon/decal_icon = icon('mods/mechs_by_shegar/icons/mech_decals.dmi',decal)
 				decal_icon.AddAlphaMask(GLOB.mech_icon_cache[template_key])
 				GLOB.mech_icon_cache[decal_key] = decal_icon
 			var/image/decal_image = get_mech_image(null, decal_key, GLOB.mech_icon_cache[decal_key])
@@ -95,7 +95,15 @@
 				if(power == MECH_POWER_ON)
 					new_overlays += get_mech_image(decal, use_icon_state, 'mods/mechs_by_shegar/icons/mech_weapon_overlays.dmi', color, hardpoint_object.mech_layer )
 				else
-					new_overlays += get_mech_image(decal, use_icon_state, 'mods/mechs_by_shegar/icons/mech_weapon_overlays_off.dmi', color, hardpoint_object.mech_layer )
+					new_overlays += get_mech_image(decal, use_icon_state, 'mods/mechs_by_shegar/icons/mech_weapon_overlays_off.dmi', color, null, hardpoint_object.mech_layer )
+
+	for(var/overlay in new_overlays)
+		var/image/I = overlay
+		if(I)
+			// Skip pilot and passenger overlays — they have their own alpha mask filters
+			if((I in pilot_overlays) || (I in back_passengers_overlays) || (I in left_back_passengers_overlays) || (I in right_back_passengers_overlays))
+				continue
+			I.filters = filters
 	SetOverlays(new_overlays)
 
 ///Функция генерирующая изображение модулей меха. Применяется в радиальном меню при ремонте

@@ -36,7 +36,7 @@
 	..()
 	remove_cloaking_source(species)
 
-	if (istype(H.gloves, /obj/item/clothing/gloves/boxing/hologlove))
+	if (istype(H.gloves, /obj/item/clothing/gloves/boxing) && H.a_intent == I_HURT)
 		H.do_attack_animation(src)
 		var/damage = rand(0, 9)
 		var/hit_zone = resolve_hand_attack(damage, H, H.zone_sel.selecting)
@@ -100,7 +100,7 @@
 
 					var/obj/item/organ/internal/heart/heart = internal_organs_by_name[BP_HEART]
 					if (heart)
-						heart.external_pump = list(world.time, 0.4 + 0.1*pumping_skill + Frand(-0.1,0.1))
+						heart.external_pump = list(world.time, 0.4 + 0.05*pumping_skill + frand(-0.1,0.1))
 
 					if (stat != DEAD && prob(2 * pumping_skill))
 						resuscitate()
@@ -136,7 +136,8 @@
 			return
 
 		if (I_GRAB)
-			if (H != src && check_shields(0, null, H, H.zone_sel.selecting, H.name))
+			// if (H != src && check_shields(0, null, H, H.zone_sel.selecting, H.name)) [SIERA-EDIT]
+			if (H != src && check_shields(0, null, H, H.zone_sel.selecting, H.name) || !aura_check(AURA_TYPE_UNARMED, H))
 				H.do_attack_animation(src)
 				return
 			return H.species.attempt_grab(H, src)
@@ -197,7 +198,8 @@
 
 		if (I_DISARM)
 			if (H.species)
-				if (H != src && check_shields(0, null, H, H.zone_sel.selecting, H.name))
+				//if (H != src && check_shields(0, null, H, H.zone_sel.selecting, H.name)) [SIERRA-EDIT]
+				if (H != src && check_shields(0, null, H, H.zone_sel.selecting, H.name) || !aura_check(AURA_TYPE_UNARMED, H))
 					H.do_attack_animation(src)
 					return
 				admin_attack_log(M, src, "Disarmed their victim.", "Was disarmed.", "disarmed")

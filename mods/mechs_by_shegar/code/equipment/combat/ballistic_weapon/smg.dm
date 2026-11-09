@@ -22,14 +22,11 @@
 	allowed_magazines = /obj/item/ammo_magazine/proto_smg/mech
 	has_safety = FALSE
 	firemodes = list(
-		list(mode_name="semi auto",burst=3, fire_delay=null,move_delay=null, one_hand_penalty=0, burst_accuracy=null, dispersion=null),
+		list("mode_name" = "semi auto",burst=3, fire_delay=null,move_delay=null, one_hand_penalty=0, burst_accuracy=null, dispersion=null),
 		)
 
 /obj/item/mech_equipment/mounted_system/taser/ballistic/smg/need_combat_skill()
 	return TRUE
-
-/obj/item/gun/projectile/automatic/mounted/smg/unload_ammo(mob/user,allow_dump = 1)
-	return
 
 /obj/item/ammo_magazine/proto_smg/mech
 	max_ammo = 100
@@ -46,4 +43,24 @@
 /obj/item/projectile/bullet/pistol/holdout/mech
 	damage = 30
 	fire_sound = 'mods/mechs_by_shegar/sounds/mech_smg.ogg'
-	penetrating = 1
+	//Раскоментировать когда будет хитскан
+	// penetrating = 0
+	// damage = 25
+	// hitscan = TRUE
+
+/*
+
+/obj/temporary/bullet_traccer
+	invisibility = 100
+
+/obj/temporary/bullet_traccer/Initialize(mapload, duration, _icon, _state)
+	. = ..()
+	pixel_y = pick(-12, 0, 12)
+	pixel_x = pick(-12, 0, 12)
+
+/obj/item/projectile/bullet/pistol/holdout/mech/setup_trajectory(turf/startloc, turf/targloc, x_offset, y_offset)
+	.=..()
+	var/obj/traccer = new /obj/temporary/bullet_traccer (targloc, 0.2 SECONDS)
+	startloc.Beam(BeamTarget = traccer, icon_state = "main",icon='mods/mechs_by_shegar/icons/traccer.dmi',time = 0.2 SECONDS)
+
+*/

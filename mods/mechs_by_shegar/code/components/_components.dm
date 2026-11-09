@@ -1,10 +1,12 @@
 /obj/item/mech_component
 	icon = 'mods/mechs_by_shegar/icons/mech_parts_held.dmi'
-	w_class = ITEM_SIZE_HUGE
+	w_class = ITEM_SIZE_GARGANTUAN
 	gender = PLURAL
 	color = COLOR_GUNMETAL
 	atom_flags = ATOM_FLAG_CAN_BE_PAINTED
-	anchored = TRUE //Часть меха нешуточно тяжёлые, кто их вообще сможет утащить?
+//	anchored = TRUE //Часть меха нешуточно тяжёлые, кто их вообще сможет утащить?
+
+	throw_range = 1
 
 	var/on_mech_icon = 'mods/mechs_by_shegar/icons/mech_parts.dmi'
 	var/exosuit_desc_string
@@ -39,15 +41,15 @@
 	///Обозначает вес компонента в КИЛОГРАММАХ
 	var/weight = 100
 	//Можно ли взять часть в руки
-	var/can_be_pickuped = FALSE
+//	var/can_be_pickuped = FALSE
 	///Модификатор урона по части, когда она принимает урон лицевой стороной
 	var/front_modificator_damage = 1
 	///Модификатор урона по части, когда она принимает урон задней стороной
-	var/back_modificator_damage = 1
+	var/back_modificator_damage = 1.5
 	///Гарантированный дополнительный урон, когда часть принимает урон лицевой стороной
 	var/front_additional_damage = 0
 	///Гарантированный дополнительный урон, когда часть принимает урон задней стороной
-	var/back_additional_damage = 0
+	var/back_additional_damage = 4
 	///Применяется при установки части которая в себе содержит несколько частей (Условно траки или паучьи ноги)
 	var/obj/item/mech_component/doubled_owner
 	///ТЭГ компонента. Применяется если мы не хотим чтоб игроки хитрили, как в случае СБ меха, или части были
@@ -58,11 +60,41 @@
 	//Кто-то прям сейчас пытается тащить нашу часть!
 	var/turf/haul_turf
 
+	/// Замедление при переноске
+	var/slowdown_held = 6 // Yes, you can carry it. But this thing is cumbersome.
+
+/obj/item/mech_component/Initialize()
+	slowdown_per_slot[slot_l_hand] =  slowdown_held
+	slowdown_per_slot[slot_r_hand] =  slowdown_held
+
+	. = ..()
+
+/obj/item/mech_component/attack_hand(mob/user)
+	.=..()
+	if(user.mob_size >= MOB_LARGE)
+		to_chat(user, SPAN_NOTICE("You casually lift \the [src] without paying attention to its weight."))
+	if(user.mob_size == MOB_MEDIUM)
+		user.adjust_stamina(-25)
+		to_chat(user, SPAN_WARNING("You bend when you lift heavy \the [src]."))
+	if(user.mob_size <= MOB_SMALL)
+		user.adjust_stamina(-50)
+		to_chat(user, SPAN_WARNING("You can barely stand under the weight of \the [src]."))
+
+
+/obj/item/mech_component/MouseDrop(atom/over_atom, atom/source_loc, atom/over_loc, source_control, over_control, list/mouse_params)
+	if(!CanMouseDrop(over_atom, usr))
+		return
+	if(istype(over_atom, /obj/structure/heavy_vehicle_frame))
+		var/obj/structure/heavy_vehicle_frame/input_frame = over_atom
+		input_frame.use_tool(src, usr)
+	.=..()
+
+/*
 /obj/item/mech_component/attack_hand(mob/user)
 	if(!can_be_pickuped)
-		to_chat(user, SPAN_BAD("Такую тяжесть тащить только с кем-то!"))
-		to_chat(user, SPAN_GOOD("А для этого вам нужно совместно с кем-то перетащить эту часть меха на пол, куда вы потащите часть"))
-		to_chat(user, SPAN_GOOD("Или, воспользоваться тележкой!"))
+		to_chat(user, SPAN_BAD("Этот предмет слишком тяжел, чтобы перемещать его в одиночку"))
+		to_chat(user, SPAN_GOOD("Найдите напарника и вместе с ним перетягивайте этот предмет по полу в нужную вам сторону"))
+		to_chat(user, SPAN_GOOD("Грузовая тележка также позволяет перемещать тяжелые предметы"))
 		return
 	else
 		.=..()
@@ -82,7 +114,7 @@
 		return
 	var/mob/living/carbon/human/human = user
 	if(human.stamina < 60)
-		to_chat(human, SPAN_WARNING("Устал, не могу!"))
+		to_chat(human, SPAN_WARNING("Вы слишком устали, чтобы тянуть это!"))
 		return FALSE
 	human.adjust_stamina(-50)
 	if(haul_turf && haul_turf == new_turf)
@@ -92,13 +124,14 @@
 	else if(haul_turf && haul_turf != new_turf)
 		haul_turf = null
 		human.adjust_stamina(-100)
-		to_chat(human, SPAN_WARNING("Что-то вы тащите совсем в разные стороны!"))
+		to_chat(human, SPAN_WARNING("Вы и ваш напарник тянете в разные стороны! Координируйтесь!"))
 		return FALSE
 	haul_turf = new_turf
 	if(do_after(user, 10 SECONDS, src, DO_PUBLIC_UNIQUE))
 		haul_turf = null
 	else
 		haul_turf = null
+*/
 
 /obj/item/mech_component/proc/update_component_owner()
 	if(ismech(loc))
@@ -142,6 +175,10 @@
 
 /obj/item/mech_component/proc/prebuild()
 	update_components()
+
+/obj/item/mech_component/PostFabrication()
+	..()
+	prebuild()
 
 /obj/item/mech_component/proc/install_component(obj/item/thing, mob/user)
 	if(user.unEquip(thing, src))

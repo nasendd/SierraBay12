@@ -132,6 +132,7 @@
 	starting_reagents = list(/datum/reagent/nutriment/flour = 50)
 
 /obj/item/reagent_containers/food/condiment/mint
+	name = "mint essential oil"
 	starting_reagents = list(/datum/reagent/nutriment/mint = 15)
 
 /obj/item/reagent_containers/food/condiment/soysauce
@@ -141,7 +142,7 @@
 	starting_reagents = list(/datum/reagent/oliveoil = 50)
 
 /obj/item/reagent_containers/food/condiment/peanutbutter
-	starting_reagents = list(/datum/reagent/nutriment/peanutbutter = 50)
+	starting_reagents = list(/datum/reagent/nutriment/peanut/peanutbutter = 50)
 
 /obj/item/reagent_containers/food/condiment/choconutspread
 	starting_reagents = list(/datum/reagent/nutriment/choconutspread = 50)
@@ -232,7 +233,7 @@
 	name = "peanut butter packet"
 	desc = "Contains 10u of peanut butter."
 	icon_state = "packet_medium"
-	starting_reagents = list(/datum/reagent/nutriment/peanutbutter = 10)
+	starting_reagents = list(/datum/reagent/nutriment/peanut/peanutbutter = 10)
 
 /obj/item/reagent_containers/food/condiment/small/packet/choconutspread
 	name = "NTella packet"
@@ -327,3 +328,10 @@
 	starting_reagents = list(/datum/reagent/crayon_dust/brown = 10)
 
 //End of MRE stuff.
+
+/obj/item/reagent_containers/food/condiment/pear_compote
+	name = "pear compote"
+	desc = "A delicious compote made of spiced pears."
+	icon_state = "pearcompote"
+	center_of_mass = "x=16;y=8"
+	starting_reagents = list(/datum/reagent/pearcompote = 50)

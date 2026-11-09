@@ -104,7 +104,7 @@ var/global/list/escape_pods_by_name = list()
 /datum/shuttle/autodock/ferry/escape_pod/can_force()
 // [SIERRA-ADD]
 	if (arming_controller && arming_controller.master.emagged)	// inf
-		return (next_location && next_location.is_valid(src) && !current_location.cannot_depart(src) && moving_status == SHUTTLE_IDLE && !location && arming_controller && arming_controller.armed)	// inf
+		return (next_location && !current_location.cannot_depart(src) && moving_status == SHUTTLE_IDLE && !location && arming_controller && arming_controller.armed)	// inf
 	// [/SIERRA-ADD]
 	if (arming_controller.eject_time && world.time < arming_controller.eject_time + 50)
 		return 0	//dont allow force launching until 5 seconds after the arming controller has reached it's countdown
@@ -159,21 +159,19 @@ var/global/list/escape_pods_by_name = list()
 		return TOPIC_REFRESH
 [/BAY]*/
 //  [SIERRA-ADD]
-	if(href_list["command"])
-		var/command = href_list["command"]
-		if(command == "manual_arm")
-			pod.arming_controller.arm()
-			return TOPIC_REFRESH
+	if(href_list["manual_arm"])
+		pod.arming_controller.arm()
+		return TOPIC_REFRESH
 
-		if(command == "force_launch")
-			if (pod.can_launch())
-				pod.toggle_bds()
-				pod.launch(src)
-			else if (pod.can_force())
-				pod.toggle_bds()
-				GLOB.global_announcer.autosay("Несанкционированный запуск капсулы <b>[pod]</b>! Возможна разгерметизация!", "Эвакуационный Контроллер",, z)
-				pod.force_launch(src)
-			return TOPIC_REFRESH
+	if(href_list["force_launch"])
+		if (pod.can_launch())
+			pod.toggle_bds()
+			pod.launch(src)
+		else if (pod.can_force())
+			pod.toggle_bds()
+			GLOB.global_announcer.autosay("Несанкционированный запуск капсулы <b>[pod]</b>! Возможна разгерметизация!", "Эвакуационный Контроллер",, z)
+			pod.force_launch(src)
+		return TOPIC_REFRESH
 //  [/SIERRA-ADD]
 
 //This controller is for the escape pod berth (station side)

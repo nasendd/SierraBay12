@@ -53,9 +53,7 @@
 	var/show_objectives_on_creation = 1     // Whether or not objectives are shown when a player is added to this antag datum
 	var/datum/antag_skill_setter/skill_setter = /datum/antag_skill_setter/generic // Used to set up skills.
 	var/datum/language/required_language = null
-
-	// Used for setting appearance.
-	var/list/valid_species =       list(SPECIES_UNATHI,SPECIES_SKRELL,SPECIES_HUMAN,SPECIES_VOX,SPECIES_DIONA,SPECIES_IPC)
+	var/list/valid_species =       list(SPECIES_HUMAN,SPECIES_VATGROWN,SPECIES_SPACER,SPECIES_GRAVWORLDER,SPECIES_TRITONIAN,SPECIES_MULE,SPECIES_UNATHI,SPECIES_SKRELL,SPECIES_VOX) // Used for setting appearance.
 	var/min_player_age = 14
 
 	// Runtime vars.
@@ -207,9 +205,11 @@
 	if(!length(candidates))
 		return 0
 
-	//Grab candidates randomly until we have enough.
+	// Grab candidates until we have enough.
+	// The /datum/game_mode/proc/get_players_for_role proc has already aseembled
+	// a candidate list for us, with Highs selected first, then Lows. It's randomized before this High/Low sorting.
 	while(length(candidates) && length(pending_antagonists) < spawn_target)
-		var/datum/mind/player = pick(candidates)
+		var/datum/mind/player = candidates[1]
 		candidates -= player
 		draft_antagonist(player)
 
@@ -269,3 +269,17 @@
 			player.assigned_role = null
 	pending_antagonists.Cut()
 	candidates.Cut()
+
+/// Antagonist specific logic sequence for exoplanet arrival
+/datum/antagonist/proc/arrive()
+	return
+
+// [SIERRA-ADD] - ANTAGBASE
+/datum/antagonist/proc/load_antag_base()
+	if(base_to_load)
+		var/datum/map_template/base = new base_to_load()
+		report_progress("Loading map template '[base]' for [role_text]...")
+		base_to_load = null
+		base.load_new_z()
+		get_starting_locations()
+// [/SIERRA-ADD]

@@ -9,8 +9,9 @@
 	min_damage = 75
 	max_repair = 50
 	repair_damage = 25
-	back_modificator_damage = 1.3
 	front_modificator_damage = 1
+	matter = list(MATERIAL_STEEL = 20000)
+
 	max_heat = 200
 	heat_cooling = 15
 	emp_heat_generation = 100

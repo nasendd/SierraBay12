@@ -170,6 +170,8 @@
 			//FACTION_VEY_MED,
 			//FACTION_BISHOP,
 			//FACTION_SEPTENERGO,
+			FACTION_KMS,
+			FACTION_BARC,
 			FACTION_OTHER
 		),
 		TAG_RELIGION =  list(
@@ -206,4 +208,9 @@
 		/singleton/emote/audible/scream/resomi,
 		/singleton/emote/audible/sneeze/resomi,
 		/singleton/emote/audible/giggle/resomi,
+		/singleton/emote/audible/resomi_chirp,
+		/singleton/emote/audible/resomi_trill,
+		/singleton/emote/audible/resomi_warble,
+		/singleton/emote/audible/resomi_wurble,
+		/singleton/emote/audible/skrell_trill1
 		)

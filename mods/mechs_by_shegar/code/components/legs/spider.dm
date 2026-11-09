@@ -12,10 +12,11 @@
 	max_hp = 50
 	min_damage = 50
 	max_repair = 30
+	matter = list(MATERIAL_STEEL = 48000, MATERIAL_ALUMINIUM = 5000, MATERIAL_PLASTIC = 5000)
+
 	repair_damage = 25
 	bump_type = MEDIUM_BUMP
 	can_strafe = TRUE
-	back_modificator_damage = 1.3
 	front_modificator_damage = 1
 	max_heat = 112.5
 	heat_cooling = 4

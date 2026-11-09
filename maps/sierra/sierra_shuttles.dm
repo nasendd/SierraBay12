@@ -18,6 +18,11 @@
 	name = "Escaped"
 
 //Pods
+
+/area/shuttle/escape_pod
+	name = "Escape Pod"
+	base_turf = /turf/simulated/floor/plating
+
 #define SIERRA_ESCAPE_POD(NUMBER) \
 /datum/shuttle/autodock/ferry/escape_pod/sierrapod/escape_pod##NUMBER { \
 	shuttle_area = /area/shuttle/escape_pod/escape_pod##NUMBER/station; \
@@ -33,10 +38,10 @@
 	docking_controller = "escape_pod_"+ #NUMBER +"_berth"; \
 } \
 /obj/shuttle_landmark/escape_pod/out/pod##NUMBER { \
-	landmark_tag = "escape_pod_"+ #NUMBER +"_internim"; \
+	landmark_tag = "escape_pod_"+ #NUMBER +"_out"; \
 } \
 /obj/shuttle_landmark/escape_pod/transit/pod##NUMBER { \
-	landmark_tag = "escape_pod_"+ #NUMBER +"_out"; \
+	landmark_tag = "escape_pod_"+ #NUMBER +"_internim"; \
 }
 
 SIERRA_ESCAPE_POD(1)
@@ -72,29 +77,30 @@ SIERRA_ESCAPE_POD(11)
 	name = "Petrov"
 	dock_target = "petrov_shuttle_airlock"
 	current_location = "nav_petrov_start"
-	landmark_transition = "nav_transit_scavshuttle"
+	landmark_transition = "nav_transit_petrov"
 	logging_home_tag = "nav_petrov_start"
 	sound_takeoff = 'sound/effects/rocket.ogg'
 	sound_landing = 'sound/effects/rocket_backwards.ogg'
 	logging_access = access_petrov_helm
 	range = 1
-	fuel_consumption = 6
+	fuel_consumption = 7
 	warmup_time = 10
 	ceiling_type = /turf/simulated/floor/shuttle_ceiling
-	shuttle_area = list(/area/shuttle/petrov/airlock,
-	/area/shuttle/petrov/cockpit,
-	/area/shuttle/petrov/ship,
-	/area/shuttle/petrov/test_room,
+	shuttle_area = list(
+	/area/shuttle/petrov/monitoring,
+	/area/shuttle/petrov/storage_primary,
+	/area/shuttle/petrov/power,
+	/area/shuttle/petrov/storage_secondary,
+	/area/shuttle/petrov/lab_airlock,
+	/area/shuttle/petrov/lab_hall,
+	/area/shuttle/petrov/chem_lab,
+	/area/shuttle/petrov/anomaly_lab,
+	/area/shuttle/petrov/spectrometry_lab,
+	/area/shuttle/petrov/toxin_lab,
 	/area/shuttle/petrov/cell1,
 	/area/shuttle/petrov/cell2,
-	/area/shuttle/petrov/cell3,
-	/area/shuttle/petrov/gas,
-	/area/shuttle/petrov/equipment,
-	/area/shuttle/petrov/eva,
-	/area/shuttle/petrov/security,
-	/area/shuttle/petrov/scan
+	/area/shuttle/petrov/cell3
 	)
-
 
 /obj/machinery/computer/shuttle_control/explore/petrov
 	name = "Petrov control console"
@@ -106,6 +112,7 @@ SIERRA_ESCAPE_POD(11)
 	fore_dir = WEST
 	vessel_size = SHIP_SIZE_SMALL
 	vessel_mass = 9000
+	skill_needed = SKILL_BASIC
 
 /obj/machinery/computer/shuttle_control/explore/petrov
 	skill_req = SKILL_BASIC
@@ -118,6 +125,10 @@ SIERRA_ESCAPE_POD(11)
 /obj/shuttle_landmark/sierra/petrov/out
 	name = "Space near the vessel"
 	landmark_tag = "nav_petrov_out"
+
+/obj/shuttle_landmark/sierra/transit/petrov
+	name = "In transit"
+	landmark_tag = "nav_transit_petrov"
 
 //Ninja Shuttle.
 /datum/shuttle/autodock/multi/antag/ninja
@@ -166,7 +177,7 @@ SIERRA_ESCAPE_POD(11)
 //Merchant
 
 /obj/shuttle_landmark/merchant/out
-	name = "Docking Bay"
+	name = "Dock STBD-1"
 	landmark_tag = "nav_merchant_out"
 	docking_controller = "merchant_shuttle_station"
 
@@ -189,7 +200,7 @@ SIERRA_ESCAPE_POD(11)
 	base_turf = /turf/simulated/floor/plating
 
 /obj/shuttle_landmark/admin/out
-	name = "Docking Bay"
+	name = "Dock STBD-3"
 	landmark_tag = "nav_admin_out"
 	docking_controller = "admin_shuttle_dock"
 
@@ -211,7 +222,7 @@ SIERRA_ESCAPE_POD(11)
 	docking_controller = "centcom_shuttle_bay"
 
 /obj/shuttle_landmark/ferry/out
-	name = "Docking Bay"
+	name = "Dock PRSD-2"
 	landmark_tag = "nav_ferry_out"
 	docking_controller = "centcom_shuttle_dock"
 
@@ -238,7 +249,7 @@ SIERRA_ESCAPE_POD(11)
 	landmark_tag = "nav_merc_deck5"
 
 /obj/shuttle_landmark/merc/dock
-	name = "Docking Port"
+	name = "Dock FORE-0"
 	landmark_tag = "nav_merc_dock"
 	docking_controller = "nuke_shuttle_dock_airlock"
 
@@ -288,7 +299,7 @@ SIERRA_ESCAPE_POD(11)
 
 //NT Rescue Shuttle
 
-/datum/shuttle/autodock/multi/antag/rescue
+/datum/shuttle/autodock/multi/antag/ert
 	destination_tags = list(
 		"nav_ert_deck1",
 		"nav_ert_deck2",
@@ -354,7 +365,7 @@ SIERRA_ESCAPE_POD(11)
 	docking_controller = "specops_shuttle_cent"
 
 /obj/shuttle_landmark/specops/out
-	name = "Docking Bay"
+	name = "Dock STBD-2"
 	landmark_tag = "nav_specops_out"
 	docking_controller = "specops_dock"
 
@@ -392,16 +403,6 @@ SIERRA_ESCAPE_POD(11)
 	logging_access = access_expedition_shuttle_helm
 	ceiling_type = /turf/simulated/floor/shuttle_ceiling/sierra
 	warmup_time = 7
-
-/datum/shuttle/autodock/overmap/exploration_shuttle/refresh_fuel_ports_list()	// Setting access onto APC and air alarms
-	..()
-	for(var/area/A in shuttle_area)
-		for(var/obj/machinery/alarm/alarm in A)
-			if(alarm.req_access)
-				alarm.req_access = list(list(access_engine, access_field_eng))  // engineering OR field eng
-		for(var/obj/machinery/power/apc/apc in A)
-			if(apc.req_access)
-				apc.req_access = list(list(access_engine, access_field_eng))  // engineering OR field eng
 
 /obj/shuttle_landmark/sierra/hangar/exploration_shuttle
 	name = "Charon Hangar"
@@ -479,6 +480,32 @@ SIERRA_ESCAPE_POD(11)
 	name = "In transit"
 	landmark_tag = "nav_transit_guppy"
 
+/datum/shuttle/autodock/overmap/phaethon
+	name = "Phaethon"
+	move_time = 20
+	shuttle_area = /area/phaethon_hangar/start
+	dock_target ="phaethon_shuttle"
+	current_location = "nav_hangar_phaethon"
+	landmark_transition = "nav_transit_phaethon"
+	sound_takeoff = 'sound/effects/rocket.ogg'
+	sound_landing = 'sound/effects/rocket_backwards.ogg'
+	fuel_consumption = 5
+	logging_home_tag = "nav_hangar_phaethon"
+	logging_access = access_sec_doors
+	skill_needed = SKILL_UNSKILLED
+	ceiling_type = /turf/simulated/floor/shuttle_ceiling/sierra
+	warmup_time = 5
+
+/obj/shuttle_landmark/sierra/hangar/phaethon
+	name = "Phaethon Hangar"
+	landmark_tag = "nav_hangar_phaethon"
+	base_area = /area/security/sierra/hangar
+	base_turf = /turf/simulated/floor/plating
+
+/obj/shuttle_landmark/sierra/transit/phaethon
+	name = "In transit"
+	landmark_tag = "nav_transit_phaethon"
+
 /datum/shuttle/autodock/overmap/crucian
 	name = "Crucian"
 	move_time = 40
@@ -526,7 +553,7 @@ SIERRA_ESCAPE_POD(11)
 	landmark_tag = "nav_transit_crucian"
 
 //Makes the deck management program use hangar access
-/datum/nano_module/deck_management
+/datum/nano_module/program/deck_management
 	default_access = list(access_hangar, access_cargo, access_heads)
 
 // away transit
@@ -535,22 +562,24 @@ SIERRA_ESCAPE_POD(11)
 	name = "In transit"
 	landmark_tag = "nav_transit_blueriver"
 
+// docking ladmarks
+
 /obj/shuttle_landmark/sierra/deck4/vox_raider
-	name = "Fourth Deck Starboard Dock"
+	name = "Dock STBD-3"
 	landmark_tag = "nav_deck4_vox_raider"
 	docking_controller = "admin_shuttle_dock"
 
 /obj/shuttle_landmark/sierra/deck4/skrellshuttle
-	name = "Fourth Deck Starboard Dock"
+	name = "Dock STBD-3"
 	landmark_tag = "nav_deck4_skrellshuttle"
 	docking_controller = "admin_shuttle_dock"
 
 /obj/shuttle_landmark/sierra/deck4/event
-	name = "Fourth Deck Starboard Dock"
+	name = "Dock STBD-3"
 	landmark_tag = "nav_deck4_event_dock"
 	docking_controller = "admin_shuttle_dock"
 
 /obj/shuttle_landmark/sierra/deck4/skrellscout
-	name = "Fourth Deck Auxillary Dock"
+	name = "Dock PRSD-3"
 	landmark_tag = "nav_deck4_skrellscout"
 	docking_controller = "rescue_shuttle_dock_airlock"

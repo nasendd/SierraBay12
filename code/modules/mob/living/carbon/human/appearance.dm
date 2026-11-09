@@ -1,5 +1,5 @@
 /mob/living/carbon/human/proc/change_appearance(flags, mob/user = src, datum/topic_state/state = GLOB.default_state)
-	var/datum/nano_module/appearance_changer/changer = new(src, flags)
+	var/datum/nano_module/program/appearance_changer/changer = new(src, flags)
 	changer.ui_interact(user, state = state)
 
 /mob/living/carbon/human/proc/change_species(new_species)
@@ -168,6 +168,16 @@
 	for (var/name in GLOB.species_by_name)
 		if (name in deny)
 			continue
+		if (is_special_character(mind))
+			var/species_invalid = FALSE
+			for (var/datum/antagonist/antag) // Identify which antag type the player is and identify if the species is allowed for this antagonist
+				if (!antag.is_antagonist(mind) || !length(antag.valid_species))
+					continue
+				if (!(name in antag.valid_species))
+					species_invalid = TRUE
+					break
+			if (species_invalid)
+				continue
 		if (!appearance_flags)
 			result += name
 			continue

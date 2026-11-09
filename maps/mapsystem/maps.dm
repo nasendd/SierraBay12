@@ -84,6 +84,7 @@ var/global/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/flags = 0
 	var/evac_controller_type = /datum/evacuation_controller
 	var/use_overmap = 0		//If overmap should be used (including overmap space travel override)
+	var/using_sun = FALSE	//If overmap should have a star
 	var/overmap_size = 20		//Dimensions of overmap zlevel if overmap is used.
 	var/overmap_z = 0		//If 0 will generate overmap zlevel on init. Otherwise will populate the zlevel provided.
 	var/overmap_event_areas = 0 //How many event "clouds" will be generated
@@ -233,7 +234,7 @@ var/global/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		TAG_RELIGION =  RELIGION_AGNOSTICISM
 	)
 
-	var/access_modify_region = list(
+	var/access_modify_region = alist(
 		ACCESS_REGION_SECURITY = list(access_hos, access_change_ids),
 		ACCESS_REGION_MEDBAY = list(access_cmo, access_change_ids),
 		ACCESS_REGION_RESEARCH = list(access_rd, access_change_ids),
@@ -378,9 +379,11 @@ var/global/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 
 /datum/map/proc/build_away_sites()
-#ifdef UNIT_TEST
-	report_progress("Unit testing, so not loading away sites")
-	return // don't build away sites during unit testing
+// [SIERRA-EDIT] - DEVMODE NO AWARS
+#if defined(UNIT_TEST) || defined(DEV_MODE_NO_AWAYS)
+	report_progress("Unit testing or dev mode (no aways), so not loading away sites")
+	return // don't build away sites during unit testing or dev mode
+// [/SIERRA-EDIT]
 #else
 	report_progress("Loading away sites...")
 
@@ -422,6 +425,10 @@ var/global/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 	report_progress("Finished selecting away sites ([english_list(selected)]) for [away_site_budget - points] cost of [away_site_budget] budget.")
 
+	// Record loaded away site IDs for derelict mission generation
+	for(var/datum/map_template/ruin/away_site/site in selected)
+		loaded_away_site_ids += site.id
+
 	for (var/datum/map_template/template in selected)
 		if (template.load_new_z())
 			report_progress("Loaded away site [template]!")
@@ -430,6 +437,12 @@ var/global/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 #endif
 
 /datum/map/proc/build_exoplanets()
+// [SIERRA-EDIT] - DEVMODE NO AWAYS
+#ifdef DEV_MODE_NO_AWAYS
+	report_progress("Dev mode (no aways), so not loading exoplanets")
+	return
+#endif
+// [/SIERRA-EDIT]
 	if(!use_overmap)
 		return
 
@@ -493,6 +506,29 @@ var/global/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	for(var/department in station_departments)
 		department_accounts[department] = create_account("[department] Account", "[department]", department_money, ACCOUNT_TYPE_DEPARTMENT)
 
+	// Backward compatibility aliases for legacy systems/mods
+	if(department_accounts["Science"])
+		department_accounts["Research"] ||= department_accounts["Science"]
+		department_accounts["Научный"] ||= department_accounts["Science"]
+	if(department_accounts["Supply"])
+		department_accounts["Cargo"] ||= department_accounts["Supply"]
+		department_accounts["Снабжения"] ||= department_accounts["Supply"]
+		department_accounts["Снабжение"] ||= department_accounts["Supply"]
+	if(department_accounts["Security"])
+		department_accounts["Охранный"] ||= department_accounts["Security"]
+	if(department_accounts["Engineering"])
+		department_accounts["Инженерный"] ||= department_accounts["Engineering"]
+	if(department_accounts["Medical"])
+		department_accounts["Медицинский"] ||= department_accounts["Medical"]
+	if(department_accounts["Service"])
+		department_accounts["Обслуживания"] ||= department_accounts["Service"]
+	if(department_accounts["Exploration"])
+		department_accounts["Экспедиционный"] ||= department_accounts["Exploration"]
+	if(department_accounts["Command"])
+		department_accounts["Командный"] ||= department_accounts["Command"]
+	if(department_accounts["Civilian"])
+		department_accounts["Гражданский"] ||= department_accounts["Civilian"]
+
 	department_accounts["Vendor"] = create_account("Vendor Account", "Vendor", 0, ACCOUNT_TYPE_DEPARTMENT)
 	vendor_account = department_accounts["Vendor"]
 
@@ -529,12 +565,31 @@ var/global/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		num2text(ENG_FREQ)   = list(access_engine_equip, access_atmospherics),
 		num2text(MED_FREQ)   = list(access_medical_equip),
 		num2text(MED_I_FREQ) = list(access_medical_equip),
-		num2text(SEC_FREQ)   = list(access_security),
-		num2text(SEC_I_FREQ) = list(access_security),
+		num2text(SEC_FREQ)   = list(access_brig),
+		num2text(SEC_I_FREQ) = list(access_brig),
 		num2text(SCI_FREQ)   = list(access_tox,access_robotics,access_xenobiology),
 		num2text(SUP_FREQ)   = list(access_cargo),
 		num2text(SRV_FREQ)   = list(access_janitor, access_hydroponics),
 		num2text(HAIL_FREQ)  = list(),
+	)
+
+/datum/map/proc/intercept_internal_channels()
+	return list(
+		num2text(PUB_FREQ)   = list(),
+		num2text(AI_FREQ)    = list(access_synth),
+		num2text(ENT_FREQ)   = list(),
+		num2text(ERT_FREQ)   = list(access_cent_specops),
+		num2text(COMM_FREQ)  = list(access_bridge),
+		num2text(ENG_FREQ)   = list(access_engine_equip, access_atmospherics),
+		num2text(MED_FREQ)   = list(access_medical_equip),
+		num2text(MED_I_FREQ) = list(access_medical_equip),
+		num2text(SEC_FREQ)   = list(access_brig),
+		num2text(SEC_I_FREQ) = list(access_brig),
+		num2text(SCI_FREQ)   = list(access_tox,access_robotics,access_xenobiology),
+		num2text(SUP_FREQ)   = list(access_cargo),
+		num2text(SRV_FREQ)   = list(access_janitor, access_hydroponics),
+		num2text(HAIL_FREQ)  = list(),
+		num2text(SYND_FREQ)  = list()
 	)
 
 /datum/map/proc/show_titlescreen(client/C)

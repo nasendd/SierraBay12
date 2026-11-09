@@ -91,6 +91,10 @@ var/global/list/_client_preferences_by_type
 /datum/client_preference/proc/changed(mob/preference_mob, new_value)
 	return
 
+/// Called when a client's preferences are first set up
+/datum/client_preference/proc/started(mob/user, value)
+	return
+
 /*********************
 * Player Preferences *
 *********************/
@@ -108,6 +112,9 @@ var/global/list/_client_preferences_by_type
 
 	mob_client.view = new_value
 	mob_client.update_skybox(TRUE)
+	//[SIERRA-ADD]
+	mob_client.update_click_catcher()
+	//[/SIERRA-ADD]
 
 /datum/client_preference/play_admin_midis
 	description = "Play admin midis"
@@ -133,6 +140,7 @@ var/global/list/_client_preferences_by_type
 	if(new_value == GLOB.PREF_NO)
 		sound_to(preference_mob, sound(null, channel = GLOB.ambience_channel_vents))
 		sound_to(preference_mob, sound(null, channel = GLOB.ambience_channel_forced))
+		sound_to(preference_mob, sound(null, channel = GLOB.ambience_channel_common))
 		sound_to(preference_mob, sound(null, channel = GLOB.ambience_channel_common))
 
 /datum/client_preference/play_announcement_sfx
@@ -238,6 +246,13 @@ var/global/list/_client_preferences_by_type
 	description = "Ignore safety on harm intent"
 	key = "SAFETY_ON_INTENT"
 
+/datum/client_preference/gun_crosshair
+	description = "Gun crosshair"
+	key = "GUN_CROSSHAIR"
+
+/datum/client_preference/gun_crosshair/changed(mob/preference_mob, new_value)
+	preference_mob.update_mouse_pointer()
+
 /datum/client_preference/show_credits
 	description = "Show End Titles"
 	key = "SHOW_CREDITS"
@@ -289,7 +304,7 @@ var/global/list/_client_preferences_by_type
 
 /datum/client_preference/graphics_quality/changed(mob/preference_mob, new_value)
 	if (preference_mob?.client)
-		for (var/atom/movable/renderer/renderer as anything in preference_mob.rdr_to_plane)
+		for (var/atom/movable/renderer/renderer as anything in preference_mob.renderer_plane_map)
 			renderer.GraphicsUpdate()
 
 /datum/client_preference/goonchat
@@ -337,12 +352,38 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_SHORT, GLOB.PREF_LONG)
 	default_value = GLOB.PREF_SHORT
 
+// [SIERRA-REMOVE] - Runechat
+/*
+/datum/client_preference/floating_messages
+	description = "Floating chat messages"
+	key = "FLOATING_CHAT"
+	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
+	default_value = GLOB.PREF_SHOW
+*/
+//[/SIERRA-REMOVE] - Runechat
 
 /datum/client_preference/toggle_run
 	description = "Shift toggles run (vs hold to run)"
 	key = "TOGGLE_RUN"
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 	default_value = GLOB.PREF_NO
+
+
+/datum/client_preference/atom_outlines
+	description = "Show Atom Outlines"
+	key = "ATOM_OUTLINE"
+
+
+/datum/client_preference/atom_outlines/changed(mob/user, new_value)
+	if(!user)
+		return
+	var/client/client = user.client
+	client?.SetOutlineAtom()
+	client?.outline_enabled = new_value == GLOB.PREF_YES
+
+
+/datum/client_preference/atom_outlines/started(mob/user, value)
+	changed(user, value)
 
 
 /********************

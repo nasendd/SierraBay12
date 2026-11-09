@@ -2,7 +2,7 @@
 	endWhen	= 350
 
 	var/list/obj/machinery/tele_pad/pads = list()
-	var/list/obj/machinery/bluespacedrive/drives = list()
+	var/list/obj/machinery/bluespace_drive/drives = list()
 	var/list/obj/structure/stairs/stairs = list()
 	var/list/obj/structure/ladders = list()
 	var/list/mob/living/simple_animal/hostile/bluespace/mobs = list()
@@ -10,18 +10,13 @@
 	var/maximum_mobs = 10
 	var/mob_spawn_chance = 3
 	var/turf_conversion_range = 5
-
-	/// Whether or not the 'pulse' should happen, changed to true if the probability check passes in setup()
-	var/should_do_pulse = FALSE
+	var/next_zap = 0
+	var/flush_running = FALSE
 
 
 /datum/event/bsd_instability/setup()
 	if (severity <= EVENT_LEVEL_MODERATE)
 		return
-	if (prob(55))
-		return
-	should_do_pulse = TRUE
-
 
 /datum/event/bsd_instability/announce()
 	switch (severity)
@@ -46,7 +41,7 @@
 		pads += pad
 		pad.interference = TRUE
 		pad.interlude_chance = 30 * severity
-	for (var/obj/machinery/bluespacedrive/drive as anything in SSmachines.get_machinery_of_type(/obj/machinery/bluespacedrive))
+	for (var/obj/machinery/bluespace_drive/drive as anything in SSmachines.get_machinery_of_type(/obj/machinery/bluespace_drive))
 		if (!(drive.z in affecting_z))
 			continue
 		drives += drive
@@ -54,7 +49,6 @@
 		drive.set_light(1, 8, 25, 15, COLOR_CYAN_BLUE)
 		if (severity <= EVENT_LEVEL_MODERATE)
 			continue
-		addtimer(new Callback(drive, TYPE_PROC_REF(/obj/machinery/bluespacedrive, create_flash), TRUE, turf_conversion_range), 2 SECONDS)
 	if (severity <= EVENT_LEVEL_MODERATE)
 		return
 	for (var/obj/structure/stairs/stair in world)
@@ -70,6 +64,7 @@
 
 
 /datum/event/bsd_instability/tick()
+	set waitfor = FALSE
 	if (severity > EVENT_LEVEL_MODERATE)
 		for (var/i = 1 to effects_per_tick)
 			var/turf/turf = pick_area_turf_in_single_z_level(
@@ -84,15 +79,45 @@
 				playsound(turf, "sound/effects/supermatter.ogg", 75, TRUE)
 				var/mob/living/simple_animal/hostile/bluespace/bluespace_ghost = new (turf)
 				mobs += bluespace_ghost
-	if (!should_do_pulse || activeFor != (endWhen - 30))
+		if (next_zap <= world.time)
+			for (var/obj/machinery/bluespace_drive/drive in drives)
+
+				var/turf/turf = get_random_turf_in_range(drive, 5)
+				var/simple_vector/start = new (drive.x * world.icon_size, drive.y * world.icon_size)
+				var/simple_vector/dest  = new (turf.x * world.icon_size, turf.y * world.icon_size)
+				turf.damage_health(10, DAMAGE_BURN)
+
+				for (var/atom/object in turf.contents)
+					object.damage_health(10, DAMAGE_BURN)
+				playsound(drive, pick('sound/effects/bsd_zap_2.ogg'), 75)
+				if (prob(30))
+					turf.damage_health(20, DAMAGE_BURN)
+					for (var/atom/object in turf)
+						object.damage_health(20, DAMAGE_BURN)
+					turf.ex_act(EX_ACT_HEAVY)
+					playsound(drive, pick('sound/effects/bsd_zap_1.ogg'), 75)
+				for (var/i = 1 to 8)
+					var/datum/bolt/b = new(start, dest, 90)
+					b.Draw(drive.z, color = "#01c4ff", thickness = 1)
+					sleep(1)
+
+				for (var/atom/object in turf)
+					object.damage_health(20, DAMAGE_BURN, null, 1)
+
+
+				next_zap = world.time + rand(5, 20) SECONDS
+	if (activeFor != (endWhen - 30))
 		return
+	if (flush_running || severity <= EVENT_LEVEL_MODERATE)
+		return
+	flush_running = TRUE
 	command_announcement.Announce(
 		"PRIORITY ALERT: System flush required to disperse esoteric hyper-particle buildup. Brace for chrono-phasic sweep.",
 		"[location_name()] Bluespace Drive Monitoring",
 		zlevels = affecting_z
 	)
-	for (var/obj/machinery/bluespacedrive/drive in drives)
-		addtimer(new Callback(drive, TYPE_PROC_REF(/obj/machinery/bluespacedrive, do_pulse)), 20 SECONDS)
+	for (var/obj/machinery/bluespace_drive/drive in drives)
+		addtimer(new Callback(drive, TYPE_PROC_REF(/obj/machinery/bluespace_drive, do_pulse)), 20 SECONDS)
 	for (var/mob/mob in GLOB.player_list)
 		if (istype(mob, /mob/new_player))
 			continue
@@ -107,7 +132,7 @@
 	for (var/obj/machinery/tele_pad/pad in pads)
 		pad.interference = FALSE
 		pad.interlude_chance = 0
-	for (var/obj/machinery/bluespacedrive/drive in drives)
+	for (var/obj/machinery/bluespace_drive/drive in drives)
 		drive.instability_event_active = FALSE
 		drive.set_light(1, 5, 15, 10, COLOR_CYAN)
 		for (var/turf/simulated/floor/floor in range(turf_conversion_range, drive))
@@ -117,16 +142,11 @@
 		stair.bluespace_affected = FALSE
 	for (var/obj/structure/ladder/ladder in ladders)
 		ladder.bluespace_affected = FALSE
-	if (should_do_pulse)
-		command_announcement.Announce(
-			"Particle flush complete, containment fields restablished. All systems nominal.",
-			"[location_name()] Bluespace Drive Monitoring"
-		)
-	else
-		command_announcement.Announce(
-			"Containment fields re-modulated. All systems nominal.",
-			"[location_name()] Bluespace Drive Monitoring"
-		)
+	command_announcement.Announce(
+		"Particle flush complete, containment fields restablished. All systems nominal.",
+		"[location_name()] Bluespace Drive Monitoring"
+	)
+
 	LAZYCLEARLIST(pads)
 	LAZYCLEARLIST(drives)
 	LAZYCLEARLIST(stairs)

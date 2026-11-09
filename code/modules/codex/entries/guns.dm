@@ -39,8 +39,14 @@
 	if(scope_zoom)
 		traits += "It has a magnifying optical scope. It can be toggled with Use Scope verb."
 
+	if(foldable)
+		traits += "It has a foldable stock. The stock can be folded or unfolded with the Toggle Stock verb."
+
 	if(LAZYLEN(firemodes) > 1)
 		traits += "It has multiple firemodes. Click it in hand to cycle them."
+
+	if(serial_number)
+		traits += "It has a serial number. Use a screwdriver to file it off."
 
 	return jointext(traits, "<br>")
 

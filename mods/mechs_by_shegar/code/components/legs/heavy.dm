@@ -12,10 +12,11 @@
 	min_damage = 150
 	max_repair = 75
 	repair_damage = 10
+	matter = list(MATERIAL_STEEL = 48000, MATERIAL_PLASTEEL = 20000, MATERIAL_ALUMINIUM = 20000)
 	bump_type = HARD_BUMP
 	bump_safety = FALSE
 	req_material = MATERIAL_PLASTEEL
-	back_modificator_damage = 4
+	back_modificator_damage = 3
 	front_modificator_damage = 0.5
 	max_heat = 150
 	heat_cooling = 2

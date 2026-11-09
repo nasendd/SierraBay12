@@ -1,6 +1,6 @@
 /datum/job/qm
 	title = "Quartermaster"
-	department = "Снабжения"
+	department = "Supply"
 	department_flag = SUP
 	head_position = 1
 	total_positions = 1
@@ -12,7 +12,12 @@
 	ideal_character_age = 25
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/supply/quartermaster
 	allowed_branches = list(/datum/mil_branch/employee)
-	allowed_ranks = list(/datum/mil_rank/civ/nt)
+	allowed_ranks = list(
+		/datum/mil_rank/civ/nt,
+		/datum/mil_rank/civ/acting,
+		/datum/mil_rank/civ/probation_employee,
+		/datum/mil_rank/civ/probation_contractor
+		)
 	min_skill = list(
 		SKILL_BUREAUCRACY = SKILL_TRAINED,
 		SKILL_FINANCE     = SKILL_BASIC,
@@ -24,7 +29,7 @@
 
 	access = list(		access_maint_tunnels, access_emergency_storage, access_bridge, access_tech_storage,  access_cargo, access_guppy_helm,
 						access_cargo_bot, access_qm, access_mailsorting, access_expedition_shuttle, access_guppy, access_hangar,
-						access_mining, access_mining_office, access_mining_station, access_commissary, access_external_airlocks)
+						access_mining, access_mining_office, access_mining_station, access_commissary, access_external_airlocks, access_employment_records)
 
 
 
@@ -40,16 +45,17 @@
 
 /datum/job/cargo_tech
 	title = "Cargo Technician"
-	department = "Снабжения"
+	department = "Supply"
 	department_flag = SUP
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "Квартирмейстеру и Главе Персонала"
 	minimum_character_age = list(SPECIES_HUMAN = 22)
 	ideal_character_age = 24
+	economic_power = 3
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/supply/tech
 	allowed_branches = list(/datum/mil_branch/employee, /datum/mil_branch/contractor)
-	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor)
+	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor, /datum/mil_rank/civ/probation_employee, /datum/mil_rank/civ/probation_contractor)
 	min_skill = list(
 		SKILL_BUREAUCRACY = SKILL_BASIC,
 		SKILL_FINANCE     = SKILL_BASIC,
@@ -73,7 +79,7 @@
 
 /datum/job/mining
 	title = "Prospector"
-	department = "Снабжения"
+	department = "Supply"
 	department_flag = SUP
 	total_positions = 4
 	spawn_positions = 4
@@ -96,7 +102,7 @@
 
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/supply/prospector
 	allowed_branches = list(/datum/mil_branch/employee, /datum/mil_branch/contractor)
-	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor)
+	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor, /datum/mil_rank/civ/probation_employee, /datum/mil_rank/civ/probation_contractor)
 
 	access = list(access_mining, access_mining_office, access_mining_station,
 						access_expedition_shuttle, access_guppy, access_hangar, access_guppy_helm, access_cargo)
@@ -109,7 +115,7 @@
 
 /datum/job/cargo_assistant
 	title = "Cargo Assistant"
-	department = "Снабжения"
+	department = "Supply"
 	department_flag = SUP
 	total_positions = 1
 	spawn_positions = 1
@@ -119,7 +125,7 @@
 	selection_color = "#515151"
 	outfit_type = /singleton/hierarchy/outfit/job/sierra/crew/supply/assistant
 	allowed_branches = list(/datum/mil_branch/employee, /datum/mil_branch/civilian, /datum/mil_branch/contractor)
-	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor, /datum/mil_rank/civ/civ)
+	allowed_ranks = list(/datum/mil_rank/civ/nt, /datum/mil_rank/civ/contractor, /datum/mil_rank/civ/civ, /datum/mil_rank/civ/probation_employee, /datum/mil_rank/civ/probation_contractor)
 	min_skill = list(
 		SKILL_BUREAUCRACY = SKILL_BASIC,
 		SKILL_FINANCE     = SKILL_BASIC,

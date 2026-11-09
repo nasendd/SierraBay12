@@ -2,6 +2,7 @@
 	//setup reagent holders
 	bloodstr = new/datum/reagents/metabolism(120, src, CHEM_BLOOD)
 	touching = new/datum/reagents/metabolism(1000, src, CHEM_TOUCH)
+	metabolized = new/datum/reagents/metabolism(500, src, CHEM_METABOLITES, TRUE)
 	reagents = bloodstr
 
 	if (!default_language && species_language)
@@ -25,6 +26,8 @@
 /mob/living/carbon/rejuvenate()
 	bloodstr.clear_reagents()
 	touching.clear_reagents()
+	metabolized.clear_reagents()
+	last_time_metabolite = list()
 	var/datum/reagents/R = get_ingested_reagents()
 	if(istype(R))
 		R.clear_reagents()
@@ -162,6 +165,10 @@
 		return 0
 	if(shock_damage < 1)
 		shock_damage = 1
+	if (fire_stacks < 0)
+		shock_damage *= (0.65 * abs(fire_stacks))
+	if (fire_stacks > 0)
+		IgniteMob()
 	apply_damage(shock_damage, DAMAGE_BURN, def_zone, used_weapon="Electrocution")
 	return(shock_damage)
 
@@ -183,6 +190,7 @@
 	var/obj/item/I = get_active_hand()
 	if(istype(I))
 		I.on_active_hand(src)
+	update_mouse_pointer()
 
 /mob/living/carbon/proc/activate_hand(selhand) //0 or "r" or "right" for right hand; 1 or "l" or "left" for left hand.
 
@@ -407,6 +415,25 @@
 	Weaken(floor(stun_duration/2))
 	return TRUE
 
+///Proc handles metabolite effects, degradation, and overdoses. Even inactive metabolites have overdoses handled here.
+/mob/living/carbon/proc/handle_metabolites()
+	if (!metabolized || !metabolized.reagent_list)
+		return
+	for (var/datum/reagent/reagent as anything in metabolized.reagent_list)
+		reagent.affect_metabolites(src, reagent.volume)
+		var/overdose_amount = 0
+		if (reagent.active_metabolites)
+			overdose_amount = reagent.volume
+		else
+			overdose_amount = bloodstr.get_reagent_amount(reagent.type)
+
+		if (reagent.overdose && overdose_amount >= reagent.overdose)
+			reagent.process_overdose(src)
+
+		if (last_time_metabolite[reagent.type] + 3 SECONDS > world.time)
+			continue
+		metabolized.remove_reagent(reagent.type, reagent.metabolism * reagent.removal_multiplier)
+
 /mob/living/carbon/proc/add_chemical_effect(effect, magnitude = 1)
 	if(effect in chem_effects)
 		chem_effects[effect] += magnitude
@@ -439,8 +466,8 @@
 	<BR><B>Head(Mask):</B> <a href='byond://?src=\ref[src];item=mask'>[(wear_mask ? wear_mask : "Nothing")]</A>
 	<BR><B>Left Hand:</B> <a href='byond://?src=\ref[src];item=l_hand'>[(l_hand ? l_hand  : "Nothing")]</A>
 	<BR><B>Right Hand:</B> <a href='byond://?src=\ref[src];item=r_hand'>[(r_hand ? r_hand : "Nothing")]</A>
-	<BR><B>Back:</B> <a href='byond://?src=\ref[src];item=back'>[(back ? back : "Nothing")]</A> [((istype(wear_mask, /obj/item/clothing/mask) && istype(back, /obj/item/tank) && !( internal )) ? text(" <a href='byond://?src=\ref[];item=internal'>Set Internal</A>", src) : "")]
-	<BR>[(internal ? text("<a href='byond://?src=\ref[src];item=internal'>Remove Internal</A>") : "")]
+	<BR><B>Back:</B> <A href='byond://?src=\ref[src];item=back'>[(back ? back : "Nothing")]</A> [(istype(wear_mask, /obj/item/clothing/mask) && istype(back, /obj/item/tank) && !internal) ? " <A href='byond://?src=\ref[src];item=internal'>Set Internal</A>" : ""]
+	<BR>[internal ? "<A href='byond://?src=\ref[src];item=internal'>Remove Internal</A>" : ""]
 	<BR><a href='byond://?src=\ref[src];item=pockets'>Empty Pockets</A>
 	<BR><a href='byond://?src=\ref[user];refresh=1'>Refresh</A>
 	<BR>"}
@@ -536,3 +563,8 @@
 
 /mob/living/carbon/proc/vomit(timevomit = 1, level = 3, delay = 0)
 	return
+
+/mob/living/carbon/proc/is_fast()
+	if (bloodstr.has_reagent(/datum/reagent/hyperzine) || metabolized.has_reagent(/datum/reagent/hyperzine))
+		return TRUE
+	else return FALSE

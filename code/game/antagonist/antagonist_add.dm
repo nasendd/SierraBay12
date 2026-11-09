@@ -1,14 +1,11 @@
-/datum/antagonist/proc/add_antagonist(datum/mind/player, ignore_role, do_not_equip, move_to_spawn, do_not_announce, preserve_appearance)
+/datum/antagonist/proc/add_antagonist(datum/mind/player, ignore_role, do_not_equip, move_to_spawn, do_not_announce, preserve_appearance, bypass = FALSE)
 
-	if(!add_antagonist_mind(player, ignore_role))
+	if(!add_antagonist_mind(player, ignore_role, bypass=bypass))
 		return
 
-	if(base_to_load)
-		var/datum/map_template/base = new base_to_load()
-		report_progress("Loading map template '[base]' for [role_text]...")
-		base_to_load = null
-		base.load_new_z()
-		get_starting_locations()
+	// [SIERRA-EDIT]
+	load_antag_base()
+	// [/SIERRA-EDIT]
 
 	//do this again, just in case
 	if(flags & ANTAG_OVERRIDE_JOB)
@@ -34,14 +31,14 @@
 		player.current.faction = faction
 	return 1
 
-/datum/antagonist/proc/add_antagonist_mind(datum/mind/player, ignore_role, nonstandard_role_type, nonstandard_role_msg)
+/datum/antagonist/proc/add_antagonist_mind(datum/mind/player, ignore_role, nonstandard_role_type, nonstandard_role_msg, bypass = FALSE)
 	if(!istype(player))
 		return 0
 	if(!player.current)
 		return 0
 	if(player in current_antagonists)
 		return 0
-	if(!can_become_antag(player, ignore_role))
+	if (!bypass && !can_become_antag(player, ignore_role))
 		return 0
 	current_antagonists |= player
 	GLOB.destroyed_event.register(player, src, PROC_REF(remove_antagonist))
